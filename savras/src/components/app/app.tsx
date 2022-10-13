@@ -1,7 +1,7 @@
-
+import SignIn from '../../pages/sign-in/sign-in';
 
 function App(): JSX.Element {
-  return <h1>hello</h1>;
+  return <SignIn />;
 }
 
 export default App;
