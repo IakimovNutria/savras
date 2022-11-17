@@ -10,6 +10,8 @@ import {
     ReferenceArea,
     ResponsiveContainer,
 } from 'recharts';
+import moment from 'moment';
+
 
 type stateType = {
     data: {[key: string]: number}[],
@@ -74,6 +76,7 @@ const initialState: stateType = {
 export default class Example extends PureComponent {
 
     state: stateType;
+
     constructor(props: any) {
         super(props);
         this.state = initialState;
@@ -116,7 +119,7 @@ export default class Example extends PureComponent {
             refAreaRight: '',
             left: 'dataMin',
             right: 'dataMax',
-            top: 'dataMax+10',
+            top: 'dataMax+1',
             bottom: 'dataMin'
         }));
     }
@@ -141,10 +144,8 @@ export default class Example extends PureComponent {
                         onMouseUp={this.zoom.bind(this)}
                     >
                         <CartesianGrid strokeDasharray="3 3" />
-                        {
-                            //отрисовка OX
-                            //<XAxis allowDataOverflow dataKey="name" domain={[left, right]} type="number" />}
-                        }
+                        <XAxis allowDataOverflow dataKey="name" domain={[left, right]} type="number"
+                               tickFormatter={timeStr => moment(timeStr).format('HH:mm')} />
                         <YAxis allowDataOverflow domain={[bottom, top]} type="number" yAxisId="1" />
                         <Tooltip />
                         <Line yAxisId="1" type="natural" dataKey="cost" stroke="#8884d8" animationDuration={300} />
