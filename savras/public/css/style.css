@@ -1,0 +1,117 @@
+.bg-image {
+    min-height:100%;
+    min-width:100%;
+    height:auto;
+    width:auto;
+    position:absolute;
+    top:-100%; bottom:-100%;
+    left:-100%; right:-100%;
+    margin:auto;
+    filter: alpha(Opacity=100);
+    opacity: 1;
+    z-index: -200
+}
+
+.sign-in {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background: #E7C82B;
+    border-style: solid;
+    border-color: black;
+    padding-bottom: 2%;
+    position: fixed;
+    width: 400px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.sign-up {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background: #E7C82B;
+    border-style: solid;
+    border-color: black;
+    padding-bottom: 2%;
+    position: fixed;
+    width: 400px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.files-block {
+    display: flex;
+    align-items: center;
+    align-content: flex-start;
+    flex-direction: column;
+    background: #E7C82B;
+    border-style: solid;
+    border-color: black;
+    width: 400px;
+}
+
+.my-pipelines-block {
+    display: flex;
+    align-items: center;
+    align-content: flex-start;
+    flex-direction: column;
+    background: #E7C82B;
+    border-style: solid;
+    border-color: black;
+    width: 400px;
+}
+
+.shared-pipelines-block {
+    display: flex;
+    align-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    background: #E7C82B;
+    border-style: solid;
+    border-color: black;
+    width: 400px;
+}
+
+.main-page {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    left: 0;
+    right: 0;
+    justify-content: center;
+}
+
+li {
+    list-style-type: none;
+}
+
+ul {
+    margin-left: 0;
+    padding-left: 0;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.main-page-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sign-in-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.sign-up-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

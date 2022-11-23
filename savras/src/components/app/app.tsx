@@ -1,22 +1,25 @@
 import SignIn from '../../pages/sign-in/sign-in';
+import SignUp from '../../pages/sign-up/sign-up';
 import Graph from '../../pages/graph/graph';
 import MainPage from '../../pages/main-page/main-page';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import Test from '../../pages/test/test';
 import Pipeline from '../../pages/pipeline/pipeline';
 import File from '../../pages/file/file'
+import PrivateRoute from "../private-route/private-route";
 
 
 function App(): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={(<SignIn />)}/>
+        <Route path='sign-in' element={(<SignIn />)}/>
+        <Route path='sign-up' element={(<SignUp />)}/>
         <Route path='graph' element={<Graph />}/>
         <Route path='main' element={(<MainPage />)}/>
         <Route path='test' element={(<Test />)}/>
-        <Route path='pipeline/:id' element={<Pipeline />}/>
-        <Route path='file/:id' element={<File />}/>
+        <Route path='pipeline/:id' element={<PrivateRoute hasAccess={true} navigateTo={<Pipeline />} />}/>
+        <Route path='file/:id' element={<PrivateRoute hasAccess={false} navigateTo={<File />} />}/>
       </Routes>
     </BrowserRouter>);
 }

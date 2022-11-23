@@ -78,14 +78,7 @@ const LinkStyle = {
 };
 
 function Test(): JSX.Element {
-    return (<html>
-    <head>
-        <title>Savras</title>
-        <meta name="robots" content="noindex, nofollow"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    </head>
-    <body>
-    <div className="main-page">
+    return (<div className="main-page">
         <h3 style={TextStyle}>files</h3>
         <div className="files" style={FilesStyle}>
             <ul style={UlStyle}>
@@ -110,9 +103,7 @@ function Test(): JSX.Element {
                 }
             </ul>
         </div>
-    </div>
-    </body>
-    </html>)
+    </div>)
 }
 
 export default Test;
