@@ -1,4 +1,5 @@
 import React, {FormEvent, useState} from 'react';
+import {Link} from "react-router-dom";
 
 
 function SignUp(): JSX.Element {
@@ -28,7 +29,7 @@ function SignUp(): JSX.Element {
                     </div>
                 </div>
                 <div className="sign-up-buttons">
-                    <button className="sign-up__btn" type="submit">Sign up</button>
+                    <Link to={`/`}><button className="sign-up__btn" type="submit">Sign up</button></Link>
                 </div>
             </form>
         </div>

@@ -14,6 +14,7 @@ const textColor: string = '#fff';
 
 function MainPage(): JSX.Element {
     return (
+
     <div className="main-page">
         <div className="files-block">
             <h3>add file</h3>
@@ -24,7 +25,7 @@ function MainPage(): JSX.Element {
             <h3>files</h3>
             <ul>
                 {
-                    data.map(key => (<li><Link to={`/file/${key[1]}`}>{key[0]}</Link></li>))
+                    data.map(key => (<li>{/*<Link to={`/file/${key[1]}`}>*/}{key[0]}{/*</Link>*/}</li>))
                 }
             </ul>
         </div>

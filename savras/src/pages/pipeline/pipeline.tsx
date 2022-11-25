@@ -10,7 +10,7 @@ function Pipeline(): JSX.Element {
     const id = Number(useParams().id);
     return (
         <React.Fragment>
-            <form action="/main">
+            <form action="/">
                 <button>Back to main</button>
             </form>
             <h1>pipeline</h1>

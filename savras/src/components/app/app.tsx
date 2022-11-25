@@ -7,6 +7,7 @@ import Test from '../../pages/test/test';
 import Pipeline from '../../pages/pipeline/pipeline';
 import File from '../../pages/file/file'
 import PrivateRoute from "../private-route/private-route";
+import {useState} from "react";
 
 
 function App(): JSX.Element {
@@ -16,10 +17,10 @@ function App(): JSX.Element {
         <Route path='sign-in' element={(<SignIn />)}/>
         <Route path='sign-up' element={(<SignUp />)}/>
         <Route path='graph' element={<Graph />}/>
-        <Route path='main' element={(<MainPage />)}/>
+        <Route path='/' element={(<PrivateRoute hasAccess={true} navigateTo={<MainPage />} />)}/>
         <Route path='test' element={(<Test />)}/>
         <Route path='pipeline/:id' element={<PrivateRoute hasAccess={true} navigateTo={<Pipeline />} />}/>
-        <Route path='file/:id' element={<PrivateRoute hasAccess={false} navigateTo={<File />} />}/>
+        <Route path='file/:id' element={<PrivateRoute hasAccess={true} navigateTo={<File />} />}/>
       </Routes>
     </BrowserRouter>);
 }
