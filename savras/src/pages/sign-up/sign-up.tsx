@@ -1,39 +1,66 @@
 import React, {FormEvent, useState} from 'react';
-import {Link} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
+import registerUser from "../../requests/register";
+
+
+const RegisterStates = {
+    REGISTERED: 'registered',
+    DEFAULT: 'not-registered',
+    BAD_REGISTER: 'bad-register'
+};
 
 
 function SignUp(): JSX.Element {
+    const [register, setRegister] = useState(RegisterStates.DEFAULT);
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-    };
-    return (
-        <div className="sign-up">
-            <h1>Sign up</h1>
-            <form className="sign-up__form" onSubmit={handleSubmit}>
-                <div className="sign-up__fields">
-                    <div className="sign-up__field">
-                        <input className="sign-up__input" type="text" placeholder="Login" name="user-login"
-                               id="user-login" value={login}
-                               onChange={(e) => setLogin(e.target.value)}
-                        />
-                        <label className="sign-up__label" form="user-login">Login</label>
-                    </div>
-                    <div className="sign-up__field">
-                        <input className="sign-up__input" type="password" placeholder="Password" name="user-password"
-                               id="user-password" value={password}
-                               onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <label className="sign-up__label" form="user-password">Password</label>
-                    </div>
+        registerUser(login, password).then((response) => {
+            if (response === null) {
+                console.log("error on register");
+            } else if (response.ok) {
+                setRegister(RegisterStates.REGISTERED);
+            } else {
+
+            }
+        });
+    }
+    if (register === RegisterStates.DEFAULT)
+    {
+        return (
+            <div className="auth-form">
+                <div className="centered-elements block">
+                    <h1>Sign up</h1>
+                    <form onSubmit={handleSubmit}>
+                        <div>
+                            <div style={{marginBottom: 5}}>
+                                <input type="text" placeholder="Login" name="user-login" required className="text-input"
+                                       id="user-login" value={login}
+                                       onChange={(e) => setLogin(e.target.value)}
+                                />
+                            </div>
+                            <div>
+                                <input type="password" placeholder="Password" name="user-password" required className="text-input"
+                                       id="user-password" value={password}
+                                       onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className="centered-elements">
+                            <button className="block-button" type="submit"><span>Sign up</span></button>
+                        </div>
+                    </form>
                 </div>
-                <div className="sign-up-buttons">
-                    <Link to={`/`}><button className="sign-up__btn" type="submit">Sign up</button></Link>
+                <div className="centered-elements block">
+                    <h3 style={{margin: 0, marginTop: 15}}>Already have an account?</h3>
+                    <Link to={`/sign-in`}><button className="block-button" type="button"><span>Sign in</span></button></Link>
                 </div>
-            </form>
-        </div>
-    );
+            </div>
+    );}
+    else {
+        return <Navigate to='/'/>;
+    }
 }
 
 export default SignUp;

@@ -5,6 +5,7 @@ type PrivateRouteProps = {
     navigateTo: JSX.Element;
 };
 
+
 function PrivateRoute(props: PrivateRouteProps): JSX.Element {
     return props.hasAccess ? props.navigateTo : <Navigate to={'/sign-in'} />;
 }

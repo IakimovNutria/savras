@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from '../../savras/src/components/app/app';
+import { CookiesProvider } from 'react-cookie';
 
 // @ts-ignore
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
-    <React.StrictMode>
+    <CookiesProvider>
         <App />
-    </React.StrictMode>
+    </CookiesProvider>
 );
