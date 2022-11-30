@@ -7,20 +7,11 @@ import Test from '../../pages/test/test';
 import Pipeline from '../../pages/pipeline/pipeline';
 import File from '../../pages/file/file'
 import PrivateRoute from "../private-route/private-route";
+import React from "react";
 import getUser from "../../requests/get-user";
 
 
 function App(): JSX.Element {
-  let hasAccess = false;
-  getUser().then(r => {
-    console.log(r);
-    if (r === null) {
-
-    } else if (r.ok) {
-      hasAccess = true;
-    }
-  });
-  console.log(1);
   return (
     <BrowserRouter>
       <Routes>

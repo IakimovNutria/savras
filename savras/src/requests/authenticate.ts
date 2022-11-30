@@ -1,11 +1,13 @@
+import {front_server_path, back_server_path} from "../configuration";
+
 export default async function authenticateUser(login: string, password: string) {
     try {
-        return fetch('http://178.250.246.144:8000/api/v1/user/authentication/', {
+        return fetch(`${back_server_path}/api/v1/user/authentication/`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/x-www-form-urlencoded;charset=UTF-8',
                 'Access-Control-Allow-Credentials': 'true',
-                'Access-Control-Allow-Origin': 'http://127.0.0.1:3000',
+                'Access-Control-Allow-Origin': front_server_path,
                 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
             },
             body: `username=${login}&password=${password}`,
