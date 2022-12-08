@@ -1,3 +1,4 @@
+
 .bg-image {
     min-height:100%;
     min-width:100%;
@@ -30,17 +31,23 @@
     width: 400px;
 }
 
-.centered-elements {
+.column-elements {
     display: flex;
     align-items: center;
     flex-direction: column;
 }
 
+.row-elements {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
 .main-page {
+    padding-right: 110px;
     position: fixed;
     display: flex;
     flex-direction: row;
-    margin: auto;
     left: 0;
     right: 0;
     justify-content: center;
@@ -51,7 +58,6 @@ li {
 }
 
 ul {
-    margin-left: 0;
     padding-left: 0;
     margin-top: 0;
     padding-top: 0;
@@ -100,7 +106,6 @@ ul {
     padding: 0;
     border: none;
 }
-
 .block-button:before,
 .block-button:after {
     position: absolute;
@@ -115,18 +120,9 @@ ul {
             4px 4px 5px 0 rgba(0,0,0,.3);
     transition: all 0.3s ease;
 }
-
 .block-button:hover{
     color: #131D2B;
     background: transparent;
-}
-
-.block-button:hover:before {
-    height: 100%;
-}
-
-.block-button:hover:after {
-    width: 100%;
 }
 
 .text-input {
@@ -144,27 +140,85 @@ ul {
     -webkit-transition: border-color 0.2s;
     transition: border-color 0.2s;
 }
-
 .text-input::-webkit-input-placeholder {
     opacity: 1;
     color: rgba(223, 207, 119, 0.27);
 }
-
 .text-input:-ms-input-placeholder {
     opacity: 1;
     color: rgba(223, 207, 119, 0.27);
 }
-
 .text-input::-ms-input-placeholder {
     opacity: 1;
     color: rgba(223, 207, 119, 0.27);
 }
-
 .text-input::placeholder {
     opacity: 1;
     color: rgba(223, 207, 119, 0.27);
 }
-
 .text-input:focus {
     border-color: #DFCF77;
 }
+
+.delete-buttons-ul {
+    margin-left: 27px;
+}
+
+.delete-button {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+    margin-left: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.delete-button:before {
+    content: '+';
+    color: #131D2B;
+    position: absolute;
+    z-index: 2;
+    transform: rotate(45deg);
+    font-size: 20px;
+    line-height: 1;
+    transition: all 0.3s cubic-bezier(0.77, 0, 0.2, 0.85);
+}
+.delete-button:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    background: #131D2B;
+    z-index: 1;
+    transition: all 0.3s cubic-bezier(0.77, 0, 0.2, 0.85);
+    transform: scale(0.01);
+}
+.delete-button:hover:after {
+    transform: scale(1);
+}
+.delete-button:hover:before {
+    transform: scale(0.8) rotate(45deg);
+    color: lightcoral;
+}
+
+.sign-out-button {
+    margin-right: 30px;
+    margin-left: 30px;
+    margin-top: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+}
+.sign-out-button:hover {
+    background-color: red;
+}
+
+
+
+

@@ -8,7 +8,6 @@ import Pipeline from '../../pages/pipeline/pipeline';
 import File from '../../pages/file/file'
 import PrivateRoute from "../private-route/private-route";
 import React from "react";
-import getUser from "../../requests/get-user";
 
 
 function App(): JSX.Element {

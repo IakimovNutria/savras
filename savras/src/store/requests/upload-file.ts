@@ -1,19 +1,19 @@
-import {back_server_path, front_server_path} from "../configuration";
+import {BACKEND_URL, FRONT_SERVER_PATH} from "./configuration";
 
-export default async function createPipeline(name: string) {
+export default async function uploadFile(file: string) {
     try {
-        return fetch(`${back_server_path}/api/v1/pipelines/create`, {
+        return fetch(`${BACKEND_URL}/api/v1/files/upload`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Access-Control-Allow-Credentials': 'true',
-                'Access-Control-Allow-Origin': front_server_path,
+                'Access-Control-Allow-Origin': FRONT_SERVER_PATH,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: name
+                file: file
             }),
-            credentials: 'same-origin'
+            credentials: 'include'
         });
     } catch (error) {
         return null;

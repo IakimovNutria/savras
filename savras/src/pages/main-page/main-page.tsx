@@ -1,38 +1,48 @@
-import React from "react";
-import {Link, Navigate} from "react-router-dom";
-import getFiles from "../../requests/get-files";
-import getUserPipelines from "../../requests/get-user-pipelines";
-import getSharedPipelines from "../../requests/get-shared-pipelines";
-import getUser from "../../requests/get-user";
+import React, {FormEvent, useState} from "react";
+import {Navigate} from "react-router-dom";
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { deletePipelineAction, addPipeline, signOut } from '../../store/actions';
+import AuthorizationStatus from "../../types/authorizationStatus";
+import {useCookies} from "react-cookie";
 
 
 function MainPage(): JSX.Element {
-    let files: string[] = [];
-    let userPipelines: string[] = [];
-    let sharedPipelines: string[] = [];
-    let hasAccess = false;
+    const [newPipelineName, setNewPipelineName] = useState("");
+    const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+    const dispatch = useAppDispatch();
+    let authorizationStatus = useAppSelector((state) => state.authorization);
+    while (authorizationStatus === AuthorizationStatus.IN_PROCESS) {}
+    const files = useAppSelector((state) => state.filesList);
+    const userPipelines = useAppSelector((state) => state.userPipelinesList);
+    const sharedPipelines = useAppSelector((state) => state.sharedPipelinesList);
 
-    getUser().then(r => {
-        if (r === null) {
 
-        } else if (r.ok) {
-            hasAccess = true;
-        }
-    });
+    if (authorizationStatus === AuthorizationStatus.NOT_AUTHORIZED) {
+        return (<Navigate to={"/sign-in"} />);
+    }
 
-    getFiles().then(r => {
-        if (r === null) {
+    function handleCreatePipeline(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        dispatch(addPipeline(newPipelineName));
+    }
 
-        } else if (r.ok) {
+    function handleDeletePipeline(event: FormEvent<HTMLDivElement>) {
+        // TODO: добавить подтверждение об удалении пайплайна
+        dispatch(deletePipelineAction(event.currentTarget.id));
+        event.preventDefault();
+    }
 
-        }
-    });
+    function handleSignOut(event: FormEvent<HTMLButtonElement>) {
+        removeCookie("token");
+        dispatch(signOut());
+    }
 
-    return hasAccess ? (
+    return (
     <div className="main-page">
-        <div className="centered-elements block">
+        <button className="block-button sign-out-button" onClick={handleSignOut}>exit</button>
+        <div className="column-elements block">
             <h3>add file</h3>
-            <form encType="multipart/form-data" method="post" className="centered-elements">
+            <form encType="multipart/form-data" method="post" className="column-elements">
                 <label htmlFor="file-input">
                     Select file
                     <input id="file-input" type="file" required style={{display: "none"}}/>
@@ -41,34 +51,44 @@ function MainPage(): JSX.Element {
                 <input className="block-button" type="submit" value="Загрузить" />
             </form>
             <h3>files</h3>
-            <ul>
+            <ul className='column-elements delete-buttons-ul'>
                 {
-                    files.map(key => (<li>{/*<Link to={`/file/${key[1]}`}>*/}{key}{/*</Link>*/}</li>))
+                    files.map(file => (
+                        <li className='row-elements'>
+                            <div className="column-elements">{/*<Link to={`/file/${file['id']}`}>*/}{file['name']}{/*</Link>*/}</div>
+                            <div className='delete-button' id={file['id']}/>
+                        </li>))
                 }
             </ul>
         </div>
-        <div className="centered-elements block">
+        <div className="column-elements block">
             <h3>create new pipeline</h3>
-            <form encType="multipart/form-data" method="post" className="centered-elements">
-                <input type="text" required className="text-input" placeholder="Name"/>
+            <form encType="multipart/form-data" className="column-elements" onSubmit={handleCreatePipeline}>
+                <input type="text" required className="text-input" placeholder="Name"
+                       value={newPipelineName}
+                       onChange={(e) => setNewPipelineName(e.target.value)}/>
                 <input className="block-button" type="submit" value="Создать" />
             </form>
             <h3>pipelines</h3>
-            <ul>
+            <ul className='column-elements delete-buttons-ul'>
                 {
-                    userPipelines.map(key => (<li>{/*<Link to={`/pipeline/${key[1]}`}>*/}{key[0]}{/*</Link>*/}</li>))
+                    userPipelines.map(pipeline => (
+                        <li className='row-elements'>
+                            <div className="column-elements">{/*<Link to={`/pipeline/${pipeline['id']}`}>*/}{pipeline['name']}{/*</Link>*/}</div>
+                            <div className='delete-button' id={pipeline['id']} onClick={handleDeletePipeline}/>
+                        </li>))
                 }
             </ul>
         </div>
-        <div className="centered-elements block">
+        <div className="column-elements block">
             <h3>shared pipelines</h3>
-            <ul>
+            <ul className='column-elements'>
                 {
-                    sharedPipelines.map(key => (<li>{/*<Link to={`/pipeline/${key[1]}`}>*/}{key[0]}{/*</Link>*/}</li>))
+                    sharedPipelines.map(pipeline => (<li>{/*<Link to={`/pipeline/${pipeline['id']}`}>*/}{pipeline['name']}{/*</Link>*/}</li>))
                 }
             </ul>
         </div>
-    </div>) : (<Navigate to={'/sign-in'} />);
+    </div>);
 }
 
 export default MainPage;

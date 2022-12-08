@@ -1,14 +1,14 @@
-import {back_server_path, front_server_path} from "../configuration";
+import {BACKEND_URL, FRONT_SERVER_PATH} from "./configuration";
 
 export default async function getSharedPipelines() {
     try {
-        return fetch(`${back_server_path}/api/v1/pipelines/shared`, {
+        return fetch(`${BACKEND_URL}/api/v1/pipelines/shared`, {
             method: 'GET',
             headers: {
                 'Access-Control-Allow-Credentials': 'true',
-                'Access-Control-Allow-Origin': front_server_path,
+                'Access-Control-Allow-Origin': FRONT_SERVER_PATH,
             },
-            credentials: 'same-origin'
+            credentials: 'include'
         });
     } catch (error) {
         return null;
