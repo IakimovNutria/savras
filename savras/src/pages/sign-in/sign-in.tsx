@@ -1,7 +1,7 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import {Link, Navigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../hooks";
-import {signIn} from "../../store/actions";
+import {signInAction} from "../../store/api-actions";
 import AuthorizationStatus from "../../types/authorizationStatus";
 
 
@@ -12,7 +12,7 @@ function SignIn(): JSX.Element {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    dispatch(signIn({login: login, password: password}));
+    dispatch(signInAction({login: login, password: password}));
   }
 
   let authorizationStatus = useAppSelector((state) => state.authorization);

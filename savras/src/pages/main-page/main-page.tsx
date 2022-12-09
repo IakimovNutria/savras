@@ -1,7 +1,8 @@
 import React, {FormEvent, useState} from "react";
 import {Navigate} from "react-router-dom";
+import File from "../../types/file";
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { deletePipelineAction, addPipeline, signOut } from '../../store/actions';
+import {setAuthorization} from "../../store/actions";
 import AuthorizationStatus from "../../types/authorizationStatus";
 import {useCookies} from "react-cookie";
 
@@ -10,31 +11,25 @@ function MainPage(): JSX.Element {
     const [newPipelineName, setNewPipelineName] = useState("");
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
     const dispatch = useAppDispatch();
-    let authorizationStatus = useAppSelector((state) => state.authorization);
-    while (authorizationStatus === AuthorizationStatus.IN_PROCESS) {}
     const files = useAppSelector((state) => state.filesList);
     const userPipelines = useAppSelector((state) => state.userPipelinesList);
     const sharedPipelines = useAppSelector((state) => state.sharedPipelinesList);
 
 
-    if (authorizationStatus === AuthorizationStatus.NOT_AUTHORIZED) {
-        return (<Navigate to={"/sign-in"} />);
-    }
-
     function handleCreatePipeline(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        dispatch(addPipeline(newPipelineName));
+        // dispatch(setUserPipelines(newPipelineName));
     }
 
     function handleDeletePipeline(event: FormEvent<HTMLDivElement>) {
         // TODO: добавить подтверждение об удалении пайплайна
-        dispatch(deletePipelineAction(event.currentTarget.id));
+        // dispatch(deletePipelineAction(event.currentTarget.id));
         event.preventDefault();
     }
 
     function handleSignOut(event: FormEvent<HTMLButtonElement>) {
         removeCookie("token");
-        dispatch(signOut());
+        dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
     }
 
     return (

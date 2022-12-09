@@ -1,7 +1,7 @@
 import {FRONT_SERVER_PATH, BACKEND_URL} from "./configuration";
-import authorizationInfoType from "../../types/authorizationInfoType";
+import AuthorizationInfo from "../../types/authorizationInfo";
 
-export default async function authenticateUser(authorizationInfo: authorizationInfoType) {
+export default async function authenticateUser(authorizationInfo: AuthorizationInfo) {
     try {
         return fetch(`${BACKEND_URL}/api/v1/user/authentication/`, {
             method: 'POST',
