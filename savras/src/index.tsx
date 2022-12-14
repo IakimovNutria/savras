@@ -4,13 +4,16 @@ import App from '../../savras/src/components/app/app';
 import { CookiesProvider } from 'react-cookie';
 import {Provider} from 'react-redux';
 import {store} from './store';
-import {checkAuthAction, fetchFileAction,
-    fetchSharedPipelinesAction, fetchUserPipelinesAction} from "./store/api-actions";
+import {
+    checkAuthAction, fetchCellsInfo, fetchFileAction,
+    fetchSharedPipelinesAction, fetchUserPipelinesAction
+} from "./store/api-actions";
 
-store.dispatch(checkAuthAction());
+//store.dispatch(checkAuthAction());
 store.dispatch(fetchFileAction());
 store.dispatch(fetchSharedPipelinesAction());
 store.dispatch(fetchUserPipelinesAction());
+store.dispatch(fetchCellsInfo());
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 

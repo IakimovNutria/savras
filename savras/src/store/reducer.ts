@@ -1,25 +1,32 @@
 import {createReducer} from '@reduxjs/toolkit';
 import AuthorizationStatus from "../types/authorizationStatus";
-import File from '../types/file';
+import FileInfo from '../types/fileInfo';
 
 import {
     setUserPipelines, setFiles,
-    setAuthorization, setSharedPipelines
+    setAuthorization, setSharedPipelines,
+    setCellsInfo, setCellsFunctions, setPipeline, addCell
 } from './actions';
+import PipelineInfo from "../types/pipelineInfo";
+import CellsFunction from "../types/cellsFunction";
 
 
 type stateType = {
     authorization: string,
-    filesList: File[],
-    userPipelinesList: File[],
-    sharedPipelinesList: File[]
+    filesList: FileInfo[],
+    userPipelinesList: FileInfo[],
+    sharedPipelinesList: FileInfo[],
+    cellsFunctions: CellsFunction[],
+    currentPipeline: PipelineInfo | null
 }
 
 const initialState: stateType = {
     authorization: AuthorizationStatus.NOT_AUTHORIZED,
     filesList: [],
     userPipelinesList: [],
-    sharedPipelinesList: []
+    sharedPipelinesList: [],
+    cellsFunctions: [],
+    currentPipeline: null
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -40,5 +47,16 @@ export const reducer = createReducer(initialState, (builder) => {
       })
       .addCase(setSharedPipelines, (state, action) => {
           state.sharedPipelinesList = action.payload;
+      })
+      .addCase(setCellsFunctions, (state, action) => {
+          state.cellsFunctions = action.payload;
+      })
+      .addCase(setPipeline, (state, action) => {
+          state.currentPipeline = action.payload;
+      })
+      .addCase(addCell, (state, action) => {
+          if (state.currentPipeline !== null) {
+              state.currentPipeline.cells.push(action.payload);
+          }
       });
 });

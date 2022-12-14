@@ -1,6 +1,6 @@
 import React, {FormEvent, useState} from "react";
-import {Navigate} from "react-router-dom";
-import File from "../../types/file";
+import {Link, Navigate} from "react-router-dom";
+import FileInfo from "../../types/fileInfo";
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {setAuthorization} from "../../store/actions";
 import AuthorizationStatus from "../../types/authorizationStatus";
@@ -48,7 +48,7 @@ function MainPage(): JSX.Element {
             <h3>files</h3>
             <ul className='column-elements delete-buttons-ul'>
                 {
-                    files.map(file => (
+                    files.map((file) => (
                         <li className='row-elements'>
                             <div className="column-elements">{/*<Link to={`/file/${file['id']}`}>*/}{file['name']}{/*</Link>*/}</div>
                             <div className='delete-button' id={file['id']}/>
@@ -67,9 +67,13 @@ function MainPage(): JSX.Element {
             <h3>pipelines</h3>
             <ul className='column-elements delete-buttons-ul'>
                 {
-                    userPipelines.map(pipeline => (
+                    userPipelines.map((pipeline) => (
                         <li className='row-elements'>
-                            <div className="column-elements">{/*<Link to={`/pipeline/${pipeline['id']}`}>*/}{pipeline['name']}{/*</Link>*/}</div>
+                            <div className="column-elements">
+                                <Link to={`/pipeline/${pipeline['id']}`}>
+                                    {pipeline['name']}
+                                </Link>
+                            </div>
                             <div className='delete-button' id={pipeline['id']} onClick={handleDeletePipeline}/>
                         </li>))
                 }
@@ -79,7 +83,12 @@ function MainPage(): JSX.Element {
             <h3>shared pipelines</h3>
             <ul className='column-elements'>
                 {
-                    sharedPipelines.map(pipeline => (<li>{/*<Link to={`/pipeline/${pipeline['id']}`}>*/}{pipeline['name']}{/*</Link>*/}</li>))
+                    sharedPipelines.map((pipeline) => (
+                        <li>
+                            <Link to={`/pipeline/${pipeline['id']}`}>
+                                {pipeline['name']}
+                            </Link>
+                        </li>))
                 }
             </ul>
         </div>
