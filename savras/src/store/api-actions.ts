@@ -5,7 +5,7 @@ import AuthorizationStatus from "../types/authorizationStatus";
 import {
     setAuthorization,
     setCellsFunctions,
-    setCellsInfo,
+    setCellInfo,
     setFiles, setPipeline,
     setSharedPipelines,
     setUserPipelines
@@ -88,7 +88,7 @@ export const signUpAction = createAsyncThunk<void, AuthorizationInfo, {
 }>(
     '/user/registration',
     async ({login, password}, {dispatch, extra: api}) => {
-        const data = await api.post("/user/registration", `username=${login}&password=${password}`);
+        const data = await api.post("/user/registration", {username: login, password: password});
         dispatch(setAuthorization(AuthorizationStatus.AUTHORIZED));
         dispatch(fetchFileAction());
         dispatch(fetchUserPipelinesAction());
@@ -96,15 +96,15 @@ export const signUpAction = createAsyncThunk<void, AuthorizationInfo, {
     },
 );
 
-export const fetchCellsInfo = createAsyncThunk<void, undefined, {
+export const fetchCellInfo = createAsyncThunk<void, {cellId: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/cells',
-    async (_arg, {dispatch, extra: api}) => {
-        const {data} = await api.get("/cells");
-        dispatch(setCellsInfo(data));
+    async ({cellId}, {dispatch, extra: api}) => {
+        const {data} = await api.get("/cells", {params: {cell_id: cellId}});
+        dispatch(setCellInfo(data));
     },
 );
 

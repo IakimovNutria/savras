@@ -219,6 +219,46 @@ ul {
     background-color: red;
 }
 
+.drag-handle {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background: rgb(231, 221, 168);
+    border-color: #131D2B;
+    border-style: solid;
+    width: 100%;
+    transform: translate(0, -2px);
+}
 
-
-
+.cell-text-input {
+    display: block;
+    height: 3px;
+    width: 150px;
+    background: #131D2B;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    font-size: 10px;
+    color: #DFCF77;
+    line-height: 20px;
+    font-weight: 200;
+    padding: 12px 10px;
+    margin-left: 3px;
+}
+.cell-text-input::-webkit-input-placeholder {
+    opacity: 0.5;
+    color: rgba(223, 207, 119, 0.27);
+}
+.cell-text-input:-ms-input-placeholder {
+    opacity: 0.5;
+    color: rgba(223, 207, 119, 0.27);
+}
+.cell-text-input::-ms-input-placeholder {
+    opacity: 0.5;
+    color: rgba(223, 207, 119, 0.27);
+}
+.cell-text-input::placeholder {
+    opacity: 0.5;
+    color: rgba(223, 207, 119, 0.27);
+}
+.cell-text-input:focus {
+    border-color: #DFCF77;
+}

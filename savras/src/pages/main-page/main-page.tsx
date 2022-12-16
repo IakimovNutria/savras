@@ -1,10 +1,11 @@
-import React, {FormEvent, useState} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import {Link, Navigate} from "react-router-dom";
 import FileInfo from "../../types/fileInfo";
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {setAuthorization} from "../../store/actions";
 import AuthorizationStatus from "../../types/authorizationStatus";
 import {useCookies} from "react-cookie";
+import {createPipeline, deletePipeline} from "../../store/api-actions";
 
 
 function MainPage(): JSX.Element {
@@ -14,16 +15,19 @@ function MainPage(): JSX.Element {
     const files = useAppSelector((state) => state.filesList);
     const userPipelines = useAppSelector((state) => state.userPipelinesList);
     const sharedPipelines = useAppSelector((state) => state.sharedPipelinesList);
-
+    let authorizationStatus = useAppSelector((state) => state.authorization);
+    if (authorizationStatus === AuthorizationStatus.NOT_AUTHORIZED) {
+        return (<Navigate to={"/sign-in"} />);
+    }
 
     function handleCreatePipeline(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        // dispatch(setUserPipelines(newPipelineName));
+        dispatch(createPipeline({name: newPipelineName}));
     }
 
     function handleDeletePipeline(event: FormEvent<HTMLDivElement>) {
         // TODO: добавить подтверждение об удалении пайплайна
-        // dispatch(deletePipelineAction(event.currentTarget.id));
+        dispatch(deletePipeline({pipelineId: event.currentTarget.id}));
         event.preventDefault();
     }
 

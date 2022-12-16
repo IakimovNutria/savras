@@ -5,7 +5,7 @@ import { CookiesProvider } from 'react-cookie';
 import {Provider} from 'react-redux';
 import {store} from './store';
 import {
-    checkAuthAction, fetchCellsInfo, fetchFileAction,
+    checkAuthAction, fetchCellsFunctionsInfo, fetchFileAction,
     fetchSharedPipelinesAction, fetchUserPipelinesAction
 } from "./store/api-actions";
 
@@ -13,7 +13,7 @@ import {
 store.dispatch(fetchFileAction());
 store.dispatch(fetchSharedPipelinesAction());
 store.dispatch(fetchUserPipelinesAction());
-store.dispatch(fetchCellsInfo());
+store.dispatch(fetchCellsFunctionsInfo());
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 

@@ -5,7 +5,7 @@ import FileInfo from '../types/fileInfo';
 import {
     setUserPipelines, setFiles,
     setAuthorization, setSharedPipelines,
-    setCellsInfo, setCellsFunctions, setPipeline, addCell
+    setCellsFunctions, setPipeline, addCell
 } from './actions';
 import PipelineInfo from "../types/pipelineInfo";
 import CellsFunction from "../types/cellsFunction";
