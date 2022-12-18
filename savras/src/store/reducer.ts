@@ -21,7 +21,7 @@ type stateType = {
 }
 
 const initialState: stateType = {
-    authorization: AuthorizationStatus.NOT_AUTHORIZED,
+    authorization: AuthorizationStatus.IN_PROCESS,
     filesList: [],
     userPipelinesList: [],
     sharedPipelinesList: [],

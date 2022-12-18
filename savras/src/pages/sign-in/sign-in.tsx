@@ -14,11 +14,6 @@ function SignIn(): JSX.Element {
     event.preventDefault();
     dispatch(signInAction({login: login, password: password}));
   }
-  dispatch(checkAuthAction());
-  let authorizationStatus = useAppSelector((state) => state.authorization);
-  if (authorizationStatus === AuthorizationStatus.AUTHORIZED) {
-    return (<Navigate to={"/"} />);
-  }
 
   return (
       <div className="auth-form">

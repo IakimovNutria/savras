@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useState} from "react";
+import React, {FormEvent, useEffect, useRef, useState} from "react";
 import {Link, Navigate} from "react-router-dom";
 import FileInfo from "../../types/fileInfo";
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -12,14 +12,10 @@ function MainPage(): JSX.Element {
     const [newPipelineName, setNewPipelineName] = useState("");
     const [cookies, setCookie, removeCookie] = useCookies(["token"]);
     const dispatch = useAppDispatch();
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const files = useAppSelector((state) => state.filesList);
     const userPipelines = useAppSelector((state) => state.userPipelinesList);
     const sharedPipelines = useAppSelector((state) => state.sharedPipelinesList);
-    let authorizationStatus = useAppSelector((state) => state.authorization);
-    dispatch(checkAuthAction());
-    if (authorizationStatus === AuthorizationStatus.NOT_AUTHORIZED) {
-        return (<Navigate to={"/sign-in"} />);
-    }
 
     function handleCreatePipeline(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -39,7 +35,11 @@ function MainPage(): JSX.Element {
     }
 
     function handleFileUpload(event: FormEvent<HTMLFormElement>) {
-
+        event.preventDefault();
+        //@ts-ignore
+        fileInputRef.current.files[0].text().then(r => console.log(r));
+        //@ts-ignore
+        dispatch(uploadFile({file: fileInputRef.current.files[0]}));
     }
 
     return (
@@ -47,8 +47,8 @@ function MainPage(): JSX.Element {
         <button className="block-button sign-out-button" onClick={handleSignOut}>exit</button>
         <div className="column-elements block">
             <h3>add file</h3>
-            <form className="column-elements">
-                <input type="file" className="column-elements" required />
+            <form className="column-elements" onSubmit={handleFileUpload}>
+                <input type="file" className="column-elements" required ref={fileInputRef}/>
                 <input className="block-button" type="submit" value="Загрузить" />
             </form>
             <h3>files</h3>

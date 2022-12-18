@@ -142,7 +142,7 @@ export const createCell = createAsyncThunk<void, {pipelineId: string, functionNa
     },
 );
 
-export const uploadFile = createAsyncThunk<void, {file: FormData}, {
+export const uploadFile = createAsyncThunk<void, {file: File}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance

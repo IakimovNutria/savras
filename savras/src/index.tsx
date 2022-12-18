@@ -9,11 +9,12 @@ import {
     fetchSharedPipelinesAction, fetchUserPipelinesAction
 } from "./store/api-actions";
 
-//store.dispatch(checkAuthAction());
+store.dispatch(checkAuthAction());
 store.dispatch(fetchFilesAction());
 store.dispatch(fetchSharedPipelinesAction());
 store.dispatch(fetchUserPipelinesAction());
 store.dispatch(fetchCellsFunctionsInfo());
+
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
