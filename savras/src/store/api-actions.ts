@@ -11,10 +11,8 @@ import {
     setUserPipelines
 } from "./actions";
 import AuthorizationInfo from "../types/authorizationInfo";
-import exp from "constants";
 
-
-export const fetchFileAction = createAsyncThunk<void, undefined, {
+export const fetchFilesAction = createAsyncThunk<void, undefined, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
@@ -75,7 +73,7 @@ export const signInAction = createAsyncThunk<void, AuthorizationInfo, {
     async ({login, password}, {dispatch, extra: api}) => {
         const data = await api.post("/user/authentication", `username=${login}&password=${password}`);
         dispatch(setAuthorization(AuthorizationStatus.AUTHORIZED));
-        dispatch(fetchFileAction());
+        dispatch(fetchFilesAction());
         dispatch(fetchUserPipelinesAction());
         dispatch(fetchSharedPipelinesAction());
     },
@@ -90,7 +88,7 @@ export const signUpAction = createAsyncThunk<void, AuthorizationInfo, {
     async ({login, password}, {dispatch, extra: api}) => {
         const data = await api.post("/user/registration", {username: login, password: password});
         dispatch(setAuthorization(AuthorizationStatus.AUTHORIZED));
-        dispatch(fetchFileAction());
+        dispatch(fetchFilesAction());
         dispatch(fetchUserPipelinesAction());
         dispatch(fetchSharedPipelinesAction());
     },
@@ -144,7 +142,7 @@ export const createCell = createAsyncThunk<void, {pipelineId: string, functionNa
     },
 );
 
-export const uploadFile = createAsyncThunk<void, {file: string}, {
+export const uploadFile = createAsyncThunk<void, {file: FormData}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
@@ -152,7 +150,7 @@ export const uploadFile = createAsyncThunk<void, {file: string}, {
     '/files/upload',
     async ({file}, {dispatch, extra: api}) => {
         const data = await api.post('/files/upload', {file: file});
-        dispatch(fetchFileAction());
+        dispatch(fetchFilesAction());
     },
 );
 
@@ -175,7 +173,7 @@ export const deleteFile = createAsyncThunk<void, {path: string}, {
     '/files/delete',
     async ({path}, {dispatch, extra: api}) => {
         const data = await api.delete('/files/delete', {params: {path: path}});
-        dispatch(fetchFileAction());
+        dispatch(fetchFilesAction());
     },
 );
 
@@ -209,7 +207,7 @@ export const renameFile = createAsyncThunk<void, {path: string, newName: string}
     '/files/rename',
     async ({path, newName}, {dispatch, extra: api}) => {
         const data = await api.post('/files/rename', {new_name: newName, path: path});
-        dispatch(fetchFileAction());
+        dispatch(fetchFilesAction());
     },
 );
 
@@ -320,7 +318,7 @@ export const moveCell = createAsyncThunk<void, {cellId: string, x: number, y: nu
     },
 );
 
-export const updateParam = createAsyncThunk<void, {cellId: string, field: string, value: string}, {
+export const updateParam = createAsyncThunk<void, {cellId: string, field: string, value: string | boolean | number}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
@@ -328,7 +326,6 @@ export const updateParam = createAsyncThunk<void, {cellId: string, field: string
     '/cells/update/param',
     async ({cellId, field, value}, {dispatch, extra: api}) => {
         const data = await api.post('/cells/update/param', {cell_id: cellId, field: field, value: value});
-        dispatch(fetchUserPipelinesAction());
     },
 );
 

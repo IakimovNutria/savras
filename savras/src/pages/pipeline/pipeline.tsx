@@ -4,20 +4,15 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import {createCell, fetchPipeline} from "../../store/api-actions";
 import Cell from "../../components/cell/cell";
 
-
 function Pipeline(): JSX.Element {
     const id = useParams().id;
     const dispatch = useAppDispatch();
     const [visible, setVisible] = useState(false);
     const pipeline = useAppSelector((state) => state.currentPipeline);
     const functions = useAppSelector((state) => state.cellsFunctions);
-    if (id === undefined) {
-        return (<h1>undefined</h1>);
-    }
-    dispatch(fetchPipeline({pipelineId: id}));
-    if (pipeline === null) {
-        return (<h1>server problem</h1>);
-    }
+    useEffect(() => {
+        dispatch(fetchPipeline({pipelineId: id === undefined ? "" : id}));
+    }, []);
     function handleCreate(event: MouseEvent<HTMLButtonElement>) {
         event.preventDefault();
         if (id === undefined)
@@ -25,20 +20,29 @@ function Pipeline(): JSX.Element {
         dispatch(createCell({pipelineId: id, functionName: event.currentTarget.id}));
     }
 
+    if (id === undefined) {
+        return (<h1>undefined</h1>);
+    }
+
+
+    if (pipeline === null) {
+        return (<h1>Loading...</h1>);
+    }
+
     return (
         <React.Fragment>
             <form action="/">
-                <button>Back to main</button>
+                <button className="block-button">Back to main</button>
             </form>
-            <h1>{pipeline.name}</h1>
-            <button onClick={() => setVisible(!visible)}>create</button>
+            <h1 className="pipeline-name">{pipeline.name}</h1>
+            <button onClick={() => setVisible(!visible)} className="block-button">create</button>
             {
                 visible ?
                 (<ul className='row-elements'>
                     {
                         functions.map((func) => (
-                            <li className='row-elements'>
-                                <button id={func.function} onClick={handleCreate}>
+                            <li className='row-elements' key={func.function}>
+                                <button id={func.function} onClick={handleCreate} className="block-button">
                                     {func.function}
                                 </button>
                             </li>
@@ -46,12 +50,12 @@ function Pipeline(): JSX.Element {
                     }
                 </ul>) : <></>
             }
-
-            <div>
-                {
-                    pipeline.cells.map((cellInfo) => <Cell cellInfo={cellInfo}/>)
-                }
-            </div>
+            {
+                pipeline.cells.map((cellInfo) =>
+                    (
+                        <Cell cellInfo={cellInfo} pipelineId={id}/>
+                    ))
+            }
         </React.Fragment>);
 }
 

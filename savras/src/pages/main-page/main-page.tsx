@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import {setAuthorization} from "../../store/actions";
 import AuthorizationStatus from "../../types/authorizationStatus";
 import {useCookies} from "react-cookie";
-import {createPipeline, deletePipeline} from "../../store/api-actions";
+import {checkAuthAction, createPipeline, deletePipeline, uploadFile} from "../../store/api-actions";
 
 
 function MainPage(): JSX.Element {
@@ -16,6 +16,7 @@ function MainPage(): JSX.Element {
     const userPipelines = useAppSelector((state) => state.userPipelinesList);
     const sharedPipelines = useAppSelector((state) => state.sharedPipelinesList);
     let authorizationStatus = useAppSelector((state) => state.authorization);
+    dispatch(checkAuthAction());
     if (authorizationStatus === AuthorizationStatus.NOT_AUTHORIZED) {
         return (<Navigate to={"/sign-in"} />);
     }
@@ -32,8 +33,13 @@ function MainPage(): JSX.Element {
     }
 
     function handleSignOut(event: FormEvent<HTMLButtonElement>) {
+        event.preventDefault();
         removeCookie("token");
         dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
+    }
+
+    function handleFileUpload(event: FormEvent<HTMLFormElement>) {
+
     }
 
     return (
@@ -41,21 +47,17 @@ function MainPage(): JSX.Element {
         <button className="block-button sign-out-button" onClick={handleSignOut}>exit</button>
         <div className="column-elements block">
             <h3>add file</h3>
-            <form encType="multipart/form-data" method="post" className="column-elements">
-                <label htmlFor="file-input">
-                    Select file
-                    <input id="file-input" type="file" required style={{display: "none"}}/>
-                </label>
-                <label>Файл не выбран</label>
+            <form className="column-elements">
+                <input type="file" className="column-elements" required />
                 <input className="block-button" type="submit" value="Загрузить" />
             </form>
             <h3>files</h3>
             <ul className='column-elements delete-buttons-ul'>
                 {
                     files.map((file) => (
-                        <li className='row-elements'>
-                            <div className="column-elements">{/*<Link to={`/file/${file['id']}`}>*/}{file['name']}{/*</Link>*/}</div>
-                            <div className='delete-button' id={file['id']}/>
+                        <li className='row-elements' key={file.id}>
+                            <div className="column-elements">{file.name}</div>
+                            <div className='delete-button' id={file.id}/>
                         </li>))
                 }
             </ul>
@@ -72,13 +74,13 @@ function MainPage(): JSX.Element {
             <ul className='column-elements delete-buttons-ul'>
                 {
                     userPipelines.map((pipeline) => (
-                        <li className='row-elements'>
+                        <li className='row-elements' key={pipeline.id}>
                             <div className="column-elements">
-                                <Link to={`/pipeline/${pipeline['id']}`}>
-                                    {pipeline['name']}
+                                <Link to={`/pipeline/${pipeline.id}`}>
+                                    {pipeline.name}
                                 </Link>
                             </div>
-                            <div className='delete-button' id={pipeline['id']} onClick={handleDeletePipeline}/>
+                            <div className='delete-button' id={pipeline.id} onClick={handleDeletePipeline}/>
                         </li>))
                 }
             </ul>
@@ -88,9 +90,9 @@ function MainPage(): JSX.Element {
             <ul className='column-elements'>
                 {
                     sharedPipelines.map((pipeline) => (
-                        <li>
-                            <Link to={`/pipeline/${pipeline['id']}`}>
-                                {pipeline['name']}
+                        <li key={pipeline.id}>
+                            <Link to={`/pipeline/${pipeline.id}`}>
+                                {pipeline.name}
                             </Link>
                         </li>))
                 }

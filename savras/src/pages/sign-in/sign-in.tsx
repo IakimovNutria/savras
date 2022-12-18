@@ -1,7 +1,7 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import {Link, Navigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../hooks";
-import {signInAction} from "../../store/api-actions";
+import {checkAuthAction, signInAction} from "../../store/api-actions";
 import AuthorizationStatus from "../../types/authorizationStatus";
 
 
@@ -14,7 +14,7 @@ function SignIn(): JSX.Element {
     event.preventDefault();
     dispatch(signInAction({login: login, password: password}));
   }
-
+  dispatch(checkAuthAction());
   let authorizationStatus = useAppSelector((state) => state.authorization);
   if (authorizationStatus === AuthorizationStatus.AUTHORIZED) {
     return (<Navigate to={"/"} />);

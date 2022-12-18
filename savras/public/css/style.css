@@ -23,6 +23,17 @@
     transform: translate(-50%, -50%);
 }
 
+.pipeline-name {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    color: #E7C82B;
+}
+
 .block {
     border-radius: 10px;
     background: #E7C82B;
@@ -83,7 +94,8 @@ ul {
     flex-direction: column;
 }
 
-.block-button {
+.block-button,
+::-webkit-file-upload-button {
     width: 130px;
     height: 40px;
     color: rgba(223, 207, 119, 0.7);
@@ -107,7 +119,9 @@ ul {
     border: none;
 }
 .block-button:before,
-.block-button:after {
+::-webkit-file-upload-button::before,
+.block-button:after,
+::-webkit-file-upload-button::after {
     position: absolute;
     content: "";
     right: 0;
@@ -120,7 +134,8 @@ ul {
             4px 4px 5px 0 rgba(0,0,0,.3);
     transition: all 0.3s ease;
 }
-.block-button:hover{
+.block-button:hover,
+::-webkit-file-upload-button:hover {
     color: #131D2B;
     background: transparent;
 }
@@ -227,6 +242,8 @@ ul {
     border-style: solid;
     width: 100%;
     transform: translate(0, -2px);
+    height: 30px;
+    margin: 0;
 }
 
 .cell-text-input {
@@ -261,4 +278,32 @@ ul {
 }
 .cell-text-input:focus {
     border-color: #DFCF77;
+}
+
+.draggable-block {
+    width: 600px;
+    height: 330px;
+    position: absolute;
+}
+
+.inside-draggable {
+    display: flex;
+    flex-direction: row;
+}
+
+.inside-draggable-block {
+    border-style: none;
+    width: 200px;
+    height: 305px;
+    margin: 0;
+    overflow: auto;
+}
+
+.inside-draggable-block-element {
+    margin: 2px;
+}
+
+.checkbox {
+    color: #E7C82B;
+    background-color: #131D2B;
 }
