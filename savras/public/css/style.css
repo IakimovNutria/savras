@@ -280,30 +280,40 @@ ul {
     border-color: #DFCF77;
 }
 
-.draggable-block {
+.cell {
     width: 600px;
-    height: 330px;
+    height: 380px;
     position: absolute;
 }
 
-.inside-draggable {
+.cell-inside {
     display: flex;
     flex-direction: row;
 }
 
-.inside-draggable-block {
+.cell-inside-block {
     border-style: none;
     width: 200px;
-    height: 305px;
+    height: 225px;
     margin: 0;
-    overflow: auto;
 }
 
-.inside-draggable-block-element {
+.cell-inside-ul {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.cell-inside-block-element {
     margin: 2px;
 }
 
-.checkbox {
-    color: #E7C82B;
-    background-color: #131D2B;
+.cell-inside-button-block {
+    width: 200px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.cell-execute-button {
+    margin-top: 0;
+    width: 500px;
 }

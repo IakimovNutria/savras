@@ -37,9 +37,8 @@ function MainPage(): JSX.Element {
     function handleFileUpload(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         //@ts-ignore
-        fileInputRef.current.files[0].text().then(r => console.log(r));
+        fileInputRef.current.files[0].text().then(r => dispatch(uploadFile({file: r})));
         //@ts-ignore
-        dispatch(uploadFile({file: fileInputRef.current.files[0]}));
     }
 
     return (

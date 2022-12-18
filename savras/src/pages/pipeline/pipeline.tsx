@@ -6,6 +6,7 @@ import Cell from "../../components/cell/cell";
 
 function Pipeline(): JSX.Element {
     const id = useParams().id;
+
     const dispatch = useAppDispatch();
     const [visible, setVisible] = useState(false);
     const pipeline = useAppSelector((state) => state.currentPipeline);
@@ -51,10 +52,7 @@ function Pipeline(): JSX.Element {
                 </ul>) : <></>
             }
             {
-                pipeline.cells.map((cellInfo) =>
-                    (
-                        <Cell cellInfo={cellInfo} pipelineId={id}/>
-                    ))
+                pipeline.cells.map((cellInfo) => (<Cell cellInfo={cellInfo} pipelineId={id}/>))
             }
         </React.Fragment>);
 }
