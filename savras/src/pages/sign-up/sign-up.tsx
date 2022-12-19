@@ -23,7 +23,7 @@ function SignUp(): JSX.Element {
     }
 
     return (
-        <div className="auth-form">
+        <div className="center">
             <div className="column-elements block">
                 <h1>Sign up</h1>
                 <form onSubmit={handleSubmit}>

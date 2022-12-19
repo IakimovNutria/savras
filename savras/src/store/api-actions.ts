@@ -12,7 +12,7 @@ import {
 } from "./actions";
 import AuthorizationInfo from "../types/authorizationInfo";
 import FileInfo from "../types/fileInfo";
-import fileInfo from "../types/fileInfo";
+import {saveAs} from "file-saver";
 
 export const fetchFilesAction = createAsyncThunk<void, undefined, {
     dispatch: AppDispatch,
@@ -165,14 +165,16 @@ export const uploadFile = createAsyncThunk<void, {formData: FormData}, {
     },
 );
 
-export const downloadFile = createAsyncThunk<void, {path: string}, {
+export const downloadFile = createAsyncThunk<void, {path: string, name: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/files/download',
-    async ({path}, {dispatch, extra: api}) => {
-        const data = await api.get('/files/download', {params: {path: path}});
+    async ({path, name}, {dispatch, extra: api}) => {
+        api.get('/files/download', {params: {path: path}, responseType: "blob"})
+            .then((r) => saveAs(r.data, name));
+
     },
 );
 

@@ -107,7 +107,6 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
             const dataColumn = elem.selectedInputsColumn[key as keyof typeof elem.selectedInputsColumn];
             dispatch(updateInput({cellId: cellInfo.id, path: path, field: key, data_column: dataColumn}));
         }
-        dispatch(fetchPipeline({pipelineId: pipelineId}));
         event.preventDefault();
     }
 
@@ -145,7 +144,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         event.preventDefault();
     }
 
-    const deleteCellHandler = (event: FormEvent<HTMLButtonElement>) => {
+    const deleteCellHandler = (event: FormEvent<HTMLDivElement>) => {
         event.preventDefault();
         dispatch(deleteCell({cellId: cellInfo.id}));
     }
@@ -156,8 +155,9 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
                    bounds={{left: 0, top: 0}} key={cellInfo.id}>
             <div className="block column-elements cell">
                 <div className="drag-handle row-elements">
-                    <h5 style={{...CellStatusStyle[executeStatus], margin: 0, userSelect: "none"}} className="header">{executeStatus}</h5>
-                    <button className="delete-button" onClick={deleteCellHandler}/>
+                    <h5 style={{...CellStatusStyle[executeStatus], margin: 0, userSelect: "none"}} className="center">{executeStatus}</h5>
+                    <h5 style={{margin: 0, marginLeft: "5px", userSelect: "none"}}>{cellInfo.function}</h5>
+                    <div className="delete-button" style={{position: "absolute", right:0}} onClick={deleteCellHandler}/>
                 </div>
                 <CellContext.Provider value={cellParams}>
                 <div className="row-elements">

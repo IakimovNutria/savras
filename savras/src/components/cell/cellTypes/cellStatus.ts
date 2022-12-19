@@ -2,7 +2,7 @@ export const CellStatus = {
     NOT_EXECUTED: 'not executed',
     EXECUTED: 'executed',
     IN_PROCESS: 'in process',
-    HAS_ERROR: 'error'
+    HAS_ERROR: 'error',
 };
 
 export const CellStatusStyle = {

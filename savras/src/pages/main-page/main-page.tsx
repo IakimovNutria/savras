@@ -1,16 +1,13 @@
-import React, {FormEvent, useEffect, useRef, useState} from "react";
-import {Link, Navigate} from "react-router-dom";
-import FileInfo from "../../types/fileInfo";
+import React, {FormEvent, useRef, useState} from "react";
+import {Link} from "react-router-dom";
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {setAuthorization} from "../../store/actions";
 import AuthorizationStatus from "../../types/authorizationStatus";
 import {useCookies} from "react-cookie";
 import {
-    checkAuthAction,
     createPipeline,
     deleteFile,
-    deletePipeline,
-    downloadFile,
+    deletePipeline, downloadFile,
     uploadFile
 } from "../../store/api-actions";
 
@@ -56,10 +53,11 @@ function MainPage(): JSX.Element {
         dispatch(deleteFile({path: path}));
     }
 
-    function downloadFileHandler(event: FormEvent<HTMLDivElement>) {
+    function downloadFileHandler(event: FormEvent<HTMLAnchorElement>) {
         event.preventDefault();
         const path = event.currentTarget.id;
-        dispatch(downloadFile({path: path}));
+        const name = event.currentTarget.innerText;
+        dispatch(downloadFile({path: path, name: name}));
     }
 
     return (
@@ -76,7 +74,7 @@ function MainPage(): JSX.Element {
                 {
                     files.map((file) => (
                         <li className='row-elements' key={file.path}>
-                            <div className="column-elements" id={file.path} onClick={downloadFileHandler}>{file.name}</div>
+                            <a href={"#"} className="column-elements" id={file.path} onClick={downloadFileHandler}>{file.name}</a>
                             <div className='delete-button' id={file.path} onClick={deleteFileHandler}/>
                         </li>))
                 }

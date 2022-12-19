@@ -16,7 +16,7 @@ function SignIn(): JSX.Element {
   }
 
   return (
-      <div className="auth-form">
+      <div className="center">
         <div className="column-elements block">
           <h1>Sign in</h1>
           <form onSubmit={handleSubmit}>

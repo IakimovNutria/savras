@@ -13,7 +13,7 @@
     z-index: -200
 }
 
-.auth-form {
+.center {
     display: flex;
     align-items: center;
     flex-direction: column;
