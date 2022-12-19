@@ -3,6 +3,7 @@ import FileInfo from '../types/fileInfo';
 import CellInfo from "../types/cellInfo";
 import PipelineInfo from "../types/pipelineInfo";
 import CellsFunction from "../types/cellsFunction";
+import ShortPipelineInfo from "../types/shortPipelineInfo";
 
 const Action = {
     SET_USER_PIPELINES: "SET_USER_PIPELINES",
@@ -17,11 +18,11 @@ const Action = {
 
 
 export const setUserPipelines = createAction(Action.SET_USER_PIPELINES,
-    (pipelines: FileInfo[]) => {return {payload: pipelines};});
+    (pipelines: ShortPipelineInfo[]) => {return {payload: pipelines};});
 export const setFiles = createAction(Action.SET_FILES,
     (files: FileInfo[]) => {return {payload: files};});
 export const setSharedPipelines = createAction(Action.SET_SHARED_PIPELINES,
-    (pipelines: FileInfo[]) => {return {payload: pipelines};});
+    (pipelines: ShortPipelineInfo[]) => {return {payload: pipelines};});
 export const setAuthorization = createAction(Action.SET_AUTHORIZATION,
     (authorizationStatus: string) => {return {payload: authorizationStatus};});
 export const setCellInfo = createAction(Action.SET_CELLS_INFO,

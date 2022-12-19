@@ -142,14 +142,15 @@ export const createCell = createAsyncThunk<void, {pipelineId: string, functionNa
     },
 );
 
-export const uploadFile = createAsyncThunk<void, {file: File}, {
+export const uploadFile = createAsyncThunk<void, {formData: FormData}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/files/upload',
-    async ({file}, {dispatch, extra: api}) => {
-        const data = await api.post('/files/upload', {file: file});
+    async ({formData}, {dispatch, extra: api}) => {
+        const data = await api.post('/files/upload', formData,
+            {headers: {"Content-Type": "multipart/form-data"}});
         dispatch(fetchFilesAction());
     },
 );
@@ -336,6 +337,7 @@ export const updateInput = createAsyncThunk<void, {cellId: string, field: string
 }>(
     '/cells/update/input',
     async ({cellId, field, path}, {dispatch, extra: api}) => {
+        console.log({cell_id: cellId, field: field, path: path});
         const data = await api.post('/cells/update/input', {cell_id: cellId, field: field, path: path});
         dispatch(fetchUserPipelinesAction());
     },

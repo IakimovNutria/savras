@@ -1,7 +1,7 @@
 
 type FileInfo = {
     name: string,
-    id: string
+    path: string
 };
 
 export default FileInfo;

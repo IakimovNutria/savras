@@ -36,9 +36,10 @@ function MainPage(): JSX.Element {
 
     function handleFileUpload(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
+        const toSend = new FormData();
         //@ts-ignore
-        fileInputRef.current.files[0].text().then(r => dispatch(uploadFile({file: r})));
-        //@ts-ignore
+        toSend.append('file', fileInputRef.current.files[0])
+        dispatch(uploadFile({formData: toSend}));
     }
 
     return (
@@ -54,9 +55,9 @@ function MainPage(): JSX.Element {
             <ul className='column-elements delete-buttons-ul'>
                 {
                     files.map((file) => (
-                        <li className='row-elements' key={file.id}>
+                        <li className='row-elements' key={file.path}>
                             <div className="column-elements">{file.name}</div>
-                            <div className='delete-button' id={file.id}/>
+                            <div className='delete-button' id={file.path}/>
                         </li>))
                 }
             </ul>

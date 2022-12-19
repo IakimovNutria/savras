@@ -9,13 +9,14 @@ import {
 } from './actions';
 import PipelineInfo from "../types/pipelineInfo";
 import CellsFunction from "../types/cellsFunction";
+import ShortPipelineInfo from "../types/shortPipelineInfo";
 
 
 type stateType = {
     authorization: string,
     filesList: FileInfo[],
-    userPipelinesList: FileInfo[],
-    sharedPipelinesList: FileInfo[],
+    userPipelinesList: ShortPipelineInfo[],
+    sharedPipelinesList: ShortPipelineInfo[],
     cellsFunctions: CellsFunction[],
     currentPipeline: PipelineInfo | null
 }

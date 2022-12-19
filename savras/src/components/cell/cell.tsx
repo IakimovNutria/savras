@@ -36,7 +36,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
     };
     type Input = {
         name: string,
-        value: string
+        value: string,
     };
     type Output = {
         name: string,
@@ -45,6 +45,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
     const inputs: Input[] = [];
     const params: ParamInput[] = [];
     const outputs: Output[] = [];
+    console.log(cellInfo.inputs);
     for (const key in cellInfo.inputs) {
         const toPush: Input = {name: key, value: cellInfo.inputs[key as keyof typeof cellInfo.inputs]};
         if (toPush.value === null) {
@@ -138,7 +139,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
                 // TODO: выводить сообщение об ошибке
                 return;
             }
-            dispatch(updateInput({cellId: cellInfo.id, path: file.id, field: key}));
+            dispatch(updateInput({cellId: cellInfo.id, path: file.path, field: key}));
         }
         // TODO: execute
         dispatch(fetchPipeline({pipelineId: pipelineId}));
