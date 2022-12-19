@@ -5,7 +5,14 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import {setAuthorization} from "../../store/actions";
 import AuthorizationStatus from "../../types/authorizationStatus";
 import {useCookies} from "react-cookie";
-import {checkAuthAction, createPipeline, deletePipeline, uploadFile} from "../../store/api-actions";
+import {
+    checkAuthAction,
+    createPipeline,
+    deleteFile,
+    deletePipeline,
+    downloadFile,
+    uploadFile
+} from "../../store/api-actions";
 
 
 function MainPage(): JSX.Element {
@@ -42,6 +49,19 @@ function MainPage(): JSX.Element {
         dispatch(uploadFile({formData: toSend}));
     }
 
+    function deleteFileHandler(event: FormEvent<HTMLDivElement>) {
+        event.preventDefault();
+        // TODO: добавить подтверждение об удалении файла
+        const path = event.currentTarget.id;
+        dispatch(deleteFile({path: path}));
+    }
+
+    function downloadFileHandler(event: FormEvent<HTMLDivElement>) {
+        event.preventDefault();
+        const path = event.currentTarget.id;
+        dispatch(downloadFile({path: path}));
+    }
+
     return (
     <div className="main-page">
         <button className="block-button sign-out-button" onClick={handleSignOut}>exit</button>
@@ -56,8 +76,8 @@ function MainPage(): JSX.Element {
                 {
                     files.map((file) => (
                         <li className='row-elements' key={file.path}>
-                            <div className="column-elements">{file.name}</div>
-                            <div className='delete-button' id={file.path}/>
+                            <div className="column-elements" id={file.path} onClick={downloadFileHandler}>{file.name}</div>
+                            <div className='delete-button' id={file.path} onClick={deleteFileHandler}/>
                         </li>))
                 }
             </ul>

@@ -11,6 +11,8 @@ import {
     setUserPipelines
 } from "./actions";
 import AuthorizationInfo from "../types/authorizationInfo";
+import FileInfo from "../types/fileInfo";
+import fileInfo from "../types/fileInfo";
 
 export const fetchFilesAction = createAsyncThunk<void, undefined, {
     dispatch: AppDispatch,
@@ -19,8 +21,16 @@ export const fetchFilesAction = createAsyncThunk<void, undefined, {
 }>(
     '/files',
     async (_arg, {dispatch, extra: api}) => {
+        async function fetchFileColumn(path: string) {
+            const {data} = await api.get('/files/columns', {params: {path: path}});
+            return data;
+        }
         const {data} = await api.get('/files');
-        dispatch(setFiles(data));
+        let files: FileInfo[] = [];
+        for (const key in data) {
+            files.push({...data[key], columns: await fetchFileColumn(data[key].path)});
+        }
+        dispatch(setFiles(files));
     },
 );
 
@@ -330,15 +340,15 @@ export const updateParam = createAsyncThunk<void, {cellId: string, field: string
     },
 );
 
-export const updateInput = createAsyncThunk<void, {cellId: string, field: string, path: string}, {
+export const updateInput = createAsyncThunk<void, {cellId: string, field: string, path: string, data_column: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/cells/update/input',
-    async ({cellId, field, path}, {dispatch, extra: api}) => {
-        console.log({cell_id: cellId, field: field, path: path});
-        const data = await api.post('/cells/update/input', {cell_id: cellId, field: field, path: path});
+    async ({cellId, field, path, data_column}, {dispatch, extra: api}) => {
+        const data = await api.post('/cells/update/input',
+            {cell_id: cellId, field: field, path: path, data_column: data_column});
         dispatch(fetchUserPipelinesAction());
     },
 );
@@ -353,3 +363,16 @@ export const executeCell = createAsyncThunk<void, {cellId: string}, {
         const data = await api.post('/cells/execute', {cell_id: cellId});
     },
 );
+
+export const saveFile = createAsyncThunk<void, {path: string, name: string}, {
+    dispatch: AppDispatch,
+    state: State,
+    extra: AxiosInstance
+}>(
+    '/files/save',
+    async ({path, name}, {dispatch, extra: api}) => {
+        const data = await api.post('/files/save', {path: path, name: name});
+        dispatch(fetchFilesAction());
+    },
+);
+

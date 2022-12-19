@@ -3,6 +3,7 @@ type CellInfo = {
     id: string,
     function: string,
     inputs: object,
+    inputs_columns: object,
     outputs: object,
     input_params: object,
     output_params: object,

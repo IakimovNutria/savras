@@ -3,6 +3,7 @@ import {useParams} from "react-router-dom";
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {createCell, fetchPipeline} from "../../store/api-actions";
 import Cell from "../../components/cell/cell";
+import useInterval from "@use-it/interval";
 
 function Pipeline(): JSX.Element {
     const id = useParams().id;
@@ -14,6 +15,9 @@ function Pipeline(): JSX.Element {
     useEffect(() => {
         dispatch(fetchPipeline({pipelineId: id === undefined ? "" : id}));
     }, []);
+    useInterval(() => {
+        dispatch(fetchPipeline({pipelineId: id === undefined ? "" : id}));
+    }, 1000 * 10);
     function handleCreate(event: MouseEvent<HTMLButtonElement>) {
         event.preventDefault();
         if (id === undefined)
@@ -35,7 +39,7 @@ function Pipeline(): JSX.Element {
             <form action="/">
                 <button className="block-button">Back to main</button>
             </form>
-            <h1 className="pipeline-name">{pipeline.name}</h1>
+            <h1 className="header">{pipeline.name}</h1>
             <button onClick={() => setVisible(!visible)} className="block-button">create</button>
             {
                 visible ?
