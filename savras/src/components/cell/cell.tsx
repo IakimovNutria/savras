@@ -52,7 +52,6 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
             }
         }}
     );
-    console.log(cellParams);
 
     const stopHandler = (event: DraggableEvent, data: DraggableData) => {
         event.preventDefault();
