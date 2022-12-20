@@ -29,16 +29,38 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
     const dispatch = useAppDispatch();
     const functionsInfo = useAppSelector((state) => state.cellsFunctions);
     const functionInfo = functionsInfo.find((elem) => (elem.function === cellInfo.function));
+    const files = useAppSelector((state) => state.filesList);
 
     const defaultCellsInput: CellParams = {
-        inputs: cellInfo.inputs,
-        inputsPath: {},
+        inputs: {},
+        inputsPath: cellInfo.inputs,
         inputParams: cellInfo.input_params,
         outputs: {},
-        selectedInputsColumn: cellInfo.inputs
+        selectedInputsColumn: cellInfo.data_columns
     };
     const [cellParams, setCellParams] = useState(defaultCellsInput);
     const [executeStatus, setExecuteStatus] = useState(CellStatus.NOT_EXECUTED);
+
+    function getFileName(path: string) {
+        const file = files.find((elem) => elem.path === path);
+        if (file === undefined) {
+            return null;
+        }
+        return file.name;
+    }
+    useEffect(() => {
+        for (const key in cellParams.inputsPath) {
+            const path = cellParams.inputsPath[key as keyof typeof cellParams.inputsPath];
+            const fileName = getFileName(path);
+            if (!(key in cellParams.inputs) || (cellParams.inputs[key as keyof typeof cellParams.inputs] === null)) {
+                setCellParams((state) => {
+                    return {...state, inputs: {...state.inputs, [key]: fileName}};
+                });
+            }
+        }
+    }, [files]);
+
+
     useEffect(() => {
         if (cellInfo.error !== null) {
             setExecuteStatus(CellStatus.HAS_ERROR);

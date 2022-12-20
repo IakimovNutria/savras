@@ -45,7 +45,8 @@ function Inputs({inputs, cellId, updateInputHandler, updateColumnHandler, submit
                                         name={input.name} id={input.name}>
                                     {
                                         //@ts-ignore
-                                        cellParams.inputs[input.name] === null ? (<option id={""}>выберите файл</option>) : (<></>)
+                                        (cellParams.inputs[input.name] === null || cellParams.inputs[input.name] === "") ?
+                                            (<option id={""}>выберите файл</option>) : (<></>)
                                     }
                                     {
                                         files.map((file) => (<option id={file.path}>{file.name}</option>))
@@ -53,7 +54,7 @@ function Inputs({inputs, cellId, updateInputHandler, updateColumnHandler, submit
                                 </select>
                                 {
                                     //@ts-ignore
-                                    cellParams.inputs[input.name] !== null ?
+                                    (cellParams.inputs[input.name] !== null && cellParams.inputs[input.name] !== "") ?
                                         //@ts-ignore
                                         (<select value={cellParams.selectedInputsColumn[input.name] === null ? "choose column" : cellParams.selectedInputsColumn[input.name]}
                                                  onChange={updateColumnHandler} id={input.name}>

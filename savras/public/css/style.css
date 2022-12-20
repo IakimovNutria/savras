@@ -103,7 +103,6 @@ ul {
     margin-top: 15px;
     margin-bottom: 15px;
     font-family: 'Lato', sans-serif;
-    font-weight: 500;
     background: transparent;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -114,7 +113,6 @@ ul {
     4px 4px 5px 0 rgba(0,0,0,.1);
     outline: none;
     background: linear-gradient(0deg, #131D2B 0%, #131D2B 100%);
-    line-height: 42px;
     padding: 0;
     border: none;
 }
@@ -138,6 +136,19 @@ ul {
 ::-webkit-file-upload-button:hover {
     color: #131D2B;
     background: transparent;
+}
+
+.not-block-button:hover {
+    color: #131D2B;
+    background: #E7C82B;
+}
+
+.create-func-button {
+    height: 20px;
+    width: 120px;
+    font-size: 8px;
+    padding: 0;
+    margin: 0;
 }
 
 .text-input {
@@ -177,6 +188,12 @@ ul {
 
 .delete-buttons-ul {
     margin-left: 27px;
+}
+
+.func-buttons-ul {
+    display: flex;
+    flex-wrap: wrap;
+    width: 70%;
 }
 
 .delete-button {
