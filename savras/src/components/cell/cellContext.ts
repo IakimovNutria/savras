@@ -3,7 +3,6 @@ import CellParams from "./cellTypes/cellParams";
 
 
 const defaultValue: CellParams = {
-    inputs: {},
     inputParams: {},
     inputsPath: {},
     outputs: {},

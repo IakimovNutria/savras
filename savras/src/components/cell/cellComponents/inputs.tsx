@@ -1,31 +1,44 @@
-import React, {ChangeEvent, FormEvent, useContext} from "react";
+import React, {ChangeEvent, FormEvent, useContext, useEffect} from "react";
 import {useAppSelector} from "../../../hooks";
 import Input from "../cellTypes/input";
 import CellContext from "../cellContext";
 
 
 type InputProps = {
-    inputs: {},
+    inputPaths: {},
+    inputColumns: {},
     cellId: string,
     updateInputHandler: (event: ChangeEvent<HTMLSelectElement>) => void,
     updateColumnHandler: (event: ChangeEvent<HTMLSelectElement>) => void,
     submitInputsHandler: (event: FormEvent<HTMLButtonElement>) => void
 };
 
-function Inputs({inputs, cellId, updateInputHandler, updateColumnHandler, submitInputsHandler}: InputProps): JSX.Element {
+function Inputs({cellId, updateInputHandler, updateColumnHandler, submitInputsHandler}: InputProps): JSX.Element {
     const files = useAppSelector((state) => state.filesList);
     const cellParams = useContext(CellContext);
+    const inputPaths = cellParams.inputsPath;
+    const inputColumns = cellParams.selectedInputsColumn;
     const inputsArray: Input[] = [];
-    for (const key in inputs) {
-        const toPush: Input = {name: key, value: inputs[key as keyof typeof inputs]};
-        if (toPush.value === null) {
-            toPush.value = "";
+    function getFileName(path: string) {
+        const file = files.find((elem) => elem.path === path);
+        if (file === undefined) {
+            return null;
         }
+        return file.name;
+    }
+    for (const key in inputPaths) {
+        const toPush: Input = {
+            name: key,
+            fileName: getFileName(inputPaths[key as keyof typeof inputPaths]),
+            inputColumn: inputColumns[key as keyof typeof inputColumns],
+            path: inputPaths[key as keyof typeof inputPaths]
+        };
         inputsArray.push(toPush);
     }
-
-
-    const getFileColumns = (path: string) => {
+    const getFileColumns = (path: string | null) => {
+        if (path === null) {
+            return [];
+        }
         const file = files.find((f) => f.path === path);
         return file === undefined ? [] : file.columns;
     }
@@ -39,13 +52,11 @@ function Inputs({inputs, cellId, updateInputHandler, updateColumnHandler, submit
                         inputsArray.map((input) => (
                             <li className="column-elements" key={cellId + input.name}>
                                 <h5 className="cell-inside-block-element">{input.name}</h5>
-                                {/*@ts-ignore*/}
-                                <select value={cellParams.inputs[input.name] === null ? "choose file" : cellParams.inputs[input.name]}
+                                <select value={(input.fileName === null) ? "choose file" : input.fileName}
                                         onChange={updateInputHandler}
                                         name={input.name} id={input.name}>
                                     {
-                                        //@ts-ignore
-                                        (cellParams.inputs[input.name] === null || cellParams.inputs[input.name] === "") ?
+                                        (input.fileName === null) ?
                                             (<option id={""}>выберите файл</option>) : (<></>)
                                     }
                                     {
@@ -53,18 +64,14 @@ function Inputs({inputs, cellId, updateInputHandler, updateColumnHandler, submit
                                     }
                                 </select>
                                 {
-                                    //@ts-ignore
-                                    (cellParams.inputs[input.name] !== null && cellParams.inputs[input.name] !== "") ?
-                                        //@ts-ignore
-                                        (<select value={cellParams.selectedInputsColumn[input.name] === null ? "choose column" : cellParams.selectedInputsColumn[input.name]}
+                                    (input.fileName !== null) ?
+                                        (<select value={input.inputColumn === null ? "choose column" : input.inputColumn}
                                                  onChange={updateColumnHandler} id={input.name}>
                                             {
-                                                //@ts-ignore
-                                                cellParams.selectedInputsColumn[input.name] === null ? (<option id={""}>choose column</option>) : (<></>)
+                                                input.inputColumn === null ? (<option id={""}>choose column</option>) : (<></>)
                                             }
                                             {
-                                                //@ts-ignore
-                                                getFileColumns(cellParams.inputsPath[input.name]).map((elem) =>
+                                                getFileColumns(input.path).map((elem) =>
                                                     (<option id={input.name + elem}>{elem}</option>))
                                             }
                                         </select>) :

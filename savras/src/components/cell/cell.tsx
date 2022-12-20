@@ -32,7 +32,6 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
     const files = useAppSelector((state) => state.filesList);
 
     const defaultCellsInput: CellParams = {
-        inputs: {},
         inputsPath: cellInfo.inputs,
         inputParams: cellInfo.input_params,
         outputs: {},
@@ -40,25 +39,6 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
     };
     const [cellParams, setCellParams] = useState(defaultCellsInput);
     const [executeStatus, setExecuteStatus] = useState(CellStatus.NOT_EXECUTED);
-
-    function getFileName(path: string) {
-        const file = files.find((elem) => elem.path === path);
-        if (file === undefined) {
-            return null;
-        }
-        return file.name;
-    }
-    useEffect(() => {
-        for (const key in cellParams.inputsPath) {
-            const path = cellParams.inputsPath[key as keyof typeof cellParams.inputsPath];
-            const fileName = getFileName(path);
-            if (!(key in cellParams.inputs) || (cellParams.inputs[key as keyof typeof cellParams.inputs] === null)) {
-                setCellParams((state) => {
-                    return {...state, inputs: {...state.inputs, [key]: fileName}};
-                });
-            }
-        }
-    }, [files]);
 
 
     useEffect(() => {
@@ -72,6 +52,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
             }
         }}
     );
+    console.log(cellParams);
 
     const stopHandler = (event: DraggableEvent, data: DraggableData) => {
         event.preventDefault();
@@ -87,7 +68,6 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         const value = (options.selectedIndex != -1) ? options[selectedIndex].value : "";
         const fieldName = select.id;
         setCellParams({...cellParams,
-            inputs: {...cellParams.inputs, [fieldName]: value},
             inputsPath: {...cellParams.inputsPath, [fieldName]: path}});
     }
 
@@ -183,7 +163,8 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
                 </div>
                 <CellContext.Provider value={cellParams}>
                 <div className="row-elements">
-                    <Inputs cellId={cellInfo.id} inputs={cellInfo.inputs}
+                    <Inputs cellId={cellInfo.id} inputPaths={cellInfo.inputs}
+                            inputColumns={cellInfo.data_columns}
                             updateInputHandler={updateInputHandler}
                             updateColumnHandler={updateInputColumnHandler}
                             submitInputsHandler={submitInputsHandler}/>

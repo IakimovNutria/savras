@@ -1,5 +1,4 @@
 type CellParams = {
-    inputs: {};
     inputParams: {};
     outputs: {};
     inputsPath: {};
