@@ -63,8 +63,8 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         const select = event.target;
         const options = select.options;
         const selectedIndex = options.selectedIndex;
-        const path = (selectedIndex != -1) ? options[selectedIndex].id : null;
-        const value = (options.selectedIndex != -1) ? options[selectedIndex].value : "";
+        const path = (selectedIndex !== -1) ? options[selectedIndex].id : null;
+        const value = (options.selectedIndex !== -1) ? options[selectedIndex].value : "";
         const fieldName = select.id;
         setCellParams({...cellParams,
             inputsPath: {...cellParams.inputsPath, [fieldName]: path}});
@@ -75,7 +75,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         const select = event.target;
         const options = select.options;
         const selectedIndex = options.selectedIndex;
-        const value = (options.selectedIndex != -1) ? options[selectedIndex].value : "";
+        const value = (options.selectedIndex !== -1) ? options[selectedIndex].value : "";
         const fieldName = select.id;
         setCellParams({...cellParams, selectedInputsColumn: {...cellParams.selectedInputsColumn, [fieldName]: value}});
     }
@@ -101,17 +101,18 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         });*/
     }
 
-    const submitInputsHandler = (event: FormEvent<HTMLButtonElement>) => {
+    const submitInputsHandler = async (event: FormEvent<HTMLButtonElement>) => {
         const elem = cellParams;
         for (const key in elem.inputsPath) {
             const path = elem.inputsPath[key as keyof typeof elem.inputsPath];
             const dataColumn = elem.selectedInputsColumn[key as keyof typeof elem.selectedInputsColumn];
             dispatch(updateInput({cellId: cellInfo.id, path: path, field: key, data_column: dataColumn}));
+            await new Promise(f => setTimeout(f, 200));
         }
         event.preventDefault();
     }
 
-    const submitParamsHandler = (event: FormEvent<HTMLButtonElement>) => {
+    const submitParamsHandler = async (event: FormEvent<HTMLButtonElement>) => {
         const elem = cellParams;
         for (const key in elem.inputParams) {
             const notNumberValue = elem.inputParams[key as keyof typeof elem.inputParams];
@@ -119,6 +120,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
             const paramType = functionInfo.input_params[key];
             const value = (paramType === "int" || paramType === "float") ? Number(notNumberValue) : notNumberValue;
             dispatch(updateParam({cellId: cellInfo.id, value: value, field: key}));
+            await new Promise(f => setTimeout(f, 200));
         }
         event.preventDefault();
     }
@@ -137,9 +139,9 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         event.preventDefault();
     }
 
-    const executeHandler = (event: FormEvent<HTMLButtonElement>) => {
-        submitParamsHandler(event);
-        submitInputsHandler(event);
+    const executeHandler = async (event: FormEvent<HTMLButtonElement>) => {
+        await submitParamsHandler(event);
+        await submitInputsHandler(event);
         setExecuteStatus(CellStatus.IN_PROCESS);
         dispatch(executeCell({cellId: cellInfo.id}));
         event.preventDefault();
