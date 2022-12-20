@@ -339,6 +339,7 @@ export const updateParam = createAsyncThunk<void, {cellId: string, field: string
     '/cells/update/param',
     async ({cellId, field, value}, {dispatch, extra: api}) => {
         const data = await api.post('/cells/update/param', {cell_id: cellId, field: field, value: value});
+        await new Promise(f => setTimeout(f, 200));
     },
 );
 
@@ -352,6 +353,7 @@ export const updateInput = createAsyncThunk<void, {cellId: string, field: string
         const data = await api.post('/cells/update/input',
             {cell_id: cellId, field: field, path: path, data_column: data_column});
         dispatch(fetchUserPipelinesAction());
+        await new Promise(f => setTimeout(f, 200));
     },
 );
 
