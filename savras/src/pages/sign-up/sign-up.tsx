@@ -16,7 +16,6 @@ function SignUp(): JSX.Element {
     }
 
     let authorizationStatus = useAppSelector((state) => state.authorization);
-    while (authorizationStatus === AuthorizationStatus.IN_PROCESS) {}
 
     if (authorizationStatus === AuthorizationStatus.AUTHORIZED) {
         return (<Navigate to={"/"} />);

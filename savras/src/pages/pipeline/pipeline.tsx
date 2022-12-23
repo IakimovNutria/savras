@@ -14,7 +14,7 @@ function Pipeline(): JSX.Element {
     const functions = useAppSelector((state) => state.cellsFunctions);
     useEffect(() => {
         dispatch(fetchPipeline({pipelineId: id === undefined ? "" : id}));
-    }, []);
+    }, [dispatch, id]);
     useInterval(() => {
         dispatch(fetchPipeline({pipelineId: id === undefined ? "" : id}));
     }, 1000 * 10);

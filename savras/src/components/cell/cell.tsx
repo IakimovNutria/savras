@@ -4,7 +4,6 @@ import {useAppSelector, useAppDispatch} from "../../hooks"
 import {
     deleteCell,
     executeCell,
-    fetchPipeline,
     moveCell,
     saveFile,
     updateInput,

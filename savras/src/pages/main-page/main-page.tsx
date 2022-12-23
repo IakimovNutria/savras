@@ -14,7 +14,7 @@ import {
 
 function MainPage(): JSX.Element {
     const [newPipelineName, setNewPipelineName] = useState("");
-    const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+    const [, , removeCookie] = useCookies(["token"]);
     const dispatch = useAppDispatch();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const files = useAppSelector((state) => state.filesList);

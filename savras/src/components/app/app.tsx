@@ -28,8 +28,10 @@ function App(): JSX.Element {
         <Route path='/' element={<PrivateRoute hasAccess={authorizationStatus === AuthorizationStatus.AUTHORIZED}
                                                navigateTo={<MainPage />}/>}/>
         <Route path='test' element={(<Test />)}/>
-        <Route path='pipeline/:id' element={<PrivateRoute hasAccess={true} navigateTo={<Pipeline />} />}/>
-        <Route path='file/:id' element={<PrivateRoute hasAccess={true} navigateTo={<File />} />}/>
+        <Route path='pipeline/:id' element={<PrivateRoute hasAccess={authorizationStatus === AuthorizationStatus.AUTHORIZED}
+                                                          navigateTo={<Pipeline />} />}/>
+        <Route path='file/:id' element={<PrivateRoute hasAccess={authorizationStatus === AuthorizationStatus.AUTHORIZED}
+                                                      navigateTo={<File />} />}/>
       </Routes>
     </BrowserRouter>);
 }
