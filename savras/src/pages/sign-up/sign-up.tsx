@@ -41,7 +41,7 @@ function SignUp(): JSX.Element {
                         </div>
                     </div>
                     <div className="column-elements">
-                        <button className="block-button" type="submit"><span>Sign up</span></button>
+                        <button className="block-button" type="submit"><span>Continue</span></button>
                     </div>
                 </form>
             </div>
