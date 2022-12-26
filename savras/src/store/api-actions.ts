@@ -13,6 +13,8 @@ import {
 import AuthorizationInfo from "../types/authorizationInfo";
 import FileInfo from "../types/fileInfo";
 import {saveAs} from "file-saver";
+import React from "react";
+import {CellStatus} from "../types/cellStatus";
 
 export const fetchFilesAction = createAsyncThunk<void, undefined, {
     dispatch: AppDispatch,
@@ -25,12 +27,20 @@ export const fetchFilesAction = createAsyncThunk<void, undefined, {
             const {data} = await api.get('/files/columns', {params: {path: path}});
             return data;
         }
-        const {data} = await api.get('/files');
-        let files: FileInfo[] = [];
-        for (const key in data) {
-            files.push({...data[key], columns: await fetchFileColumn(data[key].path)});
-        }
-        dispatch(setFiles(files));
+        api.get('/files')
+            .then(async (response) => {
+                const data = response.data;
+                let files: FileInfo[] = [];
+                for (const key in data) {
+                    files.push({...data[key], columns: await fetchFileColumn(data[key].path)});
+                }
+                dispatch(setFiles(files));
+            })
+            .catch((reason) => {
+                if (reason.response.status === 401) {
+                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
+                }
+            });
     },
 );
 
@@ -65,12 +75,13 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
 }>(
     '/user',
     async (_arg, {dispatch, extra: api}) => {
-        try {
-            await api.get("/user");
-            dispatch(setAuthorization(AuthorizationStatus.AUTHORIZED));
-        } catch {
-            dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
-        }
+        api.get("/user")
+            .then(() => {
+                dispatch(setAuthorization(AuthorizationStatus.AUTHORIZED));
+            })
+            .catch(() => {
+                dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
+            });
     },
 );
 
@@ -162,8 +173,16 @@ export const createCell = createAsyncThunk<void, {pipelineId: string, functionNa
 }>(
     '/cells/create',
     async ({pipelineId, functionName}, {dispatch, extra: api}) => {
-        const data = await api.post("/cells/create", {pipeline_id: pipelineId, function: functionName});
-        dispatch(fetchPipeline({pipelineId: pipelineId}));
+        api.post("/cells/create", {pipeline_id: pipelineId, function: functionName})
+            .then(() => {
+                dispatch(fetchPipeline({pipelineId: pipelineId}));
+            })
+            .catch((reason) => {
+                if (reason.response.status === 401) {
+                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
+                }
+            });
+
     },
 );
 
@@ -174,9 +193,18 @@ export const uploadFile = createAsyncThunk<void, {formData: FormData}, {
 }>(
     '/files/upload',
     async ({formData}, {dispatch, extra: api}) => {
-        const data = await api.post('/files/upload', formData,
-            {headers: {"Content-Type": "multipart/form-data"}});
-        dispatch(fetchFilesAction());
+        api.post('/files/upload', formData,
+            {headers: {"Content-Type": "multipart/form-data"}})
+            .then(() => {
+                dispatch(fetchFilesAction());
+            })
+            .catch((reason) => {
+                if (reason.response.status === 401) {
+                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
+                } else if (reason.response.status === 400) {
+                    //TODO: выводить ошибку
+                }
+            });
     },
 );
 
@@ -188,7 +216,12 @@ export const downloadFile = createAsyncThunk<void, {path: string, name: string},
     '/files/download',
     async ({path, name}, {dispatch, extra: api}) => {
         api.get('/files/download', {params: {path: path}, responseType: "blob"})
-            .then((r) => saveAs(r.data, name));
+            .then((r) => saveAs(r.data, name))
+            .catch((reason) => {
+                if (reason.response.status === 401) {
+                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
+                }
+            });
 
     },
 );
@@ -200,8 +233,13 @@ export const deleteFile = createAsyncThunk<void, {path: string}, {
 }>(
     '/files/delete',
     async ({path}, {dispatch, extra: api}) => {
-        const data = await api.delete('/files/delete', {params: {path: path}});
-        dispatch(fetchFilesAction());
+        api.delete('/files/delete', {params: {path: path}})
+            .then(() => dispatch(fetchFilesAction()))
+            .catch((reason) => {
+                if (reason.response.status === 401) {
+                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
+                }
+            });
     },
 );
 
@@ -246,8 +284,16 @@ export const createPipeline = createAsyncThunk<void, {name: string}, {
 }>(
     'pipelines/create',
     async ({name}, {dispatch, extra: api}) => {
-        const data = await api.post('pipelines/create', {name: name});
-        dispatch(fetchUserPipelinesAction());
+        api.post('pipelines/create', {name: name})
+            .then(() => {
+                dispatch(fetchUserPipelinesAction());
+            })
+            .catch((reason) => {
+                if (reason.response.status === 401) {
+                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
+                }
+            });
+
     },
 );
 
@@ -322,15 +368,20 @@ export const forkPipeline = createAsyncThunk<void, {pipelineId: string}, {
     },
 );
 
-export const deleteCell = createAsyncThunk<void, {cellId: string}, {
+export const deleteCell = createAsyncThunk<void, {cellId: string, pipelineId: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/cells',
-    async ({cellId}, {dispatch, extra: api}) => {
-        const data = await api.delete('/cells', {params: {cell_id: cellId}});
-        dispatch(fetchUserPipelinesAction());
+    async ({cellId, pipelineId}, {dispatch, extra: api}) => {
+        api.delete('/cells', {params: {cell_id: cellId}})
+            .then(() => dispatch(fetchPipeline({pipelineId: pipelineId})))
+            .catch((reason) => {
+                if (reason.response.status === 401) {
+                    setAuthorization(AuthorizationStatus.NOT_AUTHORIZED);
+                }
+            });
     },
 );
 
@@ -353,7 +404,17 @@ export const updateParam = createAsyncThunk<void, {cellId: string, field: string
 }>(
     '/cells/update/param',
     async ({cellId, field, value}, {dispatch, extra: api}) => {
-        const data = await api.post('/cells/update/param', {cell_id: cellId, field: field, value: value});
+        api.post('/cells/update/param', {cell_id: cellId, field: field, value: value})
+            .then(() => {
+
+            })
+            .catch((reason) => {
+                if (reason.response.status === 401) {
+                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
+                } else if (reason.response.status === 400) {
+                    //TODO: выводить сообщение об ошибке
+                }
+            });
     },
 );
 
@@ -364,20 +425,36 @@ export const updateInput = createAsyncThunk<void, {cellId: string, field: string
 }>(
     '/cells/update/input',
     async ({cellId, field, path, data_column}, {dispatch, extra: api}) => {
-        const data = await api.post('/cells/update/input',
-            {cell_id: cellId, field: field, path: path, data_column: data_column});
-        dispatch(fetchUserPipelinesAction());
+        api.post('/cells/update/input',
+            {cell_id: cellId, field: field, path: path, data_column: data_column})
+            .then(() => {
+
+            })
+            .catch((reason) => {
+                if (reason.response.status === 401) {
+                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
+                } else if (reason.response.status === 400) {
+                    //TODO: выводить ошибку
+                }
+            });
+
     },
 );
 
-export const executeCell = createAsyncThunk<void, {cellId: string}, {
+export const executeCell = createAsyncThunk<void, {cellId: string, setCellStatus: React.Dispatch<React.SetStateAction<string>>}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/cells/execute',
-    async ({cellId}, {dispatch, extra: api}) => {
-        const data = await api.post('/cells/execute', {cell_id: cellId});
+    async ({cellId, setCellStatus}, {dispatch, extra: api}) => {
+        api.post('/cells/execute', {cell_id: cellId}).catch((reason) => {
+            if (reason.response.status === 400) {
+                setCellStatus(reason.response.data["detail"].replace('.', '').toLowerCase());
+            } else {
+                setCellStatus(CellStatus.HAS_ERROR);
+            }
+        });
     },
 );
 

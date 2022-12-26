@@ -15,7 +15,7 @@ import CellContext from "./cellContext";
 import CellParams from "./cellTypes/cellParams";
 import InputParams from "./cellComponents/inputParams";
 import Outputs from "./cellComponents/outputs";
-import {CellStatus, CellStatusStyle} from "./cellTypes/cellStatus";
+import {CellStatus, CellStatusStyle} from "../../types/cellStatus";
 
 
 type CellProps = {
@@ -42,7 +42,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
 
     useEffect(() => {
         if (cellInfo.error !== null) {
-            setExecuteStatus(CellStatus.HAS_ERROR);
+            setExecuteStatus(cellInfo.error);
         } else {
             for (const key in cellInfo.outputs) {
                 if (cellInfo.outputs[key as keyof typeof cellInfo.outputs] !== null) {
@@ -106,7 +106,6 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
             const path = elem.inputsPath[key as keyof typeof elem.inputsPath];
             const dataColumn = elem.selectedInputsColumn[key as keyof typeof elem.selectedInputsColumn];
             dispatch(updateInput({cellId: cellInfo.id, path: path, field: key, data_column: dataColumn}));
-            await new Promise(f => setTimeout(f, 200));
         }
         event.preventDefault();
     }
@@ -119,7 +118,6 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
             const paramType = functionInfo.input_params[key];
             const value = (paramType === "int" || paramType === "float") ? Number(notNumberValue) : notNumberValue;
             dispatch(updateParam({cellId: cellInfo.id, value: value, field: key}));
-            await new Promise(f => setTimeout(f, 200));
         }
         event.preventDefault();
     }
@@ -142,13 +140,13 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         await submitParamsHandler(event);
         await submitInputsHandler(event);
         setExecuteStatus(CellStatus.IN_PROCESS);
-        dispatch(executeCell({cellId: cellInfo.id}));
+        dispatch(executeCell({cellId: cellInfo.id, setCellStatus: setExecuteStatus}));
         event.preventDefault();
     }
 
     const deleteCellHandler = (event: FormEvent<HTMLDivElement>) => {
         event.preventDefault();
-        dispatch(deleteCell({cellId: cellInfo.id}));
+        dispatch(deleteCell({cellId: cellInfo.id, pipelineId: pipelineId}));
     }
 
     return (
@@ -157,7 +155,8 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
                    bounds={{left: 0, top: 0}} key={cellInfo.id}>
             <div className="block column-elements cell">
                 <div className="drag-handle row-elements">
-                    <h5 style={{...CellStatusStyle[executeStatus], margin: 0, userSelect: "none"}} className="center">{executeStatus}</h5>
+                    {/*@ts-ignore*/}
+                    <h5 style={{color: "red", ...CellStatusStyle[executeStatus], margin: 0, userSelect: "none"}} className="center">{executeStatus}</h5>
                     <h5 style={{margin: 0, marginLeft: "5px", userSelect: "none"}}>{cellInfo.function}</h5>
                     <div className="delete-button" style={{position: "absolute", right:0}} onClick={deleteCellHandler}/>
                 </div>
