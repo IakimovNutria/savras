@@ -3,6 +3,7 @@ import {Link, Navigate} from "react-router-dom";
 import {signUpAction} from "../../store/api-actions";
 import {useAppDispatch, useAppSelector} from "../../hooks";
 import AuthorizationStatus from "../../types/authorizationStatus";
+import {setAuthorization} from "../../store/actions";
 
 
 function SignUp(): JSX.Element {
@@ -44,10 +45,22 @@ function SignUp(): JSX.Element {
                         <button className="block-button" type="submit"><span>Sign up</span></button>
                     </div>
                 </form>
+                {
+                    authorizationStatus === AuthorizationStatus.BAD_REGISTER ?
+                        (<div className="column-elements" style={{margin: 0, padding: 0, marginBottom: 15}}>
+                            <h5 style={{padding: 0, margin: 0, color: "red"}}>account already exist</h5>
+                        </div>)
+                        : (<></>)
+                }
             </div>
             <div className="column-elements block">
                 <h3 style={{margin: 0, marginTop: 15}}>Already have an account?</h3>
-                <Link to={`/sign-in`}><button className="block-button" type="button"><span>Sign in</span></button></Link>
+                <Link to={`/sign-in`}>
+                    <button className="block-button" type="button"
+                            onClick={() => dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED))}>
+                        Sign in
+                    </button>
+                </Link>
             </div>
         </div>
     );

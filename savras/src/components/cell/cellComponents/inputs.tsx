@@ -5,8 +5,6 @@ import CellContext from "../cellContext";
 
 
 type InputProps = {
-    inputPaths: {},
-    inputColumns: {},
     cellId: string,
     updateInputHandler: (event: ChangeEvent<HTMLSelectElement>) => void,
     updateColumnHandler: (event: ChangeEvent<HTMLSelectElement>) => void,
@@ -57,7 +55,7 @@ function Inputs({cellId, updateInputHandler, updateColumnHandler, submitInputsHa
                                         name={input.name} id={input.name}>
                                     {
                                         (input.fileName === null) ?
-                                            (<option id={""}>выберите файл</option>) : (<></>)
+                                            (<option id={""}>choose file</option>) : (<></>)
                                     }
                                     {
                                         files.map((file) => (<option id={file.path}>{file.name}</option>))

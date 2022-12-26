@@ -81,11 +81,20 @@ export const signInAction = createAsyncThunk<void, AuthorizationInfo, {
 }>(
     '/user/authentication',
     async ({login, password}, {dispatch, extra: api}) => {
-        const data = await api.post("/user/authentication", `username=${login}&password=${password}`);
-        dispatch(setAuthorization(AuthorizationStatus.AUTHORIZED));
-        dispatch(fetchFilesAction());
-        dispatch(fetchUserPipelinesAction());
-        dispatch(fetchSharedPipelinesAction());
+        api.post("/user/authentication", `username=${login}&password=${password}`)
+            .then((response) => {
+                if (response.status === 200) {
+                    dispatch(setAuthorization(AuthorizationStatus.AUTHORIZED));
+                    dispatch(fetchFilesAction());
+                    dispatch(fetchUserPipelinesAction());
+                    dispatch(fetchSharedPipelinesAction());
+                }
+            })
+            .catch((reason) => {
+                if (reason.response.status === 401) {
+                    dispatch(setAuthorization(AuthorizationStatus.BAD_AUTHENTICATE));
+                }
+            });
     },
 );
 
@@ -96,11 +105,17 @@ export const signUpAction = createAsyncThunk<void, AuthorizationInfo, {
 }>(
     '/user/registration',
     async ({login, password}, {dispatch, extra: api}) => {
-        const data = await api.post("/user/registration", {username: login, password: password});
-        dispatch(setAuthorization(AuthorizationStatus.AUTHORIZED));
-        dispatch(fetchFilesAction());
-        dispatch(fetchUserPipelinesAction());
-        dispatch(fetchSharedPipelinesAction());
+        api.post("/user/registration", {username: login, password: password})
+            .then((response) => {
+                if (response.status === 201) {
+                    dispatch(setAuthorization(AuthorizationStatus.AUTHORIZED));
+                }
+            })
+            .catch((reason) => {
+                if (reason.response.status === 400) {
+                    dispatch(setAuthorization(AuthorizationStatus.BAD_REGISTER));
+                }
+            });
     },
 );
 

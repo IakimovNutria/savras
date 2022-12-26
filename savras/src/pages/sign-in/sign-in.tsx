@@ -3,6 +3,7 @@ import {Link, Navigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../hooks";
 import {signInAction} from "../../store/api-actions";
 import AuthorizationStatus from "../../types/authorizationStatus";
+import {setAuthorization} from "../../store/actions";
 
 
 function SignIn(): JSX.Element {
@@ -38,14 +39,26 @@ function SignIn(): JSX.Element {
                 />
               </div>
             </div>
-            <div className="column-elements">
+            <div className="column-elements" style={{marginBottom: 0}}>
               <button className="block-button" type="submit">Sign in</button>
             </div>
           </form>
+          {
+            authorizationStatus === AuthorizationStatus.BAD_AUTHENTICATE ?
+                (<div className="column-elements" style={{margin: 0, padding: 0, marginBottom: 15}}>
+                  <h5 style={{padding: 0, margin: 0, color: "red"}}>invalid username or password</h5>
+                </div>)
+                : (<></>)
+          }
         </div>
         <div className="block column-elements">
           <h3 style={{margin: 0, marginTop: 15}}>Don't have account yet?</h3>
-          <Link to={`/sign-up`}><button className="block-button" type="button">Sign up</button></Link>
+          <Link to={`/sign-up`}>
+            <button className="block-button" type="button"
+                                        onClick={() => dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED))}>
+              Sign up
+            </button>
+          </Link>
         </div>
       </div>
   );

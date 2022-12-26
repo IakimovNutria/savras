@@ -163,8 +163,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
                 </div>
                 <CellContext.Provider value={cellParams}>
                 <div className="row-elements">
-                    <Inputs cellId={cellInfo.id} inputPaths={cellInfo.inputs}
-                            inputColumns={cellInfo.data_columns}
+                    <Inputs cellId={cellInfo.id}
                             updateInputHandler={updateInputHandler}
                             updateColumnHandler={updateInputColumnHandler}
                             submitInputsHandler={submitInputsHandler}/>
