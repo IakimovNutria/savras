@@ -16,8 +16,8 @@
     position: absolute;
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    overflow: scroll;
+    justify-content: space-around;
+    overflow: auto;
 }
 
 .center {
@@ -41,13 +41,20 @@
     color: #E7C82B;
 }
 
-.block {
+.sign-in-block {
     border-radius: 15px;
     background: white;
     border-color: #131D2B;
     font-family: "Arial";
     padding: 25px 100px;
     box-shadow: 1px 1px 10px 5px #DDDDDD;
+}
+
+.main-page-block {
+    border-radius: 2px;
+    background: white;
+    font-family: "Arial";
+    width: 45%;
 }
 
 .column-elements {
@@ -67,19 +74,33 @@
 }
 
 li {
+    width: 100%;
+    height: 50px;
     list-style-type: none;
+    border-top: 1px solid #DDDDDD;
+    border-bottom: 1px solid #DDDDDD;
+    display: flex;
+    justify-content: flex-end;
 }
 
 ul {
+    border: 5px solid #DDDDDD;
+    border-top: 10px solid #DDDDDD;
+    width: 95%;
+    min-height: 50px;
+    border-radius: 10px;
     padding-left: 0;
+    margin-left: 0;
     margin-top: 0;
     padding-top: 0;
 }
 
-.main-page-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.even-item {
+    background: white;
+}
+
+.odd-item {
+    background: #F0F0F0;
 }
 
 .block-button,
@@ -126,13 +147,21 @@ ul {
     background: #E7C82B;
 }
 
-.head_button {
+.head-button {
     border-radius: 0;
     margin: 0 10px 0 0;
     width: 150px;
     height: 50px;
     border-left: 3px solid #fcc521;
     border-right: 3px solid #fcc521;
+    top: 0;
+}
+
+.li-button {
+    border-radius: 0;
+    margin: 0 0 0 10px;
+    width: 100px;
+    height: 50px;
     top: 0;
 }
 
@@ -175,9 +204,6 @@ ul {
     background: white;
 }
 
-.delete-buttons-ul {
-    margin-left: 27px;
-}
 
 .func-buttons-ul {
     display: flex;

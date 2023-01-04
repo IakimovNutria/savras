@@ -18,7 +18,7 @@ function Outputs({cellId, outputs, updateOutputNameHandler, saveFilesHandler}: O
         }
     }
     return (<div>
-                <div className="block cell-inside-block column-elements">
+                <div className="sign-in-block cell-inside-block column-elements">
                     <h3 className="cell-inside-block-element">outputs</h3>
                     <ul className="column-elements cell-inside-ul">
                         {

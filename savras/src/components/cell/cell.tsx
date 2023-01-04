@@ -155,7 +155,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         <Draggable handle=".drag-handle" onStop={stopHandler}
                    defaultPosition={{x: cellInfo.x, y: cellInfo.y}}
                    bounds={{left: 0, top: 0}} key={cellInfo.id}>
-            <div className="block column-elements cell">
+            <div className="sign-in-block column-elements cell">
                 <div className="drag-handle row-elements">
                     <h5 style={{...CellStatusStyle[executeStatus], margin: 0, userSelect: "none"}} className="center">{executeStatus}</h5>
                     <h5 style={{margin: 0, marginLeft: "5px", userSelect: "none"}}>{cellInfo.function}</h5>

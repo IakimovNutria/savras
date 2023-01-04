@@ -45,7 +45,7 @@ function Inputs({cellId, updateInputHandler, updateColumnHandler, submitInputsHa
 
     return (
         <div>
-            <div className="column-elements block cell-inside-block">
+            <div className="column-elements sign-in-block cell-inside-block">
                 <h3 className="cell-inside-block-element">inputs</h3>
                 <ul className="column-elements cell-inside-ul">
                     {
