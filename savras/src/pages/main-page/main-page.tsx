@@ -126,12 +126,21 @@ function MainPage(): JSX.Element {
                 <h3>Shared pipelines</h3>
                 <ul className='column-elements'>
                     {
+                        // TODO: добавить кнопку fork
                         sharedPipelines.map((pipeline) => (
-                            <li key={pipeline.id}>
-                                <Link to={`/pipeline/${pipeline.id}`}>
-                                    {pipeline.name}
-                                </Link>
-                            </li>))
+                            counter2++ % 2 == 0?
+                                <li className='row-elements even-item' key={pipeline.id}>
+                                    <h4>{pipeline.name}</h4>
+                                    <button className="block-button li-button" id={pipeline.id} name={pipeline.name} onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
+                                    <button className="block-button li-button" id={pipeline.id} onClick={handleDeletePipeline}>Delete</button>
+                                </li>
+                                :
+                                <li className='row-elements odd-item' key={pipeline.id}>
+                                    <h4>{pipeline.name}</h4>
+                                    <button className="block-button li-button" id={pipeline.id} name={pipeline.name} onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
+                                    <button className="block-button li-button" id={pipeline.id} onClick={handleDeletePipeline}>Delete</button>
+                                </li>
+                        ))
                     }
                 </ul>
             </div>
