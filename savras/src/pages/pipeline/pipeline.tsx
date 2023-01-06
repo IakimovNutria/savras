@@ -37,26 +37,26 @@ function Pipeline(): JSX.Element {
 
     return (
         <React.Fragment>
-            <form action="/">
-                <button className="block-button not-block-button">Back to main</button>
-            </form>
-            <h1 className="header">{pipeline.name}</h1>
-            <button onClick={() => setVisible(!visible)} className="block-button not-block-button">create</button>
-            {
-                visible ?
-                (<ul className='row-elements func-buttons-ul'>
-                    {
-                        functions.map((func) => (
-                            <li className='row-elements' style={{margin: 0}} key={func.function}>
-                                <button id={func.function} onClick={handleCreate}
-                                        className="block-button not-block-button create-func-button">
-                                    {func.function}
-                                </button>
-                            </li>
-                        ))
-                    }
-                </ul>) : <></>
-            }
+            <div className="main-page-head">
+                <h1 className="header">{pipeline.name}</h1>
+                <button onClick={() => setVisible(!visible)} className="block-button head-button">create</button>
+                {
+                    visible ?
+                        (<ul className='row-elements func-buttons-ul'>
+                            {
+                                functions.map((func) => (
+                                    <li className='row-elements' style={{margin: 0}} key={func.function}>
+                                        <button id={func.function} onClick={handleCreate}
+                                                className="block-button not-block-button create-func-button">
+                                            {func.function}
+                                        </button>
+                                    </li>
+                                ))
+                            }
+                        </ul>) : <></>
+                }
+                <button className="block-button head-button" onClick={() => {window.location.href="/"}}>Back to main</button>
+            </div>
             {
                 pipeline.cells.map((cellInfo) => (<Cell cellInfo={cellInfo} pipelineId={id}/>))
             }
