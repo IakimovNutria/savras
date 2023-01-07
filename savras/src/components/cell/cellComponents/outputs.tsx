@@ -17,31 +17,31 @@ function Outputs({cellId, outputs, updateOutputNameHandler, saveFilesHandler}: O
             outputNames.push(key);
         }
     }
-    return (<div>
-                <div className="sign-in-block cell-inside-block column-elements">
-                    <h3 className="cell-inside-block-element">outputs</h3>
-                    <ul className="column-elements cell-inside-ul">
+    return (
+        <React.Fragment>
+                <div className="cell-inside-block row-elements">
+                    <h3 className="cell-inside-block-element">Outputs</h3>
+                    <ul className="row-elements cell-inside-ul">
                         {
                             outputNames.map((output) => {
                                 return (
-                                    <li key={cellId + output} className="column-elements">
-                                        <h5 className="cell-inside-block-element">{output}</h5>
+                                    <li key={cellId + output} className="row-elements">
+                                        <h3 className="cell-inside-block-element">{output}:</h3>
                                         <input value={cellParams.outputs[output as keyof typeof cellParams.outputs]}
-                                               className="cell-inside-block-element cell-text-input"
+                                               className="cell-inside-block-element text-input"
                                                type="text" id={output}
+                                               style={{height: "35px", width: "80px"}}
                                                onChange={updateOutputNameHandler}/>
                                     </li>);
                             })
                         }
                     </ul>
-                </div>
-                <div className="cell-inside-button-block column-elements">
-                    <button className="block-button cell-button" onClick={saveFilesHandler}
+                    <button className="block-button cell-button cell-inside-button" onClick={saveFilesHandler}
                             key={cellId + "output"}>
-                        save output files
+                        Save output files
                     </button>
                 </div>
-            </div>);
+            </React.Fragment>);
 }
 
 export default Outputs;

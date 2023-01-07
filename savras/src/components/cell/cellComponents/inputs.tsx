@@ -44,14 +44,14 @@ function Inputs({cellId, updateInputHandler, updateColumnHandler, submitInputsHa
     }
 
     return (
-        <div>
-            <div className="column-elements sign-in-block cell-inside-block">
-                <h3 className="cell-inside-block-element">inputs</h3>
-                <ul className="column-elements cell-inside-ul">
+        <React.Fragment>
+            <div className="row-elements cell-inside-block">
+                <h3 className="cell-inside-block-element">Inputs</h3>
+                <ul className="row-elements cell-inside-ul">
                     {
                         inputsArray.map((input) => (
-                            <li className="column-elements" key={cellId + input.name}>
-                                <h5 className="cell-inside-block-element">{input.name}</h5>
+                            <li className="row-elements" key={cellId + input.name}>
+                                <h3 className="cell-inside-block-element">{input.name}:</h3>
                                 <select value={(input.fileName === null) ? "choose file" : input.fileName}
                                         onChange={updateInputHandler}
                                         name={input.name} id={input.name}>
@@ -81,14 +81,12 @@ function Inputs({cellId, updateInputHandler, updateColumnHandler, submitInputsHa
                         ))
                     }
                 </ul>
-            </div>
-            <div className="cell-inside-button-block column-elements">
-                <button className="block-button cell-button" onClick={submitInputsHandler}
+                <button className="block-button cell-button cell-inside-button" onClick={submitInputsHandler}
                         key={cellId + "inputs"}>
-                    save inputs
+                    Save inputs
                 </button>
             </div>
-        </div>);
+        </React.Fragment>);
 }
 
 export default Inputs;

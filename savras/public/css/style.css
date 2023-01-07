@@ -5,7 +5,6 @@ body {
 .main-page-head {
     left: 0;
     top: 0;
-    position: relative;
     height: 50px;
     width: 100%;
     background: #ffdd2d;
@@ -20,7 +19,6 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    overflow: auto;
 }
 
 .center {
@@ -34,9 +32,9 @@ body {
 }
 
 .header {
-    position: fixed;
+    position: relative;
     margin-top: 5px;
-    margin-right: 80%;
+    margin-right: 60%;
     color: #535D6B;
 }
 
@@ -103,13 +101,16 @@ body {
     background: #F0F0F0;
 }
 
-.pipeline-ul {
+.func-buttons-ul  {
     background: #ffdd2d;
-    border-top: 2px solid #fcc521;
     position: fixed;
+    top: 50px;
+    left: 0;
+    margin: 0;
+    padding: 0;
     width: 100%;
-    height: 250px;
-    top:1488px
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .block-button,
@@ -213,13 +214,6 @@ body {
     background: white;
 }
 
-
-.func-buttons-ul {
-    display: flex;
-    flex-wrap: wrap;
-    width: 70%;
-}
-
 .delete-button {
     width: 20px;
     height: 20px;
@@ -265,15 +259,12 @@ body {
 
 
 .drag-handle {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    background: rgb(231, 221, 168);
-    border-color: #131D2B;
-    border-style: solid;
+    background: #ffdd2d;;
     width: 100%;
-    transform: translate(0, -2px);
-    height: 30px;
+    height: 50px;
     margin: 0;
+    display: flex;
+    justify-content: space-between;
 }
 
 .cell-text-input {
@@ -311,9 +302,11 @@ body {
 }
 
 .cell {
-    width: 600px;
-    height: 380px;
-    position: absolute;
+    width: 1024px;
+    height: 320px;
+    position: relative;
+    background: white;
+    padding: 0;
 }
 
 .cell-inside {
@@ -323,18 +316,26 @@ body {
 
 .cell-inside-block {
     border-style: none;
-    width: 200px;
-    height: 225px;
+    width: 100%;
+    height: 60px;
     margin: 0;
+    display: flex;
+    justify-content: space-between;
 }
 
 .cell-inside-ul {
-    overflow-y: auto;
-    overflow-x: hidden;
+    height: 60px;
+    max-width: 750px;
+    overflow-y: hidden;
+    overflow-x: auto;
 }
 
 .cell-inside-block-element {
-    margin: 2px;
+    margin-left: 10px;
+}
+
+.cell-inside-button {
+    margin-right: 10px;
 }
 
 .cell-inside-button-block {

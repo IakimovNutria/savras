@@ -146,7 +146,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         event.preventDefault();
     }
 
-    const deleteCellHandler = (event: FormEvent<HTMLDivElement>) => {
+    const deleteCellHandler = (event: FormEvent<HTMLButtonElement>) => {
         event.preventDefault();
         dispatch(deleteCell({cellId: cellInfo.id}));
     }
@@ -155,14 +155,14 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         <Draggable handle=".drag-handle" onStop={stopHandler}
                    defaultPosition={{x: cellInfo.x, y: cellInfo.y}}
                    bounds={{left: 0, top: 0}} key={cellInfo.id}>
-            <div className="sign-in-block column-elements cell">
+            <div className="column-elements cell">
                 <div className="drag-handle row-elements">
-                    <h5 style={{...CellStatusStyle[executeStatus], margin: 0, userSelect: "none"}} className="center">{executeStatus}</h5>
-                    <h5 style={{margin: 0, marginLeft: "5px", userSelect: "none"}}>{cellInfo.function}</h5>
-                    <div className="delete-button" style={{position: "absolute", right:0}} onClick={deleteCellHandler}/>
+                    <h3 style={{userSelect: "none", marginLeft: "10px"}}>{cellInfo.function}</h3>
+                    <h3 style={{...CellStatusStyle[executeStatus], userSelect: "none"}}>{executeStatus}</h3>
+                    <button className="block-button head-button" onClick={deleteCellHandler}>Delete</button>
                 </div>
                 <CellContext.Provider value={cellParams}>
-                <div className="row-elements">
+                <div className="column-elements" style={{width: "100%"}}>
                     <Inputs cellId={cellInfo.id} inputPaths={cellInfo.inputs}
                             inputColumns={cellInfo.data_columns}
                             updateInputHandler={updateInputHandler}
@@ -176,9 +176,9 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
                              saveFilesHandler={saveFilesHandler}
                              updateOutputNameHandler={updateOutputNameHandler}/>
                 </div>
-                <button className="block-button cell-execute-button" key={cellInfo.id + "execute"}
+                <button className="block-button" key={cellInfo.id + "execute"}
                         onClick={executeHandler}>
-                    execute
+                    Execute
                 </button>
                 </CellContext.Provider>
             </div>
