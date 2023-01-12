@@ -1,13 +1,18 @@
 import Chart from 'react-apexcharts';
-import React, {Component} from 'react';
+import React from 'react';
+import TimeSeries from "../../types/timeSeries";
+
 
 type GraphProps = {
-    categories: string[];
-    series: {name: string, data: number[]}[]
+    timeSeries: TimeSeries;
+    name: string;
+    width: number;
+    height: number;
 }
 
-function Graph({categories, series}: GraphProps): JSX.Element {
-
+function Graph({timeSeries, width, height, name}: GraphProps): JSX.Element {
+    const categories = timeSeries.map((t) => t.datetime);
+    const series = [{name: name, data: timeSeries.map((t) => t.value)}];
     const options = {
         chart: {
             id: 'apexchart-example'
@@ -19,7 +24,7 @@ function Graph({categories, series}: GraphProps): JSX.Element {
     }
 
     //@ts-ignore
-    return (<Chart options={options} series={series} type="line" width={500} height={320}/>);
+    return (<Chart options={options} series={series} type="line" width={width} height={height}/>);
 }
 
 export default Graph;

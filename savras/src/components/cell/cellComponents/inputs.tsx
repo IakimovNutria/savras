@@ -17,7 +17,7 @@ function Inputs({cellId, updateInputHandler, updateColumnHandler, submitInputsHa
     const inputPaths = cellParams.inputsPath;
     const inputColumns = cellParams.selectedInputsColumn;
     const inputsArray: Input[] = [];
-    function getFileName(path: string) {
+    function getFileName(path: string | null) {
         const file = files.find((elem) => elem.path === path);
         if (file === undefined) {
             return null;
@@ -54,26 +54,24 @@ function Inputs({cellId, updateInputHandler, updateColumnHandler, submitInputsHa
                                         onChange={updateInputHandler}
                                         name={input.name} id={input.name}>
                                     {
-                                        (input.fileName === null) ?
-                                            (<option id={""}>choose file</option>) : (<></>)
+                                        (input.fileName === null) && (<option id={""}>choose file</option>)
                                     }
                                     {
                                         files.map((file) => (<option id={file.path}>{file.name}</option>))
                                     }
                                 </select>
                                 {
-                                    (input.fileName !== null) ?
+                                    (input.fileName !== null) &&
                                         (<select value={input.inputColumn === null ? "choose column" : input.inputColumn}
                                                  onChange={updateColumnHandler} id={input.name}>
                                             {
-                                                input.inputColumn === null ? (<option id={""}>choose column</option>) : (<></>)
+                                                input.inputColumn === null && (<option id={""}>choose column</option>)
                                             }
                                             {
                                                 getFileColumns(input.path).map((elem) =>
                                                     (<option id={input.name + elem}>{elem}</option>))
                                             }
-                                        </select>) :
-                                        (<></>)
+                                        </select>)
                                 }
                             </li>
                         ))

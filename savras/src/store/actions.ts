@@ -4,6 +4,7 @@ import CellInfo from "../types/cellInfo";
 import PipelineInfo from "../types/pipelineInfo";
 import CellsFunction from "../types/cellsFunction";
 import ShortPipelineInfo from "../types/shortPipelineInfo";
+import TimeSeries from "../types/timeSeries";
 
 const Action = {
     SET_USER_PIPELINES: "SET_USER_PIPELINES",
@@ -13,7 +14,8 @@ const Action = {
     SET_CELLS_FUNCTIONS: "SET_CELLS_FUNCTIONS",
     SET_CELLS_INFO: "SET_CELLS_INFO",
     SET_PIPELINE: "SET_PIPELINE",
-    ADD_CELL: "ADD_CELL"
+    ADD_CELL: "ADD_CELL",
+    ADD_GRAPH_DATA: "ADD_GRAPH_DATA"
 };
 
 
@@ -33,3 +35,5 @@ export const setPipeline = createAction(Action.SET_PIPELINE,
     (pipeline: PipelineInfo) => {return {payload: pipeline};});
 export const addCell = createAction(Action.ADD_CELL,
     (cell: CellInfo) => {return {payload: cell};});
+export const addGraphData = createAction(Action.ADD_GRAPH_DATA,
+    (info: {cellId: string, name: string, timeSeries: TimeSeries}) => {return {payload: info};});

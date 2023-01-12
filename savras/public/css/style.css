@@ -298,7 +298,7 @@ ul {
 }
 
 .cell {
-    width: 600px;
+    width: 800px;
     height: 380px;
     position: absolute;
 }
@@ -312,6 +312,13 @@ ul {
     border-style: none;
     width: 200px;
     height: 225px;
+    margin: 0;
+}
+
+.cell-inside-graphs {
+    width: 200px;
+    border-style: none;
+    height: 275px;
     margin: 0;
 }
 

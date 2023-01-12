@@ -8,13 +8,16 @@ import {
     setCellInfo,
     setFiles, setPipeline,
     setSharedPipelines,
-    setUserPipelines
+    setUserPipelines,
+    addGraphData
 } from "./actions";
 import AuthorizationInfo from "../types/authorizationInfo";
 import FileInfo from "../types/fileInfo";
 import {saveAs} from "file-saver";
 import React from "react";
 import {CellStatus} from "../types/cellStatus";
+import TimeSeries from "../types/timeSeries";
+import PipelineInfo from "../types/pipelineInfo";
 
 export const fetchFilesAction = createAsyncThunk<void, undefined, {
     dispatch: AppDispatch,
@@ -161,7 +164,7 @@ export const fetchPipeline = createAsyncThunk<void, {pipelineId: string}, {
 }>(
     '/pipelines',
     async ({pipelineId}, {dispatch, extra: api}) => {
-        const {data} = await api.get("/pipelines", {params: {pipeline_id: pipelineId}});
+        const {data} = await api.get<PipelineInfo>("/pipelines", {params: {pipeline_id: pipelineId}});
         dispatch(setPipeline(data));
     },
 );
@@ -243,14 +246,15 @@ export const deleteFile = createAsyncThunk<void, {path: string}, {
     },
 );
 
-export const getFileTimeSeries = createAsyncThunk<void, {path: string, dataColumn: string}, {
+export const getFileTimeSeries = createAsyncThunk<void, {path: string, dataColumn: string, cellId: string, graphName: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/files/time_series',
-    async ({path, dataColumn}, {dispatch, extra: api}) => {
-        const data = await api.get('/files/time_series', {params: {path: path, data_column: dataColumn}});
+    async ({path, dataColumn, cellId, graphName}, {dispatch, extra: api}) => {
+        const {data} = await api.get<TimeSeries>('/files/time_series', {params: {path: path, data_column: dataColumn}});
+        dispatch(addGraphData({cellId: cellId, name: graphName, timeSeries: data}));
     },
 );
 

@@ -6,7 +6,9 @@ const defaultValue: CellParams = {
     inputParams: {},
     inputsPath: {},
     outputs: {},
-    selectedInputsColumn: {}
+    selectedInputsColumn: {},
+    graphInputs: [],
+    graphOutputs: []
 };
 const CellContext = React.createContext(defaultValue)
 

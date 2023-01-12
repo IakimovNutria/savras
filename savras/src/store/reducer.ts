@@ -5,20 +5,22 @@ import FileInfo from '../types/fileInfo';
 import {
     setUserPipelines, setFiles,
     setAuthorization, setSharedPipelines,
-    setCellsFunctions, setPipeline, addCell
+    setCellsFunctions, setPipeline, addCell, addGraphData
 } from './actions';
 import PipelineInfo from "../types/pipelineInfo";
 import CellsFunction from "../types/cellsFunction";
 import ShortPipelineInfo from "../types/shortPipelineInfo";
+import TimeSeries from "../types/timeSeries";
 
 
 type stateType = {
-    authorization: string,
-    filesList: FileInfo[],
-    userPipelinesList: ShortPipelineInfo[],
-    sharedPipelinesList: ShortPipelineInfo[],
-    cellsFunctions: CellsFunction[],
-    currentPipeline: PipelineInfo | null
+    authorization: string;
+    filesList: FileInfo[];
+    userPipelinesList: ShortPipelineInfo[];
+    sharedPipelinesList: ShortPipelineInfo[];
+    cellsFunctions: CellsFunction[];
+    currentPipeline: PipelineInfo | null;
+    graphs: {[cellId: string]: {[name: string]: TimeSeries}};
 }
 
 const initialState: stateType = {
@@ -27,7 +29,8 @@ const initialState: stateType = {
     userPipelinesList: [],
     sharedPipelinesList: [],
     cellsFunctions: [],
-    currentPipeline: null
+    currentPipeline: null,
+    graphs: {}
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -59,5 +62,10 @@ export const reducer = createReducer(initialState, (builder) => {
           if (state.currentPipeline !== null) {
               state.currentPipeline.cells.push(action.payload);
           }
+      })
+      .addCase(addGraphData, (state, action) => {
+          state.graphs = {...state.graphs,
+              [action.payload.cellId]: {...state.graphs[action.payload.cellId],
+                  [action.payload.name]: action.payload.timeSeries}};
       });
 });

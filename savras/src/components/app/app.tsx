@@ -1,6 +1,6 @@
 import SignIn from '../../pages/sign-in/sign-in';
 import SignUp from '../../pages/sign-up/sign-up';
-import Graph from '../../pages/graph/graph';
+import Graph from '../graph/graph';
 import MainPage from '../../pages/main-page/main-page';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import Test from '../../pages/test/test';
@@ -24,7 +24,10 @@ function App(): JSX.Element {
       <Routes>
         <Route path='sign-in' element={(<SignIn />)}/>
         <Route path='sign-up' element={(<SignUp />)}/>
-        <Route path='graph' element={<Graph />}/>
+        <Route path='graph' element={<Graph timeSeries={[{datetime: "2023-01-12T11:14:17.922Z", value: 2},
+          {datetime: "2023-01-13T11:14:17.922Z", value: 8},
+          {datetime: "2023-01-14T11:14:17.922Z", value: 5},
+          {datetime: "2023-01-15T11:14:17.922Z", value: 1}]} name={"123"} width={500} height={320}/>}/>
         <Route path='/' element={<PrivateRoute hasAccess={authorizationStatus === AuthorizationStatus.AUTHORIZED}
                                                navigateTo={<MainPage />}/>}/>
         <Route path='test' element={(<Test />)}/>

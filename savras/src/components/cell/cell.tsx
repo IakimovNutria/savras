@@ -3,7 +3,7 @@ import Draggable, {DraggableData, DraggableEvent} from 'react-draggable';
 import {useAppSelector, useAppDispatch} from "../../hooks"
 import {
     deleteCell,
-    executeCell,
+    executeCell, getFileTimeSeries,
     moveCell,
     saveFile,
     updateInput,
@@ -16,6 +16,7 @@ import CellParams from "./cellTypes/cellParams";
 import InputParams from "./cellComponents/inputParams";
 import Outputs from "./cellComponents/outputs";
 import {CellStatus, CellStatusStyle} from "../../types/cellStatus";
+import Graphs from "./cellComponents/graphs";
 
 
 type CellProps = {
@@ -28,15 +29,16 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
     const dispatch = useAppDispatch();
     const functionsInfo = useAppSelector((state) => state.cellsFunctions);
     const functionInfo = functionsInfo.find((elem) => (elem.function === cellInfo.function));
-    const files = useAppSelector((state) => state.filesList);
 
-    const defaultCellsInput: CellParams = {
+    const defaultCellParams: CellParams = {
         inputsPath: cellInfo.inputs,
         inputParams: cellInfo.input_params,
         outputs: {},
-        selectedInputsColumn: cellInfo.data_columns
+        selectedInputsColumn: cellInfo.data_columns,
+        graphInputs: [],
+        graphOutputs: []
     };
-    const [cellParams, setCellParams] = useState(defaultCellsInput);
+    const [cellParams, setCellParams] = useState(defaultCellParams);
     const [cellStatus, setCellStatus] = useState(CellStatus.NOT_EXECUTED);
 
 
@@ -45,12 +47,31 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
             setCellStatus(cellInfo.error);
         } else {
             for (const key in cellInfo.outputs) {
-                if (cellInfo.outputs[key as keyof typeof cellInfo.outputs] !== null) {
+                if (cellInfo.outputs[key] !== null) {
                     setCellStatus(CellStatus.EXECUTED);
                 }
             }
         }}
     );
+
+    useEffect(() => {
+        const inputNames: string[] = [];
+        for (const key in cellInfo.inputs) {
+            inputNames.push(key);
+        }
+        setCellParams((prev) => {return {...prev, graphInputs: inputNames};});
+    }, []);
+
+    useEffect(() => {
+        cellParams.graphInputs
+            .forEach((inputName) => {
+                const inputPath = cellParams.inputsPath[inputName];
+                const dataColumn = cellParams.selectedInputsColumn[inputName];
+                if (inputPath !== null && dataColumn !== null) {
+                    dispatch(getFileTimeSeries({path: inputPath, graphName: inputName, cellId: cellInfo.id, dataColumn: dataColumn}));
+                }
+            })
+    }, [cellParams.graphInputs]);
 
     const stopHandler = (event: DraggableEvent, data: DraggableData) => {
         event.preventDefault();
@@ -106,7 +127,14 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         for (const key in elem.inputsPath) {
             const path = elem.inputsPath[key as keyof typeof elem.inputsPath];
             const dataColumn = elem.selectedInputsColumn[key as keyof typeof elem.selectedInputsColumn];
-            dispatch(updateInput({cellId: cellInfo.id, path: path, field: key, data_column: dataColumn, setCellStatus: setCellStatus}));
+            if (path !== null && dataColumn !== null) {
+                dispatch(updateInput({
+                    cellId: cellInfo.id,
+                    path: path,
+                    field: key, data_column: dataColumn,
+                    setCellStatus: setCellStatus
+                }));
+            }
         }
         if (cellStatus === CellStatus.SAVING) {
             setCellStatus(CellStatus.SAVED);
@@ -124,9 +152,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
             const value = (paramType === "int" || paramType === "float") ? Number(notNumberValue) : notNumberValue;
             dispatch(updateParam({cellId: cellInfo.id, value: value, field: key, setCellStatus: setCellStatus}));
         }
-        console.log(cellStatus);
         if (cellStatus === CellStatus.SAVING) {
-            console.log(1);
             setCellStatus(CellStatus.SAVED);
         }
         event.preventDefault();
@@ -137,7 +163,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         const elem = cellParams;
         for (const key in elem.outputs) {
             const value = elem.outputs[key as keyof typeof elem.outputs];
-            if (value !== "") {
+            if (value !== "" && value != null) {
                 const path = cellInfo.outputs[key as keyof typeof cellInfo.outputs];
                 if (path !== null) {
                     dispatch(saveFile({path: path, name: value}));
@@ -176,6 +202,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
                 </div>
                 <CellContext.Provider value={cellParams}>
                 <div className="row-elements">
+                    <Graphs cellId={cellInfo.id}/>
                     <Inputs cellId={cellInfo.id}
                             updateInputHandler={updateInputHandler}
                             updateColumnHandler={updateInputColumnHandler}
@@ -188,11 +215,11 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
                              saveFilesHandler={saveFilesHandler}
                              updateOutputNameHandler={updateOutputNameHandler}/>
                 </div>
+                </CellContext.Provider>
                 <button className="block-button cell-execute-button" key={cellInfo.id + "execute"}
                         onClick={executeHandler}>
                     execute
                 </button>
-                </CellContext.Provider>
             </div>
         </Draggable>);
 }
