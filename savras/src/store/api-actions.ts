@@ -379,7 +379,7 @@ export const deleteCell = createAsyncThunk<void, {cellId: string, pipelineId: st
             .then(() => dispatch(fetchPipeline({pipelineId: pipelineId})))
             .catch((reason) => {
                 if (reason.response.status === 401) {
-                    setAuthorization(AuthorizationStatus.NOT_AUTHORIZED);
+                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
                 }
             });
     },
@@ -397,13 +397,14 @@ export const moveCell = createAsyncThunk<void, {cellId: string, x: number, y: nu
     },
 );
 
-export const updateParam = createAsyncThunk<void, {cellId: string, field: string, value: string | boolean | number}, {
+export const updateParam = createAsyncThunk<void, {cellId: string, field: string, value: string | boolean | number,
+    setCellStatus: React.Dispatch<React.SetStateAction<string>>}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/cells/update/param',
-    async ({cellId, field, value}, {dispatch, extra: api}) => {
+    async ({cellId, field, value, setCellStatus}, {dispatch, extra: api}) => {
         api.post('/cells/update/param', {cell_id: cellId, field: field, value: value})
             .then(() => {
 
@@ -414,17 +415,19 @@ export const updateParam = createAsyncThunk<void, {cellId: string, field: string
                 } else if (reason.response.status === 400) {
                     //TODO: выводить сообщение об ошибке
                 }
+                setCellStatus(reason.response.data["detail"].replace('.', '').toLowerCase());
             });
     },
 );
 
-export const updateInput = createAsyncThunk<void, {cellId: string, field: string, path: string, data_column: string}, {
+export const updateInput = createAsyncThunk<void, {cellId: string, field: string, path: string, data_column: string,
+    setCellStatus: React.Dispatch<React.SetStateAction<string>>}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/cells/update/input',
-    async ({cellId, field, path, data_column}, {dispatch, extra: api}) => {
+    async ({cellId, field, path, data_column, setCellStatus}, {dispatch, extra: api}) => {
         api.post('/cells/update/input',
             {cell_id: cellId, field: field, path: path, data_column: data_column})
             .then(() => {
@@ -436,6 +439,7 @@ export const updateInput = createAsyncThunk<void, {cellId: string, field: string
                 } else if (reason.response.status === 400) {
                     //TODO: выводить ошибку
                 }
+                setCellStatus(reason.response.data["detail"].replace('.', '').toLowerCase());
             });
 
     },

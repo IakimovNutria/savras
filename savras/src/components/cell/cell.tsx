@@ -37,16 +37,16 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         selectedInputsColumn: cellInfo.data_columns
     };
     const [cellParams, setCellParams] = useState(defaultCellsInput);
-    const [executeStatus, setExecuteStatus] = useState(CellStatus.NOT_EXECUTED);
+    const [cellStatus, setCellStatus] = useState(CellStatus.NOT_EXECUTED);
 
 
     useEffect(() => {
         if (cellInfo.error !== null) {
-            setExecuteStatus(cellInfo.error);
+            setCellStatus(cellInfo.error);
         } else {
             for (const key in cellInfo.outputs) {
                 if (cellInfo.outputs[key as keyof typeof cellInfo.outputs] !== null) {
-                    setExecuteStatus(CellStatus.EXECUTED);
+                    setCellStatus(CellStatus.EXECUTED);
                 }
             }
         }}
@@ -101,28 +101,39 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
     }
 
     const submitInputsHandler = async (event: FormEvent<HTMLButtonElement>) => {
+        setCellStatus(CellStatus.SAVING);
         const elem = cellParams;
         for (const key in elem.inputsPath) {
             const path = elem.inputsPath[key as keyof typeof elem.inputsPath];
             const dataColumn = elem.selectedInputsColumn[key as keyof typeof elem.selectedInputsColumn];
-            dispatch(updateInput({cellId: cellInfo.id, path: path, field: key, data_column: dataColumn}));
+            dispatch(updateInput({cellId: cellInfo.id, path: path, field: key, data_column: dataColumn, setCellStatus: setCellStatus}));
+        }
+        if (cellStatus === CellStatus.SAVING) {
+            setCellStatus(CellStatus.SAVED);
         }
         event.preventDefault();
     }
 
     const submitParamsHandler = async (event: FormEvent<HTMLButtonElement>) => {
+        setCellStatus(CellStatus.SAVING);
         const elem = cellParams;
         for (const key in elem.inputParams) {
             const notNumberValue = elem.inputParams[key as keyof typeof elem.inputParams];
             //@ts-ignore
             const paramType = functionInfo.input_params[key];
             const value = (paramType === "int" || paramType === "float") ? Number(notNumberValue) : notNumberValue;
-            dispatch(updateParam({cellId: cellInfo.id, value: value, field: key}));
+            dispatch(updateParam({cellId: cellInfo.id, value: value, field: key, setCellStatus: setCellStatus}));
+        }
+        console.log(cellStatus);
+        if (cellStatus === CellStatus.SAVING) {
+            console.log(1);
+            setCellStatus(CellStatus.SAVED);
         }
         event.preventDefault();
     }
 
     const saveFilesHandler = (event: FormEvent<HTMLButtonElement>) => {
+        setCellStatus(CellStatus.SAVING);
         const elem = cellParams;
         for (const key in elem.outputs) {
             const value = elem.outputs[key as keyof typeof elem.outputs];
@@ -133,14 +144,17 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
                 }
             }
         }
+        if (cellStatus === CellStatus.SAVING) {
+            setCellStatus(CellStatus.SAVED);
+        }
         event.preventDefault();
     }
 
     const executeHandler = async (event: FormEvent<HTMLButtonElement>) => {
         await submitParamsHandler(event);
         await submitInputsHandler(event);
-        setExecuteStatus(CellStatus.IN_PROCESS);
-        dispatch(executeCell({cellId: cellInfo.id, setCellStatus: setExecuteStatus}));
+        setCellStatus(CellStatus.IN_PROCESS);
+        dispatch(executeCell({cellId: cellInfo.id, setCellStatus: setCellStatus}));
         event.preventDefault();
     }
 
@@ -156,7 +170,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
             <div className="block column-elements cell">
                 <div className="drag-handle row-elements">
                     {/*@ts-ignore*/}
-                    <h5 style={{color: "red", ...CellStatusStyle[executeStatus], margin: 0, userSelect: "none"}} className="center">{executeStatus}</h5>
+                    <h5 style={{color: "red", ...CellStatusStyle[cellStatus], margin: 0, userSelect: "none"}} className="center">{cellStatus}</h5>
                     <h5 style={{margin: 0, marginLeft: "5px", userSelect: "none"}}>{cellInfo.function}</h5>
                     <div className="delete-button" style={{position: "absolute", right:0}} onClick={deleteCellHandler}/>
                 </div>
