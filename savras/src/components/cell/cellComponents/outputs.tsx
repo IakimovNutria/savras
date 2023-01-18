@@ -17,32 +17,31 @@ function Outputs({cellId, outputs, updateOutputNameHandler, saveFilesHandler}: O
         }
     }
     return (
-        <div>
-            <div className="block cell-inside-block column-elements">
+        <>
+            <div className="cell-inside-block row-elements">
                 <h3 className="cell-inside-block-element">outputs</h3>
-                <ul className="column-elements cell-inside-ul">
+                <ul className="row-elements cell-inside-ul">
                     {
                         outputNames.map((output) => {
                             return (
-                                <li key={cellId + output} className="column-elements">
+                                <li key={cellId + output} className="row-elements">
                                     <h5 className="cell-inside-block-element">{output}</h5>
                                     {/*@ts-ignore*/}
                                     <input value={cellParams.outputs[output] === null ? undefined : cellParams.outputs[output]}
-                                           className="cell-inside-block-element cell-text-input"
+                                           className="cell-inside-block-element text-input"
                                            type="text" id={output}
+                                           style={{height: "35px", width: "80px"}}
                                            onChange={updateOutputNameHandler}/>
                                 </li>);
                         })
                     }
                 </ul>
             </div>
-            <div className="cell-inside-button-block column-elements">
-                <button className="block-button cell-button" onClick={saveFilesHandler}
-                        key={cellId + "output"}>
-                    save output files
-                </button>
-            </div>
-        </div>);
+            <button className="block-button cell-button cell-inside-button" onClick={saveFilesHandler}
+                    key={cellId + "output"}>
+                Save output files
+            </button>
+        </>);
 }
 
 export default Outputs;

@@ -59,19 +59,19 @@ function InputParams({cellId, functionName, updateParamHandler, submitParamsHand
 
 
     return (
-        <div>
-            <div className="block cell-inside-block column-elements">
-                <h3 className="cell-inside-block-element">params</h3>
-                <ul className="column-elements cell-inside-ul">
+        <React.Fragment>
+            <div className="cell-inside-block row-elements">
+                <h3 className="cell-inside-block-element">Params</h3>
+                <ul className="row-elements cell-inside-ul">
                     {
                         params.map((param) => {
                                 return (
-                                    <li className={param.type === "checkbox" ? "row-elements" : "column-elements"}
+                                    <li className="row-elements"
                                         key={cellId + param.name}>
-                                        <h5 className="cell-inside-block-element"
+                                        <h3 className="cell-inside-block-element"
                                             style={param.type === "checkbox" ? {transform: "translate(9px, 0)"} : {}}>
-                                            {param.name}
-                                        </h5>
+                                            {param.name}:
+                                        </h3>
                                         {
                                             param.type === "checkbox" ?
                                                 // @ts-ignore
@@ -84,7 +84,8 @@ function InputParams({cellId, functionName, updateParamHandler, submitParamsHand
                                                 // @ts-ignore
                                                 (<input value={cellParams.inputParams[param.name] === null ? "" : cellParams.inputParams[param.name]}
                                                         id={param.name} type={param.type}
-                                                        className="cell-text-input cell-inside-block-element"
+                                                        className="text-input cell-inside-block-element"
+                                                        style={{height: "35px", width: "80px"}}
                                                         pattern={param.pattern}
                                                         onChange={updateParamHandler}/>)
                                         }
@@ -94,11 +95,9 @@ function InputParams({cellId, functionName, updateParamHandler, submitParamsHand
                         )
                     }
                 </ul>
+                <button className="block-button cell-button cell-inside-button" onClick={submitParamsHandler}>Save params</button>
             </div>
-            <div className="cell-inside-button-block column-elements" key={cellId + "params"}>
-                <button className="block-button cell-button" onClick={submitParamsHandler}>save params</button>
-            </div>
-        </div>);
+        </React.Fragment>);
 }
 
 export default InputParams;

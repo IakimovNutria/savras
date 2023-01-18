@@ -26,7 +26,7 @@ function MainPage(): JSX.Element {
         dispatch(createPipeline({name: newPipelineName}));
     }
 
-    function handleDeletePipeline(event: FormEvent<HTMLDivElement>) {
+    function handleDeletePipeline(event: FormEvent<HTMLButtonElement>) {
         // TODO: добавить подтверждение об удалении пайплайна
         dispatch(deletePipeline({pipelineId: event.currentTarget.id}));
         event.preventDefault();
@@ -46,77 +46,106 @@ function MainPage(): JSX.Element {
         dispatch(uploadFile({formData: toSend}));
     }
 
-    function deleteFileHandler(event: FormEvent<HTMLDivElement>) {
+    function deleteFileHandler(event: FormEvent<HTMLButtonElement>) {
         event.preventDefault();
         // TODO: добавить подтверждение об удалении файла
         const path = event.currentTarget.id;
         dispatch(deleteFile({path: path}));
     }
 
-    function downloadFileHandler(event: FormEvent<HTMLAnchorElement>) {
+    function downloadFileHandler(event: FormEvent<HTMLButtonElement>) {
         event.preventDefault();
         const path = event.currentTarget.id;
-        const name = event.currentTarget.innerText;
+        const name = event.currentTarget.name;
         dispatch(downloadFile({path: path, name: name}));
     }
 
+    let counter1 = 0, counter2 = 0, counter3 = 0;
     return (
-    <div className="main-page">
-        <button className="block-button sign-out-button" onClick={handleSignOut}>exit</button>
-        <div className="column-elements block">
-            <h3>add file</h3>
-            <form className="column-elements" onSubmit={handleFileUpload}>
-                <input type="file" className="column-elements" required ref={fileInputRef}/>
-                <input className="block-button" type="submit" value="Загрузить" />
-            </form>
-            <h3>files</h3>
-            <ul className='column-elements delete-buttons-ul'>
-                {
-                    files.map((file) => (
-                        <li className='row-elements' key={file.path}>
-                            <a href={"#"} className="column-elements" id={file.path} onClick={downloadFileHandler}>{file.name}</a>
-                            <div className='delete-button' id={file.path} onClick={deleteFileHandler}/>
-                        </li>))
-                }
-            </ul>
-        </div>
-        <div className="column-elements block">
-            <h3>create new pipeline</h3>
-            <form encType="multipart/form-data" className="column-elements" onSubmit={handleCreatePipeline}>
-                <input type="text" required className="text-input" placeholder="Name"
-                       value={newPipelineName}
-                       onChange={(e) => setNewPipelineName(e.target.value)}/>
-                <input className="block-button" type="submit" value="Создать" />
-            </form>
-            <h3>pipelines</h3>
-            <ul className='column-elements delete-buttons-ul'>
-                {
-                    userPipelines.map((pipeline) => (
-                        <li className='row-elements' key={pipeline.id}>
-                            <div className="column-elements">
-                                <Link to={`/pipeline/${pipeline.id}`}>
-                                    {pipeline.name}
-                                </Link>
-                            </div>
-                            <div className='delete-button' id={pipeline.id} onClick={handleDeletePipeline}/>
-                        </li>))
-                }
-            </ul>
-        </div>
-        <div className="column-elements block">
-            <h3>shared pipelines</h3>
-            <ul className='column-elements'>
-                {
-                    sharedPipelines.map((pipeline) => (
-                        <li key={pipeline.id}>
-                            <Link to={`/pipeline/${pipeline.id}`}>
-                                {pipeline.name}
-                            </Link>
-                        </li>))
-                }
-            </ul>
-        </div>
-    </div>);
+        <React.Fragment>
+            <div className="main-page-head">
+                <button className="block-button head-button" onClick={handleSignOut}>Sign out</button>
+            </div>
+            <div className="main-page-body">
+                <div className="column-elements main-page-block">
+                    <h3>Add new file</h3>
+                    <form className="column-elements" onSubmit={handleFileUpload}>
+                        <input type="file" className="column-elements" required ref={fileInputRef} />
+                        <input className="block-button" type="submit" value="Upload" />
+                    </form>
+                    <h3>My files</h3>
+                    <ul className='main-page-ul column-elements'>
+                        {
+                            // TODO: добавить кнопку просмотра файла
+                            files.map((file) => (
+                                counter1++ % 2 == 0?
+                                    <li className='main-page-li row-elements even-item' key={file.path}>
+                                        <h4>{file.name}</h4>
+                                        <button className="block-button li-button" id={file.path} name={file.name} onClick={downloadFileHandler}>Download</button>
+                                        <button className="block-button li-button" id={file.path} onClick={deleteFileHandler}>Delete</button>
+                                    </li>
+                                    :
+                                    <li className='main-page-li row-elements odd-item' key={file.path}>
+                                        <h4>{file.name}</h4>
+                                        <button className="block-button li-button" id={file.path} name={file.name} onClick={downloadFileHandler}>Download</button>
+                                        <button className="block-button li-button" id={file.path} onClick={deleteFileHandler}>Delete</button>
+                                    </li>
+                            ))
+                        }
+                    </ul>
+                </div>
+                <div className="column-elements main-page-block">
+                    <h3>Create new pipeline</h3>
+                    <form encType="multipart/form-data" className="column-elements" onSubmit={handleCreatePipeline}>
+                        <input type="text" required className="text-input" placeholder="Name"
+                               value={newPipelineName}
+                               onChange={(e) => setNewPipelineName(e.target.value)}/>
+                        <input className="block-button" type="submit" value="Create" />
+                    </form>
+                    <h3>My pipelines</h3>
+                    <ul className='main-page-ul column-elements'>
+                        {
+                            // TODO: добавить кнопку share, fork
+                            userPipelines.map((pipeline) => (
+                                counter2++ % 2 == 0?
+                                    <li className='main-page-li row-elements even-item' key={pipeline.id}>
+                                        <h4>{pipeline.name}</h4>
+                                        <button className="block-button li-button" id={pipeline.id} name={pipeline.name} onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
+                                        <button className="block-button li-button" id={pipeline.id} onClick={handleDeletePipeline}>Delete</button>
+                                    </li>
+                                    :
+                                    <li className='main-page-li row-elements odd-item' key={pipeline.id}>
+                                        <h4>{pipeline.name}</h4>
+                                        <button className="block-button li-button" id={pipeline.id} name={pipeline.name} onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
+                                        <button className="block-button li-button" id={pipeline.id} onClick={handleDeletePipeline}>Delete</button>
+                                    </li>
+                            ))
+                        }
+                    </ul>
+
+                    <h3>Shared pipelines</h3>
+                    <ul className='main-page-ul column-elements'>
+                        {
+                            // TODO: добавить кнопку fork
+                            sharedPipelines.map((pipeline) => (
+                                counter2++ % 2 == 0?
+                                    <li className='main-page-li row-elements even-item' key={pipeline.id}>
+                                        <h4>{pipeline.name}</h4>
+                                        <button className="block-button li-button" id={pipeline.id} name={pipeline.name} onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
+                                        <button className="block-button li-button" id={pipeline.id} onClick={handleDeletePipeline}>Delete</button>
+                                    </li>
+                                    :
+                                    <li className='main-page-li row-elements odd-item' key={pipeline.id}>
+                                        <h4>{pipeline.name}</h4>
+                                        <button className="block-button li-button" id={pipeline.id} name={pipeline.name} onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
+                                        <button className="block-button li-button" id={pipeline.id} onClick={handleDeletePipeline}>Delete</button>
+                                    </li>
+                            ))
+                        }
+                    </ul>
+                </div>
+            </div>
+        </React.Fragment>);
 }
 
 export default MainPage;

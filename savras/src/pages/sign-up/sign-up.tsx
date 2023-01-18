@@ -24,7 +24,7 @@ function SignUp(): JSX.Element {
 
     return (
         <div className="center">
-            <div className="column-elements block">
+            <div className="column-elements sign-in-block">
                 <h1>Sign up</h1>
                 <form onSubmit={handleSubmit}>
                     <div>
@@ -42,7 +42,7 @@ function SignUp(): JSX.Element {
                         </div>
                     </div>
                     <div className="column-elements">
-                        <button className="block-button" type="submit"><span>Sign up</span></button>
+                        <button className="block-button" type="submit"><span>Continue</span></button>
                     </div>
                 </form>
                 {
@@ -53,7 +53,7 @@ function SignUp(): JSX.Element {
                         : (<></>)
                 }
             </div>
-            <div className="column-elements block">
+            <div className="column-elements sign-in-block">
                 <h3 style={{margin: 0, marginTop: 15}}>Already have an account?</h3>
                 <Link to={`/sign-in`}>
                     <button className="block-button" type="button"
