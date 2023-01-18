@@ -201,20 +201,20 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
                     <button className="block-button head-button" onClick={deleteCellHandler}>Delete</button>
                 </div>
                 <CellContext.Provider value={cellParams}>
-                <div className="column-elements" style={{width: "100%"}}>
-                    <Graphs cellId={cellInfo.id}/>
-                    <Inputs cellId={cellInfo.id}
-                            updateInputHandler={updateInputHandler}
-                            updateColumnHandler={updateInputColumnHandler}
-                            submitInputsHandler={submitInputsHandler}/>
-                    <InputParams cellId={cellInfo.id} functionName={cellInfo.function}
-                                 inputParams={cellInfo.input_params}
-                                 submitParamsHandler={submitParamsHandler}
-                                 updateParamHandler={updateParamHandler}/>
-                    <Outputs cellId={cellInfo.id} outputs={cellInfo.outputs}
-                             saveFilesHandler={saveFilesHandler}
-                             updateOutputNameHandler={updateOutputNameHandler}/>
-                </div>
+                    <div className="column-elements" style={{width: "100%"}}>
+                        <Inputs cellId={cellInfo.id}
+                                updateInputHandler={updateInputHandler}
+                                updateColumnHandler={updateInputColumnHandler}
+                                submitInputsHandler={submitInputsHandler}/>
+                        <InputParams cellId={cellInfo.id} functionName={cellInfo.function}
+                                     inputParams={cellInfo.input_params}
+                                     submitParamsHandler={submitParamsHandler}
+                                     updateParamHandler={updateParamHandler}/>
+                        <Outputs cellId={cellInfo.id} outputs={cellInfo.outputs}
+                                 saveFilesHandler={saveFilesHandler}
+                                 updateOutputNameHandler={updateOutputNameHandler}/>
+                        <Graphs cellId={cellInfo.id}/>
+                    </div>
                 </CellContext.Provider>
                 <button className="block-button cell-execute-button" key={cellInfo.id + "execute"}
                         onClick={executeHandler}>

@@ -78,7 +78,7 @@ body {
     border-top: 1px solid #DDDDDD;
     border-bottom: 1px solid #DDDDDD;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 
 .main-page-ul {
@@ -111,6 +111,7 @@ body {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    z-index: 1000;
 }
 
 .block-button,
@@ -302,9 +303,9 @@ body {
 }
 
 .cell {
-    width: 1024px;
-    height: 320px;
-    position: relative;
+    width: 800px;
+    height: 480px;
+    position: absolute;
     background: white;
     padding: 0;
 }
@@ -342,6 +343,16 @@ body {
     width: 200px;
     margin-bottom: 5px;
     margin-top: 5px;
+}
+
+.cell-inside-graphs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 200px;
+    margin: 0;
+    padding: 0;
 }
 
 .cell-execute-button {

@@ -24,21 +24,19 @@ function Graphs({cellId}: GraphsParams): JSX.Element {
             })
     }, [cellParams.graphOutputs]);*/
 
-    console.log(graphsInfo);
-    return ( graphsInfo &&
-            <div className="block cell-inside-graphs column-elements">
-                <ul className="column-elements cell-inside-ul">
-                    {
-                        cellParams.graphInputs.map((inputName) => {
-                            return graphsInfo[inputName] &&
-                                (<li key={inputName} className="column-elements">
-                                    <h5 className="cell-inside-block-element">{inputName}</h5>
-                                    <Graph name={inputName} timeSeries={graphsInfo[inputName]} width={185} height={225}/>
-                                </li>);
-                        })
-                    }
-                </ul>
-            </div>
+    return (
+        graphsInfo &&
+            <ul className="block cell-inside-graphs row-elements cell-inside-ul">
+                {
+                    cellParams.graphInputs.map((inputName) => {
+                        return graphsInfo[inputName] &&
+                            (<li key={inputName} className="column-elements">
+                                <h5 className="cell-inside-block-element" style={{margin: 0}}>{inputName}</h5>
+                                <Graph name={inputName} timeSeries={graphsInfo[inputName]} width={400} height={150}/>
+                            </li>);
+                    })
+                }
+            </ul>
     );
 }
 

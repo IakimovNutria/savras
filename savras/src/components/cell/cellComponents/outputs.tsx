@@ -17,7 +17,7 @@ function Outputs({cellId, outputs, updateOutputNameHandler, saveFilesHandler}: O
         }
     }
     return (
-        <>
+        <div className="row-elements cell-inside-block">
             <div className="cell-inside-block row-elements">
                 <h3 className="cell-inside-block-element">outputs</h3>
                 <ul className="row-elements cell-inside-ul">
@@ -41,7 +41,7 @@ function Outputs({cellId, outputs, updateOutputNameHandler, saveFilesHandler}: O
                     key={cellId + "output"}>
                 Save output files
             </button>
-        </>);
+        </div>);
 }
 
 export default Outputs;

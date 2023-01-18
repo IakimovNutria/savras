@@ -80,15 +80,15 @@ function MainPage(): JSX.Element {
                             files.map((file) => (
                                 counter1++ % 2 == 0?
                                     <li className='main-page-li row-elements even-item' key={file.path}>
+                                        <button className="block-button" id={file.path} name={file.name} onClick={downloadFileHandler}>Download</button>
                                         <h4>{file.name}</h4>
-                                        <button className="block-button li-button" id={file.path} name={file.name} onClick={downloadFileHandler}>Download</button>
-                                        <button className="block-button li-button" id={file.path} onClick={deleteFileHandler}>Delete</button>
+                                        <button className="block-button" id={file.path} onClick={deleteFileHandler}>Delete</button>
                                     </li>
                                     :
                                     <li className='main-page-li row-elements odd-item' key={file.path}>
+                                        <button className="block-button" id={file.path} name={file.name} onClick={downloadFileHandler}>Download</button>
                                         <h4>{file.name}</h4>
-                                        <button className="block-button li-button" id={file.path} name={file.name} onClick={downloadFileHandler}>Download</button>
-                                        <button className="block-button li-button" id={file.path} onClick={deleteFileHandler}>Delete</button>
+                                        <button className="block-button" id={file.path} onClick={deleteFileHandler}>Delete</button>
                                     </li>
                             ))
                         }
@@ -109,36 +109,29 @@ function MainPage(): JSX.Element {
                             userPipelines.map((pipeline) => (
                                 counter2++ % 2 == 0?
                                     <li className='main-page-li row-elements even-item' key={pipeline.id}>
+                                        <button className="block-button" id={pipeline.id} name={pipeline.name} onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
                                         <h4>{pipeline.name}</h4>
-                                        <button className="block-button li-button" id={pipeline.id} name={pipeline.name} onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
-                                        <button className="block-button li-button" id={pipeline.id} onClick={handleDeletePipeline}>Delete</button>
+                                        <button className="block-button" id={pipeline.id} onClick={handleDeletePipeline}>Delete</button>
                                     </li>
                                     :
                                     <li className='main-page-li row-elements odd-item' key={pipeline.id}>
+                                        <button className="block-button" id={pipeline.id} name={pipeline.name} onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
                                         <h4>{pipeline.name}</h4>
-                                        <button className="block-button li-button" id={pipeline.id} name={pipeline.name} onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
-                                        <button className="block-button li-button" id={pipeline.id} onClick={handleDeletePipeline}>Delete</button>
+                                        <button className="block-button" id={pipeline.id} onClick={handleDeletePipeline}>Delete</button>
                                     </li>
                             ))
                         }
                     </ul>
 
                     <h3>Shared pipelines</h3>
-                    <ul className='main-page-ul column-elements'>
+                    <ul className='main-page-ul'>
                         {
                             // TODO: добавить кнопку fork
-                            sharedPipelines.map((pipeline) => (
-                                counter2++ % 2 == 0?
-                                    <li className='main-page-li row-elements even-item' key={pipeline.id}>
+                            sharedPipelines.map((pipeline, index) => (
+                                    <li className={`main-page-li row-elements ${index % 2 == 0 ? 'even-item' : 'odd-item'}`} key={pipeline.id}>
+                                        <button className="block-button" id={pipeline.id} name={pipeline.name} onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
                                         <h4>{pipeline.name}</h4>
-                                        <button className="block-button li-button" id={pipeline.id} name={pipeline.name} onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
-                                        <button className="block-button li-button" id={pipeline.id} onClick={handleDeletePipeline}>Delete</button>
-                                    </li>
-                                    :
-                                    <li className='main-page-li row-elements odd-item' key={pipeline.id}>
-                                        <h4>{pipeline.name}</h4>
-                                        <button className="block-button li-button" id={pipeline.id} name={pipeline.name} onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
-                                        <button className="block-button li-button" id={pipeline.id} onClick={handleDeletePipeline}>Delete</button>
+                                        <button className="block-button" id={pipeline.id} onClick={handleDeletePipeline}>Delete</button>
                                     </li>
                             ))
                         }

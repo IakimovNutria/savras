@@ -59,45 +59,43 @@ function InputParams({cellId, functionName, updateParamHandler, submitParamsHand
 
 
     return (
-        <React.Fragment>
-            <div className="cell-inside-block row-elements">
-                <h3 className="cell-inside-block-element">Params</h3>
-                <ul className="row-elements cell-inside-ul">
-                    {
-                        params.map((param) => {
-                                return (
-                                    <li className="row-elements"
-                                        key={cellId + param.name}>
-                                        <h3 className="cell-inside-block-element"
-                                            style={param.type === "checkbox" ? {transform: "translate(9px, 0)"} : {}}>
-                                            {param.name}:
-                                        </h3>
-                                        {
-                                            param.type === "checkbox" ?
-                                                // @ts-ignore
-                                                (<input checked={cellParams.inputParams[param.name] === null ? false : cellParams.inputParams[param.name]}
-                                                        id={param.name} type={param.type}
-                                                        className="cell-inside-block-element"
-                                                        style={{transform: "translate(9px, 0)"}}
-                                                        pattern={param.pattern} onChange={updateParamHandler} />
-                                                ) :
-                                                // @ts-ignore
-                                                (<input value={cellParams.inputParams[param.name] === null ? "" : cellParams.inputParams[param.name]}
-                                                        id={param.name} type={param.type}
-                                                        className="text-input cell-inside-block-element"
-                                                        style={{height: "35px", width: "80px"}}
-                                                        pattern={param.pattern}
-                                                        onChange={updateParamHandler}/>)
-                                        }
-                                    </li>
-                                )
-                            }
-                        )
-                    }
-                </ul>
-                <button className="block-button cell-button cell-inside-button" onClick={submitParamsHandler}>Save params</button>
-            </div>
-        </React.Fragment>);
+        <div className="cell-inside-block row-elements">
+            <h3 className="cell-inside-block-element">Params</h3>
+            <ul className="row-elements cell-inside-ul">
+                {
+                    params.map((param) => {
+                            return (
+                                <li className="row-elements"
+                                    key={cellId + param.name}>
+                                    <h3 className="cell-inside-block-element"
+                                        style={param.type === "checkbox" ? {transform: "translate(9px, 0)"} : {}}>
+                                        {param.name}:
+                                    </h3>
+                                    {
+                                        param.type === "checkbox" ?
+                                            // @ts-ignore
+                                            (<input checked={cellParams.inputParams[param.name] === null ? false : cellParams.inputParams[param.name]}
+                                                    id={param.name} type={param.type}
+                                                    className="cell-inside-block-element"
+                                                    style={{transform: "translate(9px, 0)"}}
+                                                    pattern={param.pattern} onChange={updateParamHandler} />
+                                            ) :
+                                            // @ts-ignore
+                                            (<input value={cellParams.inputParams[param.name] === null ? "" : cellParams.inputParams[param.name]}
+                                                    id={param.name} type={param.type}
+                                                    className="text-input cell-inside-block-element"
+                                                    style={{height: "35px", width: "80px"}}
+                                                    pattern={param.pattern}
+                                                    onChange={updateParamHandler}/>)
+                                    }
+                                </li>
+                            )
+                        }
+                    )
+                }
+            </ul>
+            <button className="block-button cell-button cell-inside-button" onClick={submitParamsHandler}>Save params</button>
+        </div>);
 }
 
 export default InputParams;

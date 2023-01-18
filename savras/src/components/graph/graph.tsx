@@ -22,7 +22,6 @@ function Graph({timeSeries, width, height, name}: GraphProps): JSX.Element {
             type: 'datetime',
         }
     }
-
     //@ts-ignore
     return (<Chart options={options} series={series} type="line" width={width} height={height}/>);
 }

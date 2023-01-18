@@ -1,7 +1,9 @@
 import Chart from 'react-apexcharts';
 import React, {Component} from 'react';
+import Graph from "../../components/graph/graph";
+import TimeSeries from "../../types/timeSeries";
 
-class Graph extends Component {
+class Graph1 extends Component {
     constructor(props: any) {
         super(props);
 
@@ -24,9 +26,9 @@ class Graph extends Component {
     render() {
         return (
             //@ts-ignore
-            <Chart options={this.state.options} series={this.state.series} type="line" width={500} height={320} />
+            <Graph timeSeries={[{datetime: "2023-01-12T11:14:17.922Z", value: 101}, {datetime: "2023-01-13T11:14:17.922Z", value: 105}]} name={"123"} width={100} height={200}/>
         )
     }
 }
 
-export default Graph;
+export default Graph1;
