@@ -62,8 +62,8 @@ function Inputs({cellId, updateInputHandler, updateColumnHandler, submitInputsHa
                 {
                     inputsArray.map((input) => (
                         <li className="row-elements" key={cellId + input.name}>
-                            <div className="column-elements cell-inside-block" style={{justifyContent: "normal"}}>
-                                <div className="row-elements" style={{margin: 0, justifyContent: "center"}}>
+                            <div className="column-elements cell-inside-block" style={{justifyContent: "normal"}} key={cellId + input.name}>
+                                <div className="row-elements" style={{margin: 0, justifyContent: "center"}} key={cellId + input.name}>
                                     <h5 style={{margin: 0}}>show graph</h5>
                                     <input type="checkbox" style={{margin: 0, marginLeft: "2px"}}
                                            checked={isShowGraph[input.name]}

@@ -41,13 +41,13 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
     const [cellStatus, setCellStatus] = useState(CellStatus.NOT_EXECUTED);
 
     useEffect(() => {
-        for (const key in cellParams.inputsPath) {
+        for (const key in cellInfo.inputs) {
             setCellParams((state) => {return {...state, graphInputs: {...state.graphInputs, [key]: false}}});
         }
         for (const key in cellInfo.outputs) {
             setCellParams((state) => {return {...state, graphOutputs: {...state.graphOutputs, [key]: false}}});
         }
-    }, [cellInfo, cellParams]);
+    }, [cellInfo]);
 
     useEffect(() => {
         if (cellInfo.error !== null) {
