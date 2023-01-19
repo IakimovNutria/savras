@@ -29,7 +29,7 @@ function SignUp(): JSX.Element {
                 <form onSubmit={handleSubmit}>
                     <div>
                         <div style={{marginBottom: 5}}>
-                            <input type="text" placeholder="Login" name="user-login" required className="text-input"
+                            <input placeholder="Login" name="user-login" required className="text-input"
                                    id="user-login" value={login}
                                    onChange={(e) => setLogin(e.target.value)}
                             />
@@ -46,11 +46,10 @@ function SignUp(): JSX.Element {
                     </div>
                 </form>
                 {
-                    authorizationStatus === AuthorizationStatus.BAD_REGISTER ?
+                    authorizationStatus === AuthorizationStatus.BAD_REGISTER &&
                         (<div className="column-elements" style={{margin: 0, padding: 0, marginBottom: 15}}>
                             <h5 style={{padding: 0, margin: 0, color: "red"}}>account already exist</h5>
                         </div>)
-                        : (<></>)
                 }
             </div>
             <div className="column-elements sign-in-block">

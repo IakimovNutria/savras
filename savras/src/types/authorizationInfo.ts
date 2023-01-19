@@ -1,8 +1,8 @@
 
 
 type AuthorizationInfo = {
-    login: string,
-    password: string
+    login: string;
+    password: string;
 };
 
 export default AuthorizationInfo;

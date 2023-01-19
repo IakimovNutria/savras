@@ -29,7 +29,7 @@ function SignIn(): JSX.Element {
           <form onSubmit={handleSubmit}>
             <div>
               <div style={{marginBottom: 5}}>
-                <input type="login" placeholder="Login" name="user-login" required className="text-input"
+                <input placeholder="Login" name="user-login" required className="text-input"
                   id="user-login" value={login} onChange={(e) => setLogin(e.target.value)}
                 />
               </div>
@@ -44,18 +44,17 @@ function SignIn(): JSX.Element {
             </div>
           </form>
           {
-            authorizationStatus === AuthorizationStatus.BAD_AUTHENTICATE ?
-                (<div className="column-elements" style={{margin: 0, padding: 0, marginBottom: 15}}>
-                  <h5 style={{padding: 0, margin: 0, color: "red"}}>invalid username or password</h5>
-                </div>)
-                : (<></>)
+            authorizationStatus === AuthorizationStatus.BAD_AUTHENTICATE &&
+              (<div className="column-elements" style={{margin: 0, padding: 0, marginBottom: 15}}>
+                <h5 style={{padding: 0, margin: 0, color: "red"}}>invalid username or password</h5>
+              </div>)
           }
         </div>
         <div className="sign-in-block column-elements">
           <h3 style={{margin: 0, marginTop: 15}}>Don't have account yet?</h3>
           <Link to={`/sign-up`}>
             <button className="block-button" type="button"
-                                        onClick={() => dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED))}>
+                    onClick={() => dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED))}>
               Sign up
             </button>
           </Link>

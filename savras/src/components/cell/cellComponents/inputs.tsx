@@ -22,14 +22,14 @@ function Inputs({cellId, updateInputHandler, updateColumnHandler, submitInputsHa
     const defaultIsShowGraph: {[key: string]: boolean} = {};
     const [isShowGraph, setIsShowGraph] = useState(defaultIsShowGraph);
 
-    function getFileName(path: string | null) {
-        const file = files.find((elem) => elem.path === path);
-        if (file === undefined) {
-            return null;
-        }
-        return file.name;
-    }
     useEffect(() => {
+        function getFileName(path: string | null) {
+            const file = files.find((elem) => elem.path === path);
+            if (file === undefined) {
+                return null;
+            }
+            return file.name;
+        }
         for (const key in cellParams.inputsPath) {
             const graphInput = cellParams.graphInputs[key];
             setIsShowGraph((state) => {return {...state, [key]: graphInput}});
@@ -45,7 +45,8 @@ function Inputs({cellId, updateInputHandler, updateColumnHandler, submitInputsHa
             newInputsArray.push(toPush);
         }
         setInputsArray(newInputsArray);
-    }, [cellParams]);
+    }, [cellParams, inputColumns, inputPaths, files]);
+
     const getFileColumns = (path: string | null) => {
         if (path === null) {
             return [];

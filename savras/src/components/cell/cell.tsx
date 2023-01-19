@@ -44,10 +44,10 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         for (const key in cellParams.inputsPath) {
             setCellParams((state) => {return {...state, graphInputs: {...state.graphInputs, [key]: false}}});
         }
-        for (const key in cellParams.outputs) {
+        for (const key in cellInfo.outputs) {
             setCellParams((state) => {return {...state, graphOutputs: {...state.graphOutputs, [key]: false}}});
         }
-    }, []);
+    }, [cellInfo, cellParams]);
 
     useEffect(() => {
         if (cellInfo.error !== null) {
@@ -58,8 +58,8 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
                     setCellStatus(CellStatus.EXECUTED);
                 }
             }
-        }}
-    );
+        }
+    }, [cellInfo.error, cellInfo.outputs]);
 
     const stopHandler = (event: DraggableEvent, data: DraggableData) => {
         event.preventDefault();
@@ -72,7 +72,6 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         const options = select.options;
         const selectedIndex = options.selectedIndex;
         const path = (selectedIndex !== -1) ? options[selectedIndex].id : null;
-        const value = (options.selectedIndex !== -1) ? options[selectedIndex].value : "";
         const fieldName = select.id;
         setCellParams((state) => {return {...state, inputsPath: {...state.inputsPath, [fieldName]: path}}});
     }
@@ -90,7 +89,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
     const updateParamHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         const fieldName = event.currentTarget.id;
-        const value = (event.currentTarget.type === "checkbox" ? event.target.checked : event.target.value);
+        const value = event.currentTarget.type === "checkbox" ? event.target.checked : event.target.value;
         setCellParams((state) => {return {...state, inputParams: {...state.inputParams, [fieldName]: value}}});
     }
 
@@ -105,8 +104,8 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         setCellStatus(CellStatus.SAVING);
         const elem = cellParams;
         for (const key in elem.inputsPath) {
-            const path = elem.inputsPath[key as keyof typeof elem.inputsPath];
-            const dataColumn = elem.selectedInputsColumn[key as keyof typeof elem.selectedInputsColumn];
+            const path = elem.inputsPath[key];
+            const dataColumn = elem.selectedInputsColumn[key];
             if (path !== null && dataColumn !== null) {
                 dispatch(updateInput({
                     cellId: cellInfo.id,
@@ -116,25 +115,29 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
                 }));
             }
         }
-        if (cellStatus === CellStatus.SAVING) {
-            setCellStatus(CellStatus.SAVED);
-        }
+        setCellStatus((state) => {
+            if (cellStatus === CellStatus.SAVING) {
+                return CellStatus.SAVED;
+            }
+            return state;
+        });
         event.preventDefault();
     }
 
     const submitParamsHandler = async (event: FormEvent<HTMLButtonElement>) => {
         setCellStatus(CellStatus.SAVING);
-        const elem = cellParams;
-        for (const key in elem.inputParams) {
-            const notNumberValue = elem.inputParams[key as keyof typeof elem.inputParams];
-            //@ts-ignore
-            const paramType = functionInfo.input_params[key];
+        for (const key in cellParams.inputParams) {
+            const notNumberValue = cellParams.inputParams[key];
+            const paramType = functionInfo ? functionInfo.input_params[key] : 0;
             const value = (paramType === "int" || paramType === "float") ? Number(notNumberValue) : notNumberValue;
             dispatch(updateParam({cellId: cellInfo.id, value: value, field: key, setCellStatus: setCellStatus}));
         }
-        if (cellStatus === CellStatus.SAVING) {
-            setCellStatus(CellStatus.SAVED);
-        }
+        setCellStatus((state) => {
+            if (cellStatus === CellStatus.SAVING) {
+                return CellStatus.SAVED;
+            }
+            return state;
+        });
         event.preventDefault();
     }
 
@@ -142,17 +145,20 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         setCellStatus(CellStatus.SAVING);
         const elem = cellParams;
         for (const key in elem.outputs) {
-            const value = elem.outputs[key as keyof typeof elem.outputs];
+            const value = elem.outputs[key];
             if (value !== "" && value != null) {
-                const path = cellInfo.outputs[key as keyof typeof cellInfo.outputs];
+                const path = cellInfo.outputs[key];
                 if (path !== null) {
                     dispatch(saveFile({path: path, name: value}));
                 }
             }
         }
-        if (cellStatus === CellStatus.SAVING) {
-            setCellStatus(CellStatus.SAVED);
-        }
+        setCellStatus((state) => {
+            if (cellStatus === CellStatus.SAVING) {
+                return CellStatus.SAVED;
+            }
+            return state;
+        });
         event.preventDefault();
     }
 
@@ -174,6 +180,13 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         const fieldName = event.currentTarget.id;
         const value = event.currentTarget.checked;
         setCellParams((state) => {return {...state, graphInputs: {...state.graphInputs, [fieldName]: value}}});
+    }
+
+    const updateShowGraphOutputHandler = (event: FormEvent<HTMLInputElement>) => {
+        event.preventDefault();
+        const fieldName = event.currentTarget.id;
+        const value = event.currentTarget.checked;
+        setCellParams((state) => {return {...state, graphOutputs: {...state.graphOutputs, [fieldName]: value}}});
     }
 
     return (
@@ -202,8 +215,9 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
                     <Outputs cellId={cellInfo.id} outputs={cellInfo.outputs}
                              saveFilesHandler={saveFilesHandler}
                              updateOutputNameHandler={updateOutputNameHandler}
-                             cellParams={cellParams}/>
-                    <Graphs cellId={cellInfo.id} cellParams={cellParams}/>
+                             cellParams={cellParams}
+                             updateShowGraphHandler={updateShowGraphOutputHandler}/>
+                    <Graphs cellId={cellInfo.id} cellParams={cellParams} outputs={cellInfo.outputs}/>
                 </div>
                 <button className="block-button cell-execute-button" key={cellInfo.id + "execute"}
                         onClick={executeHandler}>

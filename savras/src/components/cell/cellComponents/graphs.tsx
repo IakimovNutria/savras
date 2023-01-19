@@ -9,13 +9,29 @@ import CellParams from "../cellTypes/cellParams";
 type GraphsParams = {
     cellId: string;
     cellParams: CellParams;
+    outputs: {[key: string]: string};
 };
 
-function Graphs({cellId, cellParams}: GraphsParams): JSX.Element {
+function Graphs({cellId, cellParams, outputs}: GraphsParams): JSX.Element {
     const graphsInfo = useAppSelector((state) => state.graphs)[cellId];
     const dispatch = useAppDispatch();
     const defaultGraphsValue: {name: string, timeSeries: TimeSeries}[] = [];
     const [graphs, setGraphs] = useState(defaultGraphsValue);
+    useEffect(() => {
+        const newGraphs = [];
+        for (const key in graphsInfo) {
+            if (graphsInfo[key] && cellParams.graphInputs[key]) {
+                newGraphs.push({name: key, timeSeries: graphsInfo[key]});
+            }
+        }
+        for (const key in graphsInfo) {
+            if (graphsInfo[key] && cellParams.graphOutputs[key]) {
+                newGraphs.push({name: key, timeSeries: graphsInfo[key]});
+            }
+        }
+        setGraphs(newGraphs);
+    }, [cellParams, graphsInfo]);
+
     useEffect(() => {
         for (const key in cellParams.graphInputs) {
             const path = cellParams.inputsPath[key];
@@ -29,10 +45,13 @@ function Graphs({cellId, cellParams}: GraphsParams): JSX.Element {
                 }));
             }
         }
+    }, [cellParams, cellId, dispatch]);
+
+    useEffect(() => {
         for (const key in cellParams.graphOutputs) {
-            const path = cellParams.inputsPath[key];
-            const dataColumn = cellParams.selectedInputsColumn[key];
-            if (cellParams.graphOutputs[key] && cellParams.graphOutputs[key] !== null && path !== null && dataColumn !== null) {
+            const path = outputs[key];
+            const dataColumn = "value";
+            if (cellParams.graphOutputs[key] && cellParams.graphOutputs[key] !== null && path !== null) {
                 dispatch(getFileTimeSeries({
                     path: path,
                     graphName: key,
@@ -41,15 +60,7 @@ function Graphs({cellId, cellParams}: GraphsParams): JSX.Element {
                 }));
             }
         }
-        const newGraphs = [];
-        for (const key in graphsInfo) {
-            console.log(graphsInfo[key], cellParams.graphInputs[key]);
-            if (graphsInfo[key] && cellParams.graphInputs[key]) {
-                newGraphs.push({name: key, timeSeries: graphsInfo[key]});
-            }
-        }
-        setGraphs(newGraphs);
-    }, [cellParams, graphsInfo]);
+    }, [cellParams, outputs, cellId, dispatch]);
 
 
     return (graphs.length !== 0) ? (

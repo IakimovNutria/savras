@@ -1,5 +1,4 @@
 import React, {FormEvent, useRef, useState} from "react";
-import {Link} from "react-router-dom";
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {setAuthorization} from "../../store/actions";
 import AuthorizationStatus from "../../types/authorizationStatus";
@@ -41,9 +40,10 @@ function MainPage(): JSX.Element {
     function handleFileUpload(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const toSend = new FormData();
-        //@ts-ignore
-        toSend.append('file', fileInputRef.current.files[0])
-        dispatch(uploadFile({formData: toSend}));
+        if (fileInputRef.current !== null && fileInputRef.current.files !== null) {
+            toSend.append('file', fileInputRef.current.files[0]);
+            dispatch(uploadFile({formData: toSend}));
+        }
     }
 
     function deleteFileHandler(event: FormEvent<HTMLButtonElement>) {
@@ -60,7 +60,6 @@ function MainPage(): JSX.Element {
         dispatch(downloadFile({path: path, name: name}));
     }
 
-    let counter1 = 0, counter2 = 0, counter3 = 0;
     return (
         <React.Fragment>
             <div className="main-page-head">
@@ -77,19 +76,12 @@ function MainPage(): JSX.Element {
                     <ul className='main-page-ul column-elements'>
                         {
                             // TODO: добавить кнопку просмотра файла
-                            files.map((file) => (
-                                counter1++ % 2 == 0?
-                                    <li className='main-page-li row-elements even-item' key={file.path}>
-                                        <button className="block-button" id={file.path} name={file.name} onClick={downloadFileHandler}>Download</button>
-                                        <h4>{file.name}</h4>
-                                        <button className="block-button" id={file.path} onClick={deleteFileHandler}>Delete</button>
-                                    </li>
-                                    :
-                                    <li className='main-page-li row-elements odd-item' key={file.path}>
-                                        <button className="block-button" id={file.path} name={file.name} onClick={downloadFileHandler}>Download</button>
-                                        <h4>{file.name}</h4>
-                                        <button className="block-button" id={file.path} onClick={deleteFileHandler}>Delete</button>
-                                    </li>
+                            files.map((file, index) => (
+                                <li className={`main-page-li row-elements ${index % 2 === 0 ? 'even-item' : 'odd-item'}`} key={file.path}>
+                                    <button className="block-button" id={file.path} name={file.name} onClick={downloadFileHandler}>Download</button>
+                                    <h4>{file.name}</h4>
+                                    <button className="block-button" id={file.path} onClick={deleteFileHandler}>Delete</button>
+                                </li>
                             ))
                         }
                     </ul>
@@ -106,19 +98,12 @@ function MainPage(): JSX.Element {
                     <ul className='main-page-ul column-elements'>
                         {
                             // TODO: добавить кнопку share, fork
-                            userPipelines.map((pipeline) => (
-                                counter2++ % 2 == 0?
-                                    <li className='main-page-li row-elements even-item' key={pipeline.id}>
-                                        <button className="block-button" id={pipeline.id} name={pipeline.name} onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
-                                        <h4>{pipeline.name}</h4>
-                                        <button className="block-button" id={pipeline.id} onClick={handleDeletePipeline}>Delete</button>
-                                    </li>
-                                    :
-                                    <li className='main-page-li row-elements odd-item' key={pipeline.id}>
-                                        <button className="block-button" id={pipeline.id} name={pipeline.name} onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
-                                        <h4>{pipeline.name}</h4>
-                                        <button className="block-button" id={pipeline.id} onClick={handleDeletePipeline}>Delete</button>
-                                    </li>
+                            userPipelines.map((pipeline, index) => (
+                                <li className={`main-page-li row-elements ${index % 2 === 0 ? 'even-item' : 'odd-item'}`} key={pipeline.id}>
+                                    <button className="block-button" id={pipeline.id} name={pipeline.name} onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
+                                    <h4>{pipeline.name}</h4>
+                                    <button className="block-button" id={pipeline.id} onClick={handleDeletePipeline}>Delete</button>
+                                </li>
                             ))
                         }
                     </ul>
@@ -128,7 +113,7 @@ function MainPage(): JSX.Element {
                         {
                             // TODO: добавить кнопку fork
                             sharedPipelines.map((pipeline, index) => (
-                                    <li className={`main-page-li row-elements ${index % 2 == 0 ? 'even-item' : 'odd-item'}`} key={pipeline.id}>
+                                    <li className={`main-page-li row-elements ${index % 2 === 0 ? 'even-item' : 'odd-item'}`} key={pipeline.id}>
                                         <button className="block-button" id={pipeline.id} name={pipeline.name} onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
                                         <h4>{pipeline.name}</h4>
                                         <button className="block-button" id={pipeline.id} onClick={handleDeletePipeline}>Delete</button>
