@@ -7,8 +7,8 @@ type CellParams = {
     outputs: {[outputName: string]: string | null};
     inputsPath: {[inputName: string]: string | null};
     selectedInputsColumn: {[inputColumn: string]: string | null};
-    graphInputs: string[];
-    graphOutputs: string[];
+    graphInputs: {[name: string]: boolean};
+    graphOutputs: {[name: string]: boolean};
 };
 
 export default CellParams;

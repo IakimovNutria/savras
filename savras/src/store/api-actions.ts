@@ -477,4 +477,3 @@ export const saveFile = createAsyncThunk<void, {path: string, name: string}, {
         dispatch(fetchFilesAction());
     },
 );
-

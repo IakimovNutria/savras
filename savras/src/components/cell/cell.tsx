@@ -3,7 +3,7 @@ import Draggable, {DraggableData, DraggableEvent} from 'react-draggable';
 import {useAppSelector, useAppDispatch} from "../../hooks"
 import {
     deleteCell,
-    executeCell, getFileTimeSeries,
+    executeCell,
     moveCell,
     saveFile,
     updateInput,
@@ -11,7 +11,6 @@ import {
 } from "../../store/api-actions";
 import React, {FormEvent, useEffect, useState} from "react";
 import Inputs from "./cellComponents/inputs";
-import CellContext from "./cellContext";
 import CellParams from "./cellTypes/cellParams";
 import InputParams from "./cellComponents/inputParams";
 import Outputs from "./cellComponents/outputs";
@@ -35,12 +34,20 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         inputParams: cellInfo.input_params,
         outputs: {},
         selectedInputsColumn: cellInfo.data_columns,
-        graphInputs: [],
-        graphOutputs: []
+        graphInputs: {},
+        graphOutputs: {}
     };
     const [cellParams, setCellParams] = useState(defaultCellParams);
     const [cellStatus, setCellStatus] = useState(CellStatus.NOT_EXECUTED);
 
+    useEffect(() => {
+        for (const key in cellParams.inputsPath) {
+            setCellParams((state) => {return {...state, graphInputs: {...state.graphInputs, [key]: false}}});
+        }
+        for (const key in cellParams.outputs) {
+            setCellParams((state) => {return {...state, graphOutputs: {...state.graphOutputs, [key]: false}}});
+        }
+    }, []);
 
     useEffect(() => {
         if (cellInfo.error !== null) {
@@ -53,25 +60,6 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
             }
         }}
     );
-
-    useEffect(() => {
-        const inputNames: string[] = [];
-        for (const key in cellInfo.inputs) {
-            inputNames.push(key);
-        }
-        setCellParams((prev) => {return {...prev, graphInputs: inputNames};});
-    }, []);
-
-    useEffect(() => {
-        cellParams.graphInputs
-            .forEach((inputName) => {
-                const inputPath = cellParams.inputsPath[inputName];
-                const dataColumn = cellParams.selectedInputsColumn[inputName];
-                if (inputPath !== null && dataColumn !== null) {
-                    dispatch(getFileTimeSeries({path: inputPath, graphName: inputName, cellId: cellInfo.id, dataColumn: dataColumn}));
-                }
-            })
-    }, [cellParams.graphInputs]);
 
     const stopHandler = (event: DraggableEvent, data: DraggableData) => {
         event.preventDefault();
@@ -86,8 +74,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         const path = (selectedIndex !== -1) ? options[selectedIndex].id : null;
         const value = (options.selectedIndex !== -1) ? options[selectedIndex].value : "";
         const fieldName = select.id;
-        setCellParams({...cellParams,
-            inputsPath: {...cellParams.inputsPath, [fieldName]: path}});
+        setCellParams((state) => {return {...state, inputsPath: {...state.inputsPath, [fieldName]: path}}});
     }
 
     const updateInputColumnHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -97,28 +84,21 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         const selectedIndex = options.selectedIndex;
         const value = (options.selectedIndex !== -1) ? options[selectedIndex].value : "";
         const fieldName = select.id;
-        setCellParams({...cellParams, selectedInputsColumn: {...cellParams.selectedInputsColumn, [fieldName]: value}});
+        setCellParams((state) => {return {...state, selectedInputsColumn: {...state.selectedInputsColumn, [fieldName]: value}}});
     }
 
     const updateParamHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         const fieldName = event.currentTarget.id;
         const value = (event.currentTarget.type === "checkbox" ? event.target.checked : event.target.value);
-        setCellParams({...cellParams, inputParams: {...cellParams.inputParams, [fieldName]: value}});
+        setCellParams((state) => {return {...state, inputParams: {...state.inputParams, [fieldName]: value}}});
     }
 
     const updateOutputNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         const fieldName = event.currentTarget.id;
         const value = event.target.value;
-        setCellParams({...cellParams, outputs: {...cellParams.outputs, [fieldName]: value}});
-    }
-
-    const dragHandler = (event: DraggableEvent, data: DraggableData) => {
-        event.preventDefault();
-        /*setSize((value: {width: number, height: number}) => {
-            return {width: Math.max(data.x + 500, value.width), height: Math.max(data.y + 500, value.height)};
-        });*/
+        setCellParams((state) => {return {...state, outputs: {...state.outputs, [fieldName]: value}}});
     }
 
     const submitInputsHandler = async (event: FormEvent<HTMLButtonElement>) => {
@@ -189,6 +169,13 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         dispatch(deleteCell({cellId: cellInfo.id, pipelineId: pipelineId}));
     }
 
+    const updateShowGraphInputsHandler = (event: FormEvent<HTMLInputElement>) => {
+        event.preventDefault();
+        const fieldName = event.currentTarget.id;
+        const value = event.currentTarget.checked;
+        setCellParams((state) => {return {...state, graphInputs: {...state.graphInputs, [fieldName]: value}}});
+    }
+
     return (
         <Draggable handle=".drag-handle" onStop={stopHandler}
                    defaultPosition={{x: cellInfo.x, y: cellInfo.y}}
@@ -200,22 +187,24 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
                     <h3 style={{margin: 0, marginLeft: "10px", userSelect: "none"}}>{cellInfo.function}</h3>
                     <button className="block-button head-button" onClick={deleteCellHandler}>Delete</button>
                 </div>
-                <CellContext.Provider value={cellParams}>
-                    <div className="column-elements" style={{width: "100%"}}>
-                        <Inputs cellId={cellInfo.id}
-                                updateInputHandler={updateInputHandler}
-                                updateColumnHandler={updateInputColumnHandler}
-                                submitInputsHandler={submitInputsHandler}/>
-                        <InputParams cellId={cellInfo.id} functionName={cellInfo.function}
-                                     inputParams={cellInfo.input_params}
-                                     submitParamsHandler={submitParamsHandler}
-                                     updateParamHandler={updateParamHandler}/>
-                        <Outputs cellId={cellInfo.id} outputs={cellInfo.outputs}
-                                 saveFilesHandler={saveFilesHandler}
-                                 updateOutputNameHandler={updateOutputNameHandler}/>
-                        <Graphs cellId={cellInfo.id}/>
-                    </div>
-                </CellContext.Provider>
+                <div className="column-elements" style={{width: "100%"}}>
+                    <Inputs cellId={cellInfo.id}
+                            updateInputHandler={updateInputHandler}
+                            updateColumnHandler={updateInputColumnHandler}
+                            submitInputsHandler={submitInputsHandler}
+                            updateShowGraphHandler={updateShowGraphInputsHandler}
+                            cellParams={cellParams}/>
+                    <InputParams cellId={cellInfo.id} functionName={cellInfo.function}
+                                 inputParams={cellInfo.input_params}
+                                 submitParamsHandler={submitParamsHandler}
+                                 updateParamHandler={updateParamHandler}
+                                 cellParams={cellParams}/>
+                    <Outputs cellId={cellInfo.id} outputs={cellInfo.outputs}
+                             saveFilesHandler={saveFilesHandler}
+                             updateOutputNameHandler={updateOutputNameHandler}
+                             cellParams={cellParams}/>
+                    <Graphs cellId={cellInfo.id} cellParams={cellParams}/>
+                </div>
                 <button className="block-button cell-execute-button" key={cellInfo.id + "execute"}
                         onClick={executeHandler}>
                     Execute

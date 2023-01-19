@@ -1,16 +1,16 @@
-import React, {ChangeEvent, FormEvent, useContext} from "react";
-import CellContext from "../cellContext";
+import React, {ChangeEvent, FormEvent} from "react";
+import CellParams from "../cellTypes/cellParams";
 
 type OutputsParams = {
-    cellId: string,
-    outputs: {},
-    updateOutputNameHandler: (event: ChangeEvent<HTMLInputElement>) => void,
-    saveFilesHandler: (event: FormEvent<HTMLButtonElement>) => void
+    cellId: string;
+    outputs: {};
+    updateOutputNameHandler: (event: ChangeEvent<HTMLInputElement>) => void;
+    saveFilesHandler: (event: FormEvent<HTMLButtonElement>) => void;
+    cellParams: CellParams;
 };
 
-function Outputs({cellId, outputs, updateOutputNameHandler, saveFilesHandler}: OutputsParams): JSX.Element {
+function Outputs({cellId, outputs, updateOutputNameHandler, saveFilesHandler, cellParams}: OutputsParams): JSX.Element {
     const outputNames: string[] = [];
-    const cellParams = useContext(CellContext);
     for (const key in outputs) {
         if (outputs[key as keyof typeof outputs] !== null) {
             outputNames.push(key);

@@ -1,8 +1,7 @@
-import React, {ChangeEvent, FormEvent, useContext, useState} from "react";
+import React, {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {useAppSelector} from "../../../hooks";
-import Input from "../cellTypes/input";
-import CellContext from "../cellContext";
 import ParamInput from "../cellTypes/paramInput";
+import CellParams from "../cellTypes/cellParams";
 
 
 type InputParamsProps = {
@@ -10,52 +9,56 @@ type InputParamsProps = {
     cellId: string,
     functionName: string,
     updateParamHandler: (event: ChangeEvent<HTMLInputElement>) => void,
-    submitParamsHandler: (event: FormEvent<HTMLButtonElement>) => void
+    submitParamsHandler: (event: FormEvent<HTMLButtonElement>) => void,
+    cellParams: CellParams
 };
 
-function InputParams({cellId, functionName, updateParamHandler, submitParamsHandler, inputParams}: InputParamsProps): JSX.Element {
+function InputParams({cellId, functionName, updateParamHandler, submitParamsHandler, inputParams, cellParams}: InputParamsProps): JSX.Element {
     const functionsInfo = useAppSelector((state) => state.cellsFunctions);
     const functionInfo = functionsInfo.find((elem) => (elem.function === functionName));
-    const cellParams = useContext(CellContext);
 
-    const params: ParamInput[] = [];
-
-    if (functionInfo !== undefined) {
-        for (const key in functionInfo.input_params) {
-            const fieldType = functionInfo.input_params[key as keyof typeof functionInfo.input_params];
-            const toPush: ParamInput = {
-                name: key,
-                type: "",
-                pattern: "*",
-                value: inputParams[key as keyof typeof inputParams]
-            };
-            if (fieldType === "bool") {
-                toPush.type = "checkbox";
-                toPush.pattern = '';
-                if (toPush.value === null) {
-                    toPush.value = false;
+    const defaultParams: ParamInput[] = [];
+    const [params, setParams] = useState(defaultParams);
+    useEffect(() => {
+        const newParams = [];
+        if (functionInfo !== undefined) {
+            for (const key in functionInfo.input_params) {
+                const fieldType = functionInfo.input_params[key as keyof typeof functionInfo.input_params];
+                const toPush: ParamInput = {
+                    name: key,
+                    type: "",
+                    pattern: "*",
+                    value: inputParams[key as keyof typeof inputParams]
+                };
+                if (fieldType === "bool") {
+                    toPush.type = "checkbox";
+                    toPush.pattern = '';
+                    if (toPush.value === null) {
+                        toPush.value = false;
+                    }
+                } else if (fieldType === "str") {
+                    toPush.type = "text";
+                    if (toPush.value === null) {
+                        toPush.value = "";
+                    }
+                } else if (fieldType === "int") {
+                    toPush.type = "number";
+                    toPush.pattern = "\\d*";
+                    if (toPush.value === null) {
+                        toPush.value = 0;
+                    }
+                } else if (fieldType === "float") {
+                    toPush.type = "number";
+                    toPush.pattern = "*";
+                    if (toPush.value === null) {
+                        toPush.value = 0;
+                    }
                 }
-            } else if (fieldType === "str") {
-                toPush.type = "text";
-                if (toPush.value === null) {
-                    toPush.value = "";
-                }
-            } else if (fieldType === "int") {
-                toPush.type = "number";
-                toPush.pattern = "\\d*";
-                if (toPush.value === null) {
-                    toPush.value = 0;
-                }
-            } else if (fieldType === "float") {
-                toPush.type = "number";
-                toPush.pattern = "*";
-                if (toPush.value === null) {
-                    toPush.value = 0;
-                }
+                newParams.push(toPush);
             }
-            params.push(toPush);
         }
-    }
+        setParams(newParams);
+    }, [cellParams]);
 
 
     return (
@@ -94,7 +97,7 @@ function InputParams({cellId, functionName, updateParamHandler, submitParamsHand
                     )
                 }
             </ul>
-            <button className="block-button cell-button cell-inside-button" onClick={submitParamsHandler}>Save params</button>
+            <button className="block-button cell-inside-button" onClick={submitParamsHandler}>Save params</button>
         </div>);
 }
 

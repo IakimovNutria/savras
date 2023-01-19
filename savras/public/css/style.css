@@ -304,7 +304,6 @@ body {
 
 .cell {
     width: 800px;
-    height: 480px;
     position: absolute;
     background: white;
     padding: 0;
@@ -337,6 +336,7 @@ body {
 
 .cell-inside-button {
     margin-right: 10px;
+    width: 60px;
 }
 
 .cell-inside-button-block {
