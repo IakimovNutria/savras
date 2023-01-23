@@ -15,6 +15,7 @@ type InputProps = {
 
 function Inputs({cellId, updateInputHandler, updateColumnHandler, submitInputsHandler, updateShowGraphHandler, cellParams}: InputProps): JSX.Element {
     const files = useAppSelector((state) => state.filesList);
+    const dataColumns = useAppSelector((state) => state.fileColumns);
     const inputPaths = cellParams.inputsPath;
     const inputColumns = cellParams.selectedInputsColumn;
     const defaultInputsArray: Input[] = [];
@@ -48,11 +49,10 @@ function Inputs({cellId, updateInputHandler, updateColumnHandler, submitInputsHa
     }, [cellParams, inputColumns, inputPaths, files]);
 
     const getFileColumns = (path: string | null) => {
-        if (path === null) {
-            return [];
+        if (path && dataColumns.hasOwnProperty(path)) {
+            return dataColumns[path];
         }
-        const file = files.find((f) => f.path === path);
-        return file === undefined ? [] : file.columns;
+        return [];
     }
 
     return (
@@ -83,10 +83,10 @@ function Inputs({cellId, updateInputHandler, updateColumnHandler, submitInputsHa
                             </select>
                             {
                                 (input.fileName !== null) &&
-                                    (<select value={input.inputColumn === null ? "choose column" : input.inputColumn}
+                                    (<select value={input.inputColumn ? input.inputColumn : "choose column"}
                                              onChange={updateColumnHandler} id={input.name}>
                                         {
-                                            input.inputColumn === null && (<option id={""}>choose column</option>)
+                                            input.inputColumn || (<option id={""}>choose column</option>)
                                         }
                                         {
                                             getFileColumns(input.path).map((elem) =>

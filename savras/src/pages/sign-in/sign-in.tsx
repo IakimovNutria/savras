@@ -2,7 +2,7 @@ import React, {FormEvent, useState} from 'react';
 import {Link, Navigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../hooks";
 import {signInAction} from "../../store/api-actions";
-import AuthorizationStatus from "../../types/authorizationStatus";
+import AuthorizationStatus from "../../types/authorization-status";
 import {setAuthorization} from "../../store/actions";
 
 

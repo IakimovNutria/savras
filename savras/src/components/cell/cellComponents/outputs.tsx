@@ -3,7 +3,7 @@ import CellParams from "../cellTypes/cellParams";
 
 type OutputsParams = {
     cellId: string;
-    outputs: {[key: string]: string};
+    outputs: {[key: string]: string | null};
     updateOutputNameHandler: (event: ChangeEvent<HTMLInputElement>) => void;
     saveFilesHandler: (event: FormEvent<HTMLButtonElement>) => void;
     cellParams: CellParams;

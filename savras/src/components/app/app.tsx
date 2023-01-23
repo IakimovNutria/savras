@@ -7,7 +7,7 @@ import File from '../../pages/file/file'
 import PrivateRoute from "../private-route/private-route";
 import React from "react";
 import {useAppSelector} from "../../hooks";
-import AuthorizationStatus from "../../types/authorizationStatus";
+import AuthorizationStatus from "../../types/authorization-status";
 
 function App(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorization);

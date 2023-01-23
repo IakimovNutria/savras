@@ -4,7 +4,8 @@ export const CellStatus = {
     IN_PROCESS: 'in process',
     HAS_ERROR: 'error',
     SAVING: 'saving...',
-    SAVED: 'saved'
+    SAVED: 'saved',
+    NOT_SAVED: 'error on save'
 };
 
 export const CellStatusStyle = {
@@ -13,5 +14,6 @@ export const CellStatusStyle = {
     [CellStatus.IN_PROCESS]: {color: "#4682B4"},
     [CellStatus.EXECUTED]: {color: "green"},
     [CellStatus.SAVING]: {color: "#4682B4"},
-    [CellStatus.SAVED]: {color: "green"}
+    [CellStatus.SAVED]: {color: "green"},
+    [CellStatus.NOT_SAVED]: {color: "red"}
 }

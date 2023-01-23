@@ -1,6 +1,6 @@
 import Chart from 'react-apexcharts';
 import React from 'react';
-import TimeSeries from "../../types/timeSeries";
+import TimeSeries from "../../types/time-series";
 
 
 type GraphProps = {

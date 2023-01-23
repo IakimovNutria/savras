@@ -1,10 +1,10 @@
 import {createAction} from '@reduxjs/toolkit';
-import FileInfo from '../types/fileInfo';
-import CellInfo from "../types/cellInfo";
-import PipelineInfo from "../types/pipelineInfo";
-import CellsFunction from "../types/cellsFunction";
-import ShortPipelineInfo from "../types/shortPipelineInfo";
-import TimeSeries from "../types/timeSeries";
+import FileInfo from '../types/file-info';
+import CellInfo from "../types/cell-info";
+import PipelineInfo from "../types/pipeline-info";
+import CellsFunction from "../types/cells-function";
+import ShortPipelineInfo from "../types/short-pipeline-info";
+import TimeSeries from "../types/time-series";
 
 const Action = {
     SET_USER_PIPELINES: "SET_USER_PIPELINES",

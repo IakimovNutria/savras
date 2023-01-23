@@ -2,14 +2,14 @@ import React, {useEffect, useState} from "react";
 import Graph from "../../graph/graph";
 import {getFileTimeSeries} from "../../../store/api-actions";
 import {useAppDispatch, useAppSelector} from "../../../hooks";
-import TimeSeries from "../../../types/timeSeries";
+import TimeSeries from "../../../types/time-series";
 import CellParams from "../cellTypes/cellParams";
 
 
 type GraphsParams = {
     cellId: string;
     cellParams: CellParams;
-    outputs: {[key: string]: string};
+    outputs: {[key: string]: string | null};
 };
 
 function Graphs({cellId, cellParams, outputs}: GraphsParams): JSX.Element {

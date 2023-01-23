@@ -1,7 +1,7 @@
 import React, {FormEvent, useRef, useState} from "react";
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {setAuthorization} from "../../store/actions";
-import AuthorizationStatus from "../../types/authorizationStatus";
+import AuthorizationStatus from "../../types/authorization-status";
 import {useCookies} from "react-cookie";
 import {
     createPipeline,

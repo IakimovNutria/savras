@@ -1,73 +1,58 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, State} from '../types/state';
 import {AxiosInstance} from 'axios';
-import AuthorizationStatus from "../types/authorizationStatus";
-import {
-    setAuthorization,
-    setCellsFunctions,
-    setCellInfo,
-    setFiles, setPipeline,
-    setSharedPipelines,
-    setUserPipelines,
-    addGraphData
-} from "./actions";
-import AuthorizationInfo from "../types/authorizationInfo";
-import FileInfo from "../types/fileInfo";
+import AuthorizationInfo from "../types/authorization-info";
+import FileInfo from "../types/file-info";
 import {saveAs} from "file-saver";
-import React from "react";
-import {CellStatus} from "../types/cellStatus";
-import TimeSeries from "../types/timeSeries";
-import PipelineInfo from "../types/pipelineInfo";
+import TimeSeries from "../types/time-series";
+import PipelineInfo from "../types/pipeline-info";
+import ShortPipelineInfo from "../types/short-pipeline-info";
+import CellInfo from "../types/cell-info";
+import CellsFunction from "../types/cells-function";
 
-export const fetchFilesAction = createAsyncThunk<void, undefined, {
+export const fetchFilesAction = createAsyncThunk<FileInfo[], undefined, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/files',
-    async (_arg, {dispatch, extra: api}) => {
-        async function fetchFileColumn(path: string) {
-            const {data} = await api.get('/files/columns', {params: {path: path}});
-            return data;
-        }
-        api.get('/files')
-            .then(async (response) => {
-                const data = response.data;
-                let files: FileInfo[] = [];
-                for (const key in data) {
-                    files.push({...data[key], columns: await fetchFileColumn(data[key].path)});
-                }
-                dispatch(setFiles(files));
-            })
-            .catch((reason) => {
-                if (reason.response.status === 401) {
-                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
-                }
-            });
-    },
+    async (_arg, {extra: api}) => {
+        const {data} = await api.get<FileInfo[]>('/files');
+        return data;
+    }
 );
 
-export const fetchUserPipelinesAction = createAsyncThunk<void, undefined, {
+export const fetchFileColumns = createAsyncThunk<{columns: string[], path: string}, {path: string}, {
+    dispatch: AppDispatch,
+    state: State,
+    extra: AxiosInstance
+}>('/files/columns',async ({path}, {extra: api}) => {
+        const {data} = await api.get<string[]>('/files/columns', {params: {path: path}});
+        return {columns: data, path: path};
+    }
+);
+
+export const fetchUserPipelinesAction = createAsyncThunk<ShortPipelineInfo[], undefined, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/pipelines/own',
-    async (_arg, {dispatch, extra: api}) => {
-        const {data} = await api.get('/pipelines/own');
-        dispatch(setUserPipelines(data));
+    async (_arg, {extra: api}) => {
+        const {data} = await api.get<ShortPipelineInfo[]>('/pipelines/own');
+        return data;
     },
 );
 
-export const fetchSharedPipelinesAction = createAsyncThunk<void, undefined, {
+export const fetchSharedPipelinesAction = createAsyncThunk<ShortPipelineInfo[], undefined, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/pipelines/shared',
-    async (_arg, {dispatch, extra: api}) => {
-        const {data} = await api.get('/pipelines/shared');
-        dispatch(setSharedPipelines(data));
+    async (_arg, {extra: api}) => {
+        const {data} = await api.get<ShortPipelineInfo[]>('/pipelines/shared');
+        return data;
     },
 );
 
@@ -77,14 +62,8 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
     extra: AxiosInstance
 }>(
     '/user',
-    async (_arg, {dispatch, extra: api}) => {
-        api.get("/user")
-            .then(() => {
-                dispatch(setAuthorization(AuthorizationStatus.AUTHORIZED));
-            })
-            .catch(() => {
-                dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
-            });
+    async (_arg, {extra: api}) => {
+        await api.get("/user");
     },
 );
 
@@ -94,21 +73,8 @@ export const signInAction = createAsyncThunk<void, AuthorizationInfo, {
     extra: AxiosInstance
 }>(
     '/user/authentication',
-    async ({login, password}, {dispatch, extra: api}) => {
-        api.post("/user/authentication", `username=${login}&password=${password}`)
-            .then((response) => {
-                if (response.status === 200) {
-                    dispatch(setAuthorization(AuthorizationStatus.AUTHORIZED));
-                    dispatch(fetchFilesAction());
-                    dispatch(fetchUserPipelinesAction());
-                    dispatch(fetchSharedPipelinesAction());
-                }
-            })
-            .catch((reason) => {
-                if (reason.response.status === 401) {
-                    dispatch(setAuthorization(AuthorizationStatus.BAD_AUTHENTICATE));
-                }
-            });
+    async ({login, password}, {extra: api}) => {
+        await api.post("/user/authentication", `username=${login}&password=${password}`);
     },
 );
 
@@ -118,96 +84,68 @@ export const signUpAction = createAsyncThunk<void, AuthorizationInfo, {
     extra: AxiosInstance
 }>(
     '/user/registration',
-    async ({login, password}, {dispatch, extra: api}) => {
-        api.post("/user/registration", {username: login, password: password})
-            .then((response) => {
-                if (response.status === 201) {
-                    dispatch(setAuthorization(AuthorizationStatus.AUTHORIZED));
-                }
-            })
-            .catch((reason) => {
-                if (reason.response.status === 400) {
-                    dispatch(setAuthorization(AuthorizationStatus.BAD_REGISTER));
-                }
-            });
+    async ({login, password}, {extra: api}) => {
+        await api.post("/user/registration", {username: login, password: password});
     },
 );
 
-export const fetchCellInfo = createAsyncThunk<void, {cellId: string}, {
+export const fetchCellInfo = createAsyncThunk<CellInfo, {cellId: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/cells',
-    async ({cellId}, {dispatch, extra: api}) => {
+    async ({cellId}, {extra: api}) => {
         const {data} = await api.get("/cells", {params: {cell_id: cellId}});
-        dispatch(setCellInfo(data));
+        return data;
     },
 );
 
-export const fetchCellsFunctionsInfo = createAsyncThunk<void, undefined, {
+export const fetchCellsFunctionsInfo = createAsyncThunk<CellsFunction[], undefined, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/cells/functions',
-    async (_arg, {dispatch, extra: api}) => {
+    async (_arg, {extra: api}) => {
         const {data} = await api.get("/cells/functions");
-        dispatch(setCellsFunctions(data));
+        return data;
     },
 );
 
-export const fetchPipeline = createAsyncThunk<void, {pipelineId: string}, {
+export const fetchPipeline = createAsyncThunk<PipelineInfo, {pipelineId: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/pipelines',
-    async ({pipelineId}, {dispatch, extra: api}) => {
+    async ({pipelineId}, {extra: api}) => {
         const {data} = await api.get<PipelineInfo>("/pipelines", {params: {pipeline_id: pipelineId}});
-        dispatch(setPipeline(data));
+        return data;
     },
 );
 
-export const createCell = createAsyncThunk<void, {pipelineId: string, functionName: string}, {
+export const createCell = createAsyncThunk<CellInfo, {pipelineId: string, functionName: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/cells/create',
-    async ({pipelineId, functionName}, {dispatch, extra: api}) => {
-        api.post("/cells/create", {pipeline_id: pipelineId, function: functionName})
-            .then(() => {
-                dispatch(fetchPipeline({pipelineId: pipelineId}));
-            })
-            .catch((reason) => {
-                if (reason.response.status === 401) {
-                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
-                }
-            });
-
+    async ({pipelineId, functionName}, {extra: api}) => {
+        const {data} = await api.post("/cells/create", {pipeline_id: pipelineId, function: functionName});
+        return data;
     },
 );
 
-export const uploadFile = createAsyncThunk<void, {formData: FormData}, {
+export const uploadFile = createAsyncThunk<FileInfo, {formData: FormData}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/files/upload',
-    async ({formData}, {dispatch, extra: api}) => {
-        api.post('/files/upload', formData,
-            {headers: {"Content-Type": "multipart/form-data"}})
-            .then(() => {
-                dispatch(fetchFilesAction());
-            })
-            .catch((reason) => {
-                if (reason.response.status === 401) {
-                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
-                } else if (reason.response.status === 400) {
-                    //TODO: выводить ошибку
-                }
-            });
+    async ({formData}, {extra: api}) => {
+        const {data} = await api.post<FileInfo>('/files/upload', formData, {headers: {"Content-Type": "multipart/form-data"}});
+        return data;
     },
 );
 
@@ -217,99 +155,71 @@ export const downloadFile = createAsyncThunk<void, {path: string, name: string},
     extra: AxiosInstance
 }>(
     '/files/download',
-    async ({path, name}, {dispatch, extra: api}) => {
+    async ({path, name}, {extra: api}) => {
         api.get('/files/download', {params: {path: path}, responseType: "blob"})
-            .then((r) => saveAs(r.data, name))
-            .catch((reason) => {
-                if (reason.response.status === 401) {
-                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
-                }
-            });
-
+            .then((r) => saveAs(r.data, name));
     },
 );
 
-export const deleteFile = createAsyncThunk<void, {path: string}, {
+export const deleteFile = createAsyncThunk<{path: string}, {path: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/files/delete',
     async ({path}, {dispatch, extra: api}) => {
-        api.delete('/files/delete', {params: {path: path}})
-            .then(() => dispatch(fetchFilesAction()))
-            .catch((reason) => {
-                if (reason.response.status === 401) {
-                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
-                }
-            });
+        await api.delete('/files/delete', {params: {path: path}});
+        return {path: path};
     },
 );
 
-export const getFileTimeSeries = createAsyncThunk<void, {path: string, dataColumn: string, cellId: string, graphName: string}, {
+export const getFileTimeSeries = createAsyncThunk<
+    {cellId: string, name: string, timeSeries: TimeSeries},
+    {path: string, dataColumn: string, cellId: string, graphName: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/files/time_series',
-    async ({path, dataColumn, cellId, graphName}, {dispatch, extra: api}) => {
+    async ({path, dataColumn, cellId, graphName}, {extra: api}) => {
         const {data} = await api.get<TimeSeries>('/files/time_series', {params: {path: path, data_column: dataColumn}});
-        dispatch(addGraphData({cellId: cellId, name: graphName, timeSeries: data}));
+        return {cellId: cellId, name: graphName, timeSeries: data};
     },
 );
 
-export const getFileColumns = createAsyncThunk<void, {path: string}, {
-    dispatch: AppDispatch,
-    state: State,
-    extra: AxiosInstance
-}>(
-    '/files/columns',
-    async ({path}, {dispatch, extra: api}) => {
-        const data = await api.get('/files/columns', {params: {path: path}});
-    },
-);
-
-export const renameFile = createAsyncThunk<void, {path: string, newName: string}, {
+export const renameFile = createAsyncThunk<{path: string, newName: string}, {path: string, newName: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/files/rename',
     async ({path, newName}, {dispatch, extra: api}) => {
-        const data = await api.post('/files/rename', {new_name: newName, path: path});
-        dispatch(fetchFilesAction());
+        await api.post('/files/rename', {new_name: newName, path: path});
+        return {path: path, newName: newName};
     },
 );
 
-export const createPipeline = createAsyncThunk<void, {name: string}, {
+export const createPipeline = createAsyncThunk<ShortPipelineInfo, {name: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     'pipelines/create',
-    async ({name}, {dispatch, extra: api}) => {
-        api.post('pipelines/create', {name: name})
-            .then(() => {
-                dispatch(fetchUserPipelinesAction());
-            })
-            .catch((reason) => {
-                if (reason.response.status === 401) {
-                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
-                }
-            });
-
+    async ({name}, {extra: api}) => {
+        const {data} = await api.post<ShortPipelineInfo>('pipelines/create', {name: name});
+        return data;
     },
 );
 
-export const deletePipeline = createAsyncThunk<void, {pipelineId: string}, {
+export const deletePipeline = createAsyncThunk<{pipelineId: string}, {pipelineId: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
-    '/pipelines',
-    async ({pipelineId}, {dispatch, extra: api}) => {
-        const data = await api.delete('/pipelines', {params: {pipeline_id: pipelineId}});
-        dispatch(fetchUserPipelinesAction());
+    '/pipelines/delete',
+    async ({pipelineId}, {extra: api}) => {
+        await api.delete('/pipelines', {params: {pipeline_id: pipelineId}});
+        return {pipelineId: pipelineId};
     },
 );
 
@@ -320,19 +230,19 @@ export const sharePipeline = createAsyncThunk<void, {username: string, pipelineI
 }>(
     '/pipelines/share',
     async ({username, pipelineId}, {dispatch, extra: api}) => {
-        const data = await api.post('/pipelines/share', {added_user: username, pipeline_id: pipelineId});
+        await api.post('/pipelines/share', {added_user: username, pipeline_id: pipelineId});
     },
 );
 
-export const renamePipeline = createAsyncThunk<void, {newName: string, pipelineId: string}, {
+export const renamePipeline = createAsyncThunk<{pipelineId: string, newName: string}, {newName: string, pipelineId: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/pipelines/rename',
     async ({newName, pipelineId}, {dispatch, extra: api}) => {
-        const data = await api.post('/pipelines/rename', {new_name: newName, pipeline_id: pipelineId});
-        dispatch(fetchUserPipelinesAction());
+        await api.post('/pipelines/rename', {new_name: newName, pipeline_id: pipelineId});
+        return {pipelineId: pipelineId, newName: newName};
     },
 );
 
@@ -344,7 +254,6 @@ export const addEdge = createAsyncThunk<void, {cellIdFrom: string, cellIdTo: str
     '/pipelines/edge',
     async ({cellIdFrom, cellIdTo}, {dispatch, extra: api}) => {
         const data = await api.post('/pipelines/edge', {cell_id_from: cellIdFrom, cell_id_to: cellIdTo});
-        dispatch(fetchUserPipelinesAction());
     },
 );
 
@@ -356,7 +265,6 @@ export const deleteEdge = createAsyncThunk<void, {cellIdFrom: string, cellIdTo: 
     '/pipelines/edge',
     async ({cellIdFrom, cellIdTo}, {dispatch, extra: api}) => {
         const data = await api.delete('/pipelines/edge', {params: {cell_id_from: cellIdFrom, cell_id_to: cellIdTo}});
-        dispatch(fetchUserPipelinesAction());
     },
 );
 
@@ -368,112 +276,81 @@ export const forkPipeline = createAsyncThunk<void, {pipelineId: string}, {
     '/pipelines/fork',
     async ({pipelineId}, {dispatch, extra: api}) => {
         const data = await api.post('/pipelines/fork', {pipeline_id: pipelineId});
-        dispatch(fetchUserPipelinesAction());
     },
 );
 
-export const deleteCell = createAsyncThunk<void, {cellId: string, pipelineId: string}, {
+export const deleteCell = createAsyncThunk<{cellId: string, pipelineId: string}, {cellId: string, pipelineId: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
-    '/cells',
-    async ({cellId, pipelineId}, {dispatch, extra: api}) => {
-        api.delete('/cells', {params: {cell_id: cellId}})
-            .then(() => dispatch(fetchPipeline({pipelineId: pipelineId})))
-            .catch((reason) => {
-                if (reason.response.status === 401) {
-                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
-                }
-            });
+    '/cells/delete',
+    async ({cellId, pipelineId}, {extra: api}) => {
+        await api.delete('/cells', {params: {cell_id: cellId}});
+        return {cellId: cellId, pipelineId: pipelineId};
     },
 );
 
-export const moveCell = createAsyncThunk<void, {cellId: string, x: number, y: number}, {
+export const moveCell = createAsyncThunk<{cellId: string, x: number, y: number}, {cellId: string, x: number, y: number}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/cells/move',
-    async ({cellId, x, y}, {dispatch, extra: api}) => {
-        const data = await api.post('/cells/move', {cell_id: cellId, x: x, y: y});
-        dispatch(fetchUserPipelinesAction());
+    async ({cellId, x, y}, {extra: api}) => {
+        await api.post('/cells/move', {cell_id: cellId, x: x, y: y});
+        return {cellId: cellId, x: x, y: y};
     },
 );
 
-export const updateParam = createAsyncThunk<void, {cellId: string, field: string, value: string | boolean | number,
-    setCellStatus: React.Dispatch<React.SetStateAction<string>>}, {
+export const updateParams = createAsyncThunk<
+    {cellId: string, params: {field: string, value: string | boolean | number}[]},
+    {cellId: string, params: {field: string, value: string | boolean | number}[]}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
-    '/cells/update/param',
-    async ({cellId, field, value, setCellStatus}, {dispatch, extra: api}) => {
-        api.post('/cells/update/param', {cell_id: cellId, field: field, value: value})
-            .then(() => {
-
-            })
-            .catch((reason) => {
-                if (reason.response.status === 401) {
-                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
-                } else if (reason.response.status === 400) {
-                    //TODO: выводить сообщение об ошибке
-                }
-                setCellStatus(reason.response.data["detail"].replace('.', '').toLowerCase());
-            });
+    '/cells/update/params',
+    async ({cellId, params}, {extra: api}) => {
+        await api.post('/cells/update/params', {cell_id: cellId, params: params});
+        return {cellId: cellId, params: params};
     },
 );
 
-export const updateInput = createAsyncThunk<void, {cellId: string, field: string, path: string, data_column: string,
-    setCellStatus: React.Dispatch<React.SetStateAction<string>>}, {
+export const updateInputs = createAsyncThunk<
+    {cellId: string, inputs: {field: string, path: string, data_column: string}[]},
+    {cellId: string, inputs: {field: string, path: string, data_column: string}[]}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
-    '/cells/update/input',
-    async ({cellId, field, path, data_column, setCellStatus}, {dispatch, extra: api}) => {
-        api.post('/cells/update/input',
-            {cell_id: cellId, field: field, path: path, data_column: data_column})
-            .then(() => {
-
-            })
-            .catch((reason) => {
-                if (reason.response.status === 401) {
-                    dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
-                } else if (reason.response.status === 400) {
-                    //TODO: выводить ошибку
-                }
-                setCellStatus(reason.response.data["detail"].replace('.', '').toLowerCase());
-            });
-
+    '/cells/update/inputs',
+    async ({cellId, inputs}, {extra: api}) => {
+        await api.post('/cells/update/inputs', {cell_id: cellId, inputs: inputs});
+        return {cellId: cellId, inputs: inputs};
     },
 );
 
-export const executeCell = createAsyncThunk<void, {cellId: string, setCellStatus: React.Dispatch<React.SetStateAction<string>>}, {
+export const executeCell = createAsyncThunk<{cellId: string}, {cellId: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/cells/execute',
-    async ({cellId, setCellStatus}, {dispatch, extra: api}) => {
-        api.post('/cells/execute', {cell_id: cellId}).catch((reason) => {
-            if (reason.response.status === 400) {
-                setCellStatus(reason.response.data["detail"].replace('.', '').toLowerCase());
-            } else {
-                setCellStatus(CellStatus.HAS_ERROR);
-            }
-        });
+    async ({cellId}, {extra: api}) => {
+        await api.post('/cells/execute', {cell_id: cellId});
+        return {cellId: cellId};
     },
 );
 
-export const saveFile = createAsyncThunk<void, {path: string, name: string}, {
+export const saveFile = createAsyncThunk<{path: string, name: string}, {path: string, name: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/files/save',
     async ({path, name}, {dispatch, extra: api}) => {
-        const data = await api.post('/files/save', {path: path, name: name});
-        dispatch(fetchFilesAction());
+        await api.post('/files/save', {path: path, name: name});
+        return {path: path, name: name};
     },
 );

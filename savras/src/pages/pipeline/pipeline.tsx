@@ -15,9 +15,6 @@ function Pipeline(): JSX.Element {
     useEffect(() => {
         dispatch(fetchPipeline({pipelineId: id === undefined ? "" : id}));
     }, [dispatch, id]);
-    useInterval(() => {
-        dispatch(fetchPipeline({pipelineId: id === undefined ? "" : id}));
-    }, 1000 * 10);
 
     function handleCreate(event: MouseEvent<HTMLButtonElement>) {
         event.preventDefault();

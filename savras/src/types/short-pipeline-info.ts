@@ -1,4 +1,4 @@
-import CellInfo from "./cellInfo";
+import CellInfo from "./cell-info";
 
 type ShortPipelineInfo = {
     name: string;

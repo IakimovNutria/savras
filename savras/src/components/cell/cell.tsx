@@ -1,21 +1,22 @@
-import CellInfo from "../../types/cellInfo";
+import CellInfo from "../../types/cell-info";
 import Draggable, {DraggableData, DraggableEvent} from 'react-draggable';
 import {useAppSelector, useAppDispatch} from "../../hooks"
 import {
     deleteCell,
-    executeCell,
+    executeCell, fetchCellInfo, fetchFileColumns, fetchPipeline,
     moveCell,
     saveFile,
-    updateInput,
-    updateParam
+    updateInputs,
+    updateParams
 } from "../../store/api-actions";
 import React, {FormEvent, useEffect, useState} from "react";
 import Inputs from "./cellComponents/inputs";
 import CellParams from "./cellTypes/cellParams";
 import InputParams from "./cellComponents/inputParams";
 import Outputs from "./cellComponents/outputs";
-import {CellStatus, CellStatusStyle} from "../../types/cellStatus";
+import {CellStatus, CellStatusStyle} from "../../types/cell-status";
 import Graphs from "./cellComponents/graphs";
+import useInterval from "@use-it/interval";
 
 
 type CellProps = {
@@ -28,6 +29,8 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
     const dispatch = useAppDispatch();
     const functionsInfo = useAppSelector((state) => state.cellsFunctions);
     const functionInfo = functionsInfo.find((elem) => (elem.function === cellInfo.function));
+    const dataColumns = useAppSelector((state) => state.fileColumns);
+    const cellStatus: string = useAppSelector((state) => state.cellsStatus)[cellInfo.id];
 
     const defaultCellParams: CellParams = {
         inputsPath: cellInfo.inputs,
@@ -38,7 +41,6 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         graphOutputs: {}
     };
     const [cellParams, setCellParams] = useState(defaultCellParams);
-    const [cellStatus, setCellStatus] = useState(CellStatus.NOT_EXECUTED);
 
     useEffect(() => {
         for (const key in cellInfo.inputs) {
@@ -50,16 +52,17 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
     }, [cellInfo]);
 
     useEffect(() => {
-        if (cellInfo.error !== null) {
-            setCellStatus(cellInfo.error);
-        } else {
-            for (const key in cellInfo.outputs) {
-                if (cellInfo.outputs[key] !== null) {
-                    setCellStatus(CellStatus.EXECUTED);
-                }
+        for (const key in cellInfo.inputs) {
+            const path = cellInfo.inputs[key];
+            if (path && !dataColumns.hasOwnProperty(path)) {
+                dispatch(fetchFileColumns({path: path}));
             }
         }
-    }, [cellInfo.error, cellInfo.outputs]);
+    });
+
+    useInterval(() => {
+        dispatch(fetchCellInfo({cellId: cellInfo.id}));
+    }, cellStatus === CellStatus.IN_PROCESS ? 1000 * 5 : null);
 
     const stopHandler = (event: DraggableEvent, data: DraggableData) => {
         event.preventDefault();
@@ -73,6 +76,9 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         const selectedIndex = options.selectedIndex;
         const path = (selectedIndex !== -1) ? options[selectedIndex].id : null;
         const fieldName = select.id;
+        if (path && !dataColumns.hasOwnProperty(path)) {
+            dispatch(fetchFileColumns({path: path}));
+        }
         setCellParams((state) => {return {...state, inputsPath: {...state.inputsPath, [fieldName]: path}}});
     }
 
@@ -101,48 +107,32 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
     }
 
     const submitInputsHandler = async (event: FormEvent<HTMLButtonElement>) => {
-        setCellStatus(CellStatus.SAVING);
         const elem = cellParams;
+        const toUpdate: {path: string, data_column: string, field: string}[] = [];
         for (const key in elem.inputsPath) {
             const path = elem.inputsPath[key];
             const dataColumn = elem.selectedInputsColumn[key];
             if (path !== null && dataColumn !== null) {
-                dispatch(updateInput({
-                    cellId: cellInfo.id,
-                    path: path,
-                    field: key, data_column: dataColumn,
-                    setCellStatus: setCellStatus
-                }));
+                toUpdate.push({path: path, data_column: dataColumn, field: key});
             }
         }
-        setCellStatus((state) => {
-            if (cellStatus === CellStatus.SAVING) {
-                return CellStatus.SAVED;
-            }
-            return state;
-        });
+        dispatch(updateInputs({cellId: cellInfo.id, inputs: toUpdate}));
         event.preventDefault();
     }
 
     const submitParamsHandler = async (event: FormEvent<HTMLButtonElement>) => {
-        setCellStatus(CellStatus.SAVING);
+        const toUpdate: {field: string, value: string | boolean | number}[] = [];
         for (const key in cellParams.inputParams) {
             const notNumberValue = cellParams.inputParams[key];
             const paramType = functionInfo ? functionInfo.input_params[key] : 0;
             const value = (paramType === "int" || paramType === "float") ? Number(notNumberValue) : notNumberValue;
-            dispatch(updateParam({cellId: cellInfo.id, value: value, field: key, setCellStatus: setCellStatus}));
+            toUpdate.push({field: key, value: value});
         }
-        setCellStatus((state) => {
-            if (cellStatus === CellStatus.SAVING) {
-                return CellStatus.SAVED;
-            }
-            return state;
-        });
+        dispatch(updateParams({cellId: cellInfo.id, params: toUpdate}));
         event.preventDefault();
     }
 
     const saveFilesHandler = (event: FormEvent<HTMLButtonElement>) => {
-        setCellStatus(CellStatus.SAVING);
         const elem = cellParams;
         for (const key in elem.outputs) {
             const value = elem.outputs[key];
@@ -153,20 +143,13 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
                 }
             }
         }
-        setCellStatus((state) => {
-            if (cellStatus === CellStatus.SAVING) {
-                return CellStatus.SAVED;
-            }
-            return state;
-        });
         event.preventDefault();
     }
 
     const executeHandler = async (event: FormEvent<HTMLButtonElement>) => {
         await submitParamsHandler(event);
         await submitInputsHandler(event);
-        setCellStatus(CellStatus.IN_PROCESS);
-        dispatch(executeCell({cellId: cellInfo.id, setCellStatus: setCellStatus}));
+        dispatch(executeCell({cellId: cellInfo.id}));
         event.preventDefault();
     }
 
