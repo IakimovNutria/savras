@@ -130,10 +130,9 @@ export const reducer = createReducer(initialState, (builder) => {
           state.cellsStatus = {...state.cellsStatus, [action.payload.cellId]: CellStatus.IN_PROCESS};
       })
       .addCase(executeCell.rejected, (state, action) => {
-          const error = action.error.message;
           state.cellsStatus = {
               ...state.cellsStatus,
-              [action.meta.arg.cellId]: error === undefined ? CellStatus.HAS_ERROR : error
+              [action.meta.arg.cellId]: CellStatus.HAS_ERROR
           };
       })
       .addCase(deletePipeline.fulfilled, (state, action) => {
@@ -162,6 +161,7 @@ export const reducer = createReducer(initialState, (builder) => {
           if (state.currentPipeline) {
               state.currentPipeline.cells.push(action.payload);
           }
+          state.cellsStatus[action.payload.id] = CellStatus.NOT_EXECUTED;
       })
       .addCase(createPipeline.fulfilled, (state, action) => {
           state.userPipelinesList.push(action.payload);

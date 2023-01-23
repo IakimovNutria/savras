@@ -147,8 +147,6 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
     }
 
     const executeHandler = async (event: FormEvent<HTMLButtonElement>) => {
-        await submitParamsHandler(event);
-        await submitInputsHandler(event);
         dispatch(executeCell({cellId: cellInfo.id}));
         event.preventDefault();
     }
