@@ -64,7 +64,7 @@ function Graphs({cellId, cellParams, outputs}: GraphsParams): JSX.Element {
 
 
     return (graphs.length !== 0) ? (
-        <ul className="block cell-inside-graphs row-elements cell-inside-ul">
+        <ul className="block cell-inside-graphs row-elements">
             {
                 graphs.map((graph) => {
                     return (

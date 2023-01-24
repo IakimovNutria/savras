@@ -62,14 +62,15 @@ function Inputs({cellId, updateInputHandler, updateColumnHandler, submitInputsHa
                 {
                     inputsArray.map((input) => (
                         <li className="row-elements" key={cellId + input.name}>
-                            <div className="column-elements cell-inside-block" style={{justifyContent: "normal"}} key={cellId + input.name}>
-                                <div className="row-elements" style={{margin: 0, justifyContent: "center"}} key={cellId + input.name}>
-                                    <h5 style={{margin: 0}}>show graph</h5>
-                                    <input type="checkbox" style={{margin: 0, marginLeft: "2px"}}
+                            <div className="row-elements cell-inside-block-element" style={{justifyContent: "normal"}} key={cellId + input.name}>
+                                <div className="column-elements" style={{margin: 0, justifyContent: "center", marginRight: "2px"}}
+                                     key={cellId + input.name}>
+                                    <img alt="graph-icon" src="/img/graph-icon.png" style={{width: "15px", height: "15px"}}/>
+                                    <input type="checkbox" style={{margin: 0}}
                                            checked={isShowGraph[input.name]}
                                            id={input.name} onChange={updateShowGraphHandler}/>
                                 </div>
-                                <h3 className="cell-inside-block-element" style={{marginBottom: 0, marginTop: 0}}>{input.name}:</h3>
+                                <h3 style={{marginBottom: 0, marginTop: 0}}>{input.name}:</h3>
                             </div>
                             <select value={(input.fileName === null) ? "choose file" : input.fileName}
                                     onChange={updateInputHandler}

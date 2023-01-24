@@ -48,10 +48,10 @@ function Outputs({cellId, outputs, updateOutputNameHandler, saveFilesHandler, ce
                     outputNames.map((output) => {
                         return (
                             <li key={cellId + output} className="row-elements">
-                                <div className="column-elements cell-inside-block" style={{justifyContent: "normal"}}>
-                                    <div className="row-elements" style={{margin: 0, justifyContent: "center"}}>
-                                        <h5 style={{margin: 0}}>show graph</h5>
-                                        <input type="checkbox" style={{margin: 0, marginLeft: "2px"}}
+                                <div className="row-elements cell-inside-block-element" style={{justifyContent: "normal"}}>
+                                    <div className="column-elements" style={{margin: 0, justifyContent: "center", marginRight: "2px"}}>
+                                        <img alt="graph-icon" src="/img/graph-icon.png" style={{width: "15px", height: "15px"}}/>
+                                        <input type="checkbox" style={{margin: 0}}
                                                checked={isShowGraph[output]}
                                                id={output} onChange={updateShowGraphHandler}/>
                                     </div>
