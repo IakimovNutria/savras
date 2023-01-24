@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import {createCell, fetchPipeline} from "../../store/api-actions";
 import Cell from "../../components/cell/cell";
 import useInterval from "@use-it/interval";
+import CreateButtons from "../../components/create-buttons/create-buttons";
 
 function Pipeline(): JSX.Element {
     const id = useParams().id;
@@ -11,25 +12,21 @@ function Pipeline(): JSX.Element {
     const dispatch = useAppDispatch();
     const [visible, setVisible] = useState(false);
     const pipeline = useAppSelector((state) => state.currentPipeline);
-    const functions = useAppSelector((state) => state.cellsFunctions);
+    const isLoading = useAppSelector((state) => state.isPipelineLoading);
     useEffect(() => {
         dispatch(fetchPipeline({pipelineId: id === undefined ? "" : id}));
     }, [dispatch, id]);
-
-    function handleCreate(event: MouseEvent<HTMLButtonElement>) {
-        event.preventDefault();
-        if (id === undefined)
-            return;
-        dispatch(createCell({pipelineId: id, functionName: event.currentTarget.id}));
-    }
 
     if (id === undefined) {
         return (<h1>undefined</h1>);
     }
 
-
     if (pipeline === null) {
-        return (<h1>Loading...</h1>);
+        if (isLoading) {
+            return (<h1>Loading...</h1>);
+        } else {
+            return (<h1>Not found</h1>);
+        }
     }
 
     return (
@@ -37,22 +34,11 @@ function Pipeline(): JSX.Element {
             <div className="main-page-head">
                 <h1 className="header">{pipeline.name}</h1>
                 <button onClick={() => setVisible(!visible)} className="block-button head-button">Create</button>
+                <div className="func-buttons">
                 {
-                    visible &&
-                        (<ul className='row-elements func-buttons-ul'>
-                            {
-                                functions.map((func) => (
-                                    <li className='row-elements' style={{margin: 0}} key={func.function}>
-                                        <button id={func.function} onClick={handleCreate}
-                                                style={{border: "2px solid #fcc521"}}
-                                                className="block-button head-button">
-                                            {func.function}
-                                        </button>
-                                    </li>
-                                ))
-                            }
-                        </ul>)
+                    visible && <CreateButtons pipelineId={id}/>
                 }
+                </div>
                 <button className="block-button head-button" onClick={() => {window.location.href="/"}}>Back to main</button>
             </div>
             {

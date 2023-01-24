@@ -101,7 +101,7 @@ body {
     background: #F0F0F0;
 }
 
-.func-buttons-ul  {
+.func-buttons  {
     background: #ffdd2d;
     position: fixed;
     top: 50px;
@@ -110,7 +110,7 @@ body {
     padding: 0;
     width: 100%;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     z-index: 1000;
 }
 
@@ -359,3 +359,19 @@ body {
     margin-top: 0;
     width: 500px;
 }
+
+.func-group-button {
+    border: none;
+    background: none;
+    font-weight: bold;
+}
+
+.func-group-button:hover {
+    color: darkblue;
+}
+
+.func-group-button_active {
+    text-decoration: underline;
+}
+
+

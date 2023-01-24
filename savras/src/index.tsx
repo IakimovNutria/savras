@@ -10,9 +10,6 @@ import {
 } from "./store/api-actions";
 
 store.dispatch(checkAuthAction());
-store.dispatch(fetchFilesAction());
-store.dispatch(fetchSharedPipelinesAction());
-store.dispatch(fetchUserPipelinesAction());
 store.dispatch(fetchCellsFunctionsInfo());
 
 

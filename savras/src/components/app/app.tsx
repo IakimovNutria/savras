@@ -5,15 +5,25 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import Pipeline from '../../pages/pipeline/pipeline';
 import File from '../../pages/file/file'
 import PrivateRoute from "../private-route/private-route";
-import React from "react";
-import {useAppSelector} from "../../hooks";
+import React, {useEffect} from "react";
+import {useAppDispatch, useAppSelector} from "../../hooks";
 import AuthorizationStatus from "../../types/authorization-status";
+import {fetchFilesAction, fetchSharedPipelinesAction, fetchUserPipelinesAction} from "../../store/api-actions";
 
 function App(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorization);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.AUTHORIZED) {
+      dispatch(fetchFilesAction());
+      dispatch(fetchUserPipelinesAction());
+      dispatch(fetchSharedPipelinesAction());
+    }
+  }, [authorizationStatus]);
   if (authorizationStatus === AuthorizationStatus.IN_PROCESS) {
     return (<h1>Loading</h1>);
   }
+
 
   return (
     <BrowserRouter>
