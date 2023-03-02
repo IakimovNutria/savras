@@ -5,14 +5,15 @@ import {createCell, fetchPipeline} from "../../store/api-actions";
 import Cell from "../../components/cell/cell";
 import useInterval from "@use-it/interval";
 import CreateButtons from "../../components/create-buttons/create-buttons";
+import {getCurrentPipeline, getIsPipelineLoading} from "../../store/pipeline-reducer/selectors";
 
 function Pipeline(): JSX.Element {
     const id = useParams().id;
 
     const dispatch = useAppDispatch();
     const [visible, setVisible] = useState(false);
-    const pipeline = useAppSelector((state) => state.currentPipeline);
-    const isLoading = useAppSelector((state) => state.isPipelineLoading);
+    const pipeline = useAppSelector(getCurrentPipeline);
+    const isLoading = useAppSelector(getIsPipelineLoading);
     useEffect(() => {
         dispatch(fetchPipeline({pipelineId: id === undefined ? "" : id}));
     }, [dispatch, id]);

@@ -5,6 +5,7 @@ import PipelineInfo from "../types/pipeline-info";
 import CellsFunction from "../types/cells-function";
 import ShortPipelineInfo from "../types/short-pipeline-info";
 import TimeSeries from "../types/time-series";
+import AuthorizationStatus from "../enums/authorization-status";
 
 const Action = {
     SET_USER_PIPELINES: "SET_USER_PIPELINES",
@@ -26,7 +27,7 @@ export const setFiles = createAction(Action.SET_FILES,
 export const setSharedPipelines = createAction(Action.SET_SHARED_PIPELINES,
     (pipelines: ShortPipelineInfo[]) => {return {payload: pipelines};});
 export const setAuthorization = createAction(Action.SET_AUTHORIZATION,
-    (authorizationStatus: string) => {return {payload: authorizationStatus};});
+    (authorizationStatus: AuthorizationStatus) => {return {payload: authorizationStatus};});
 export const setCellInfo = createAction(Action.SET_CELLS_INFO,
     (cellsInfo: CellInfo) => {return {payload: cellsInfo};});
 export const setCellsFunctions = createAction(Action.SET_CELLS_FUNCTIONS,

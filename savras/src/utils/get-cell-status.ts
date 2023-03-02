@@ -1,5 +1,5 @@
 import CellInfo from "../types/cell-info";
-import {CellStatus} from "../types/cell-status";
+import {CellStatus} from "../enums/cell-status";
 
 function getCellStatus(cell: CellInfo, defaultStatus: string): string {
     const error = cell.error;

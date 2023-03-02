@@ -1,12 +1,12 @@
-export const CellStatus = {
-    NOT_EXECUTED: 'not executed',
-    EXECUTED: 'executed',
-    IN_PROCESS: 'in process',
-    HAS_ERROR: 'error',
-    SAVING: 'saving...',
-    SAVED: 'saved',
-    NOT_SAVED: 'error on save'
-};
+export enum CellStatus {
+    NOT_EXECUTED = 'not executed',
+    EXECUTED = 'executed',
+    IN_PROCESS = 'in process',
+    HAS_ERROR = 'error',
+    SAVING = 'saving...',
+    SAVED = 'saved',
+    NOT_SAVED = 'error on save'
+}
 
 export const CellStatusStyle = {
     [CellStatus.NOT_EXECUTED]: {color: "#707070"},

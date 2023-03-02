@@ -2,6 +2,7 @@ import React, {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {useAppSelector} from "../../../hooks";
 import ParamInput from "../cellTypes/paramInput";
 import CellParams from "../cellTypes/cellParams";
+import {getFunctions} from "../../../store/main-reducer/selectors";
 
 
 type InputParamsProps = {
@@ -14,7 +15,7 @@ type InputParamsProps = {
 };
 
 function InputParams({cellId, functionName, updateParamHandler, submitParamsHandler, inputParams, cellParams}: InputParamsProps): JSX.Element {
-    const functionsInfo = useAppSelector((state) => state.cellsFunctions);
+    const functionsInfo = useAppSelector(getFunctions);
     const functionInfo = functionsInfo.find((elem) => (elem.function === functionName));
 
     const defaultParams: ParamInput[] = [];

@@ -1,5 +1,4 @@
 import CellInfo from "./cell-info";
-import TimeSeries from "./time-series";
 
 type PipelineInfo = {
     id: string;

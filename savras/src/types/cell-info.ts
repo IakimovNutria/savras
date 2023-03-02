@@ -1,4 +1,3 @@
-
 type CellInfo = {
     id: string;
     function: string;

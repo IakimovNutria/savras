@@ -1,4 +1,3 @@
-
 type TimeSeries = {
     datetime: string;
     value: number;

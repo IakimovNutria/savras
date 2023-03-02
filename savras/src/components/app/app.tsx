@@ -7,11 +7,12 @@ import File from '../../pages/file/file'
 import PrivateRoute from "../private-route/private-route";
 import React, {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks";
-import AuthorizationStatus from "../../types/authorization-status";
+import AuthorizationStatus from "../../enums/authorization-status";
 import {fetchFilesAction, fetchSharedPipelinesAction, fetchUserPipelinesAction} from "../../store/api-actions";
+import {getAuthorizationStatus} from "../../store/authorization-reducer/selectors";
 
 function App(): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorization);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const dispatch = useAppDispatch();
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.AUTHORIZED) {

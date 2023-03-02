@@ -2,6 +2,7 @@ import React, {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {useAppSelector} from "../../../hooks";
 import Input from "../cellTypes/input";
 import CellParams from "../cellTypes/cellParams";
+import {getFiles, getFilesColumns} from "../../../store/main-reducer/selectors";
 
 
 type InputProps = {
@@ -14,8 +15,8 @@ type InputProps = {
 };
 
 function Inputs({cellId, updateInputHandler, updateColumnHandler, submitInputsHandler, updateShowGraphHandler, cellParams}: InputProps): JSX.Element {
-    const files = useAppSelector((state) => state.filesList);
-    const dataColumns = useAppSelector((state) => state.fileColumns);
+    const files = useAppSelector(getFiles);
+    const dataColumns = useAppSelector(getFilesColumns);
     const inputPaths = cellParams.inputsPath;
     const inputColumns = cellParams.selectedInputsColumn;
     const defaultInputsArray: Input[] = [];

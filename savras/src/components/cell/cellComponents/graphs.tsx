@@ -4,6 +4,7 @@ import {getFileTimeSeries} from "../../../store/api-actions";
 import {useAppDispatch, useAppSelector} from "../../../hooks";
 import TimeSeries from "../../../types/time-series";
 import CellParams from "../cellTypes/cellParams";
+import {getGraphs} from "../../../store/pipeline-reducer/selectors";
 
 
 type GraphsParams = {
@@ -13,7 +14,7 @@ type GraphsParams = {
 };
 
 function Graphs({cellId, cellParams, outputs}: GraphsParams): JSX.Element {
-    const graphsInfo = useAppSelector((state) => state.graphs)[cellId];
+    const graphsInfo = useAppSelector(getGraphs)[cellId];
     const dispatch = useAppDispatch();
     const defaultGraphsValue: {name: string, timeSeries: TimeSeries}[] = [];
     const [graphs, setGraphs] = useState(defaultGraphsValue);

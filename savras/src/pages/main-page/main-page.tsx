@@ -1,7 +1,7 @@
 import React, {FormEvent, useRef, useState} from "react";
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {setAuthorization} from "../../store/actions";
-import AuthorizationStatus from "../../types/authorization-status";
+import AuthorizationStatus from "../../enums/authorization-status";
 import {useCookies} from "react-cookie";
 import {
     createPipeline,
@@ -9,6 +9,7 @@ import {
     deletePipeline, downloadFile,
     uploadFile
 } from "../../store/api-actions";
+import {getFiles, getSharedPipelines, getUserPipelines} from "../../store/main-reducer/selectors";
 
 
 function MainPage(): JSX.Element {
@@ -16,9 +17,9 @@ function MainPage(): JSX.Element {
     const [, , removeCookie] = useCookies(["token"]);
     const dispatch = useAppDispatch();
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const files = useAppSelector((state) => state.filesList);
-    const userPipelines = useAppSelector((state) => state.userPipelinesList);
-    const sharedPipelines = useAppSelector((state) => state.sharedPipelinesList);
+    const files = useAppSelector(getFiles);
+    const userPipelines = useAppSelector(getUserPipelines);
+    const sharedPipelines = useAppSelector(getSharedPipelines);
 
     function handleCreatePipeline(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();

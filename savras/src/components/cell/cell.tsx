@@ -14,9 +14,11 @@ import Inputs from "./cellComponents/inputs";
 import CellParams from "./cellTypes/cellParams";
 import InputParams from "./cellComponents/inputParams";
 import Outputs from "./cellComponents/outputs";
-import {CellStatus, CellStatusStyle} from "../../types/cell-status";
+import {CellStatus, CellStatusStyle} from "../../enums/cell-status";
 import Graphs from "./cellComponents/graphs";
 import useInterval from "@use-it/interval";
+import {getFilesColumns, getFunctions} from "../../store/main-reducer/selectors";
+import {getCellsStatus} from "../../store/pipeline-reducer/selectors";
 
 
 type CellProps = {
@@ -27,10 +29,10 @@ type CellProps = {
 
 function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
     const dispatch = useAppDispatch();
-    const functionsInfo = useAppSelector((state) => state.cellsFunctions);
+    const functionsInfo = useAppSelector(getFunctions);
     const functionInfo = functionsInfo.find((elem) => (elem.function === cellInfo.function));
-    const dataColumns = useAppSelector((state) => state.fileColumns);
-    const cellStatus: string = useAppSelector((state) => state.cellsStatus)[cellInfo.id];
+    const dataColumns = useAppSelector(getFilesColumns);
+    const cellStatus: string = useAppSelector(getCellsStatus)[cellInfo.id];
 
     const defaultCellParams: CellParams = {
         inputsPath: cellInfo.inputs,

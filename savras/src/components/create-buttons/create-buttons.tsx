@@ -1,6 +1,7 @@
 import {useAppDispatch, useAppSelector} from "../../hooks";
 import React, {MouseEvent, useState} from "react";
 import {createCell} from "../../store/api-actions";
+import {getFunctions} from "../../store/main-reducer/selectors";
 
 
 type CreateButtonsProps = {
@@ -8,7 +9,7 @@ type CreateButtonsProps = {
 };
 
 function CreateButtons({pipelineId}: CreateButtonsProps) : JSX.Element {
-    const functions = useAppSelector((state) => state.cellsFunctions);
+    const functions = useAppSelector(getFunctions);
     const dispatch = useAppDispatch();
     const [currentGroup, setCurrentGroup] = useState(functions[0].group);
 
