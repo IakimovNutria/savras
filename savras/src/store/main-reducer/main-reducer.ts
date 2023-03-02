@@ -29,10 +29,10 @@ export const mainReducer = createSlice({
                 state.files = state.files.filter((file) => file.path !== action.payload.path);
             })
             .addCase(saveFile.fulfilled, (state, action) => {
-                state.files.push(action.payload);
+                state.files = [action.payload].concat(state.files);
             })
             .addCase(uploadFile.fulfilled, (state, action) => {
-                state.files.push(action.payload);
+                state.files = [action.payload].concat(state.files);
             })
             .addCase(fetchSharedPipelinesAction.fulfilled, (state, action) => {
                 state.sharedPipelines = action.payload;
@@ -41,7 +41,7 @@ export const mainReducer = createSlice({
                 state.userPipelines = action.payload;
             })
             .addCase(createPipeline.fulfilled, (state, action) => {
-                state.userPipelines.push(action.payload);
+                state.userPipelines = [action.payload].concat(state.userPipelines);
             })
             .addCase(fetchFilesAction.fulfilled, (state, action) => {
                 state.files = action.payload;
