@@ -4,7 +4,6 @@ import PipelineReducerState from "../../types/pipeline-reducer-state";
 import {
     createCell,
     deleteCell, executeCell, fetchCellInfo,
-    fetchFileColumns,
     fetchPipeline,
     getFileTimeSeries,
     updateInputs,

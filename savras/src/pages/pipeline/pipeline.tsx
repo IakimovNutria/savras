@@ -1,9 +1,8 @@
-import React, {MouseEvent, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import {createCell, fetchPipeline} from "../../store/api-actions";
+import {fetchPipeline} from "../../store/api-actions";
 import Cell from "../../components/cell/cell";
-import useInterval from "@use-it/interval";
 import CreateButtons from "../../components/create-buttons/create-buttons";
 import {getCurrentPipeline, getIsPipelineLoading} from "../../store/pipeline-reducer/selectors";
 

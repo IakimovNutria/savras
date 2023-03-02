@@ -3,7 +3,6 @@ import SignUp from '../../pages/sign-up/sign-up';
 import MainPage from '../../pages/main-page/main-page';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import Pipeline from '../../pages/pipeline/pipeline';
-import File from '../../pages/file/file'
 import PrivateRoute from "../private-route/private-route";
 import React, {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks";
@@ -35,8 +34,6 @@ function App(): JSX.Element {
                                                navigateTo={<MainPage />}/>}/>
         <Route path='pipeline/:id' element={<PrivateRoute hasAccess={authorizationStatus === AuthorizationStatus.AUTHORIZED}
                                                           navigateTo={<Pipeline />} />}/>
-        <Route path='file/:id' element={<PrivateRoute hasAccess={authorizationStatus === AuthorizationStatus.AUTHORIZED}
-                                                      navigateTo={<File />} />}/>
       </Routes>
     </BrowserRouter>);
 }

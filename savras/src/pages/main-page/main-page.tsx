@@ -24,6 +24,7 @@ function MainPage(): JSX.Element {
     function handleCreatePipeline(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         dispatch(createPipeline({name: newPipelineName}));
+        setNewPipelineName("");
     }
 
     function handleDeletePipeline(event: FormEvent<HTMLButtonElement>) {

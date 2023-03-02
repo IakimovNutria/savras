@@ -3,7 +3,7 @@ import Draggable, {DraggableData, DraggableEvent} from 'react-draggable';
 import {useAppSelector, useAppDispatch} from "../../hooks"
 import {
     deleteCell,
-    executeCell, fetchCellInfo, fetchFileColumns, fetchPipeline,
+    executeCell, fetchCellInfo, fetchFileColumns,
     moveCell,
     saveFile,
     updateInputs,
