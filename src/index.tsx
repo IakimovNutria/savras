@@ -5,8 +5,7 @@ import { CookiesProvider } from 'react-cookie';
 import {Provider} from 'react-redux';
 import {store} from './store';
 import {
-    checkAuthAction, fetchCellsFunctionsInfo, fetchFilesAction,
-    fetchSharedPipelinesAction, fetchUserPipelinesAction
+    checkAuthAction, fetchCellsFunctionsInfo
 } from "./store/api-actions";
 
 store.dispatch(checkAuthAction());
