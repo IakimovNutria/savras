@@ -19,36 +19,36 @@ function CreateButtons({pipelineId}: CreateButtonsProps) : JSX.Element {
     }
 
     return (
-    <>
-    {
-        <ul className="row-elements">
+    <div className="func-buttons">
         {
-            [...new Set(functions.map((func) => func.group))].map((group) => (
-                <li className="row-elements">
-                    <button onClick={() => setCurrentGroup(group)}
-                            className={`func-group-button ${group === currentGroup ? 'func-group-button_active' : ''}`}>
-                        {group}
-                    </button>
-                </li>))
-        }
-        </ul>
-    }
-    {
-        (<ul className='row-elements'>
+            <ul className="row-elements">
             {
-                functions.filter((func) => func.group === currentGroup).map((func) => (
-                    <li className="row-elements" style={{margin: 0}} key={func.function}>
-                        <button id={func.function} onClick={handleCreate}
-                                style={{border: "2px solid #fcc521"}}
-                                className="block-button head-button">
-                            {func.name}
+                [...new Set(functions.map((func) => func.group))].map((group) => (
+                    <li className="row-elements">
+                        <button onClick={() => setCurrentGroup(group)}
+                                className={`func-group-button ${group === currentGroup ? 'func-group-button_active' : ''}`}>
+                            {group}
                         </button>
-                    </li>
-                ))
+                    </li>))
             }
-        </ul>)
-    }
-    </>)
+            </ul>
+        }
+        {
+            (<ul className='row-elements'>
+                {
+                    functions.filter((func) => func.group === currentGroup).map((func) => (
+                        <li className="row-elements" style={{margin: 0}} key={func.function}>
+                            <button id={func.function} onClick={handleCreate}
+                                    style={{border: "2px solid #fcc521"}}
+                                    className="block-button head-button">
+                                {func.name}
+                            </button>
+                        </li>
+                    ))
+                }
+            </ul>)
+        }
+    </div>)
 }
 
 export default CreateButtons;

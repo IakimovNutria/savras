@@ -17,49 +17,39 @@ function SignIn(): JSX.Element {
     dispatch(signInAction({login: login, password: password}));
   }
 
-  let authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   if (authorizationStatus === AuthorizationStatus.AUTHORIZED) {
     return (<Navigate to={"/"} />);
   }
 
   return (
-      <div className="center">
-        <div className="column-elements sign-in-block">
+      <div className="authorization">
+        <section className="authorization__section">
           <h1>Sign in</h1>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <div style={{marginBottom: 5}}>
-                <input placeholder="Login" name="user-login" required className="text-input"
-                  id="user-login" value={login} onChange={(e) => setLogin(e.target.value)}
-                />
-              </div>
-              <div>
-                <input type="password" placeholder="Password" name="user-password" required className="text-input"
-                  id="user-password" value={password} onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="column-elements">
-              <button className="block-button" type="submit">Continue</button>
-            </div>
+          <form onSubmit={handleSubmit} className="authorization__form">
+            <input placeholder="Login" required
+                   className="authorization__login" value={login}
+                   onChange={(e) => setLogin(e.target.value)}
+            />
+            <input type="password" placeholder="Password" required
+                   className="authorization__password" value={password}
+                   onChange={(e) => setPassword(e.target.value)}
+            />
+            <button className="authorization__button" type="submit">Continue</button>
           </form>
           {
             authorizationStatus === AuthorizationStatus.BAD_AUTHENTICATE &&
-              (<div className="column-elements" style={{margin: 0, padding: 0, marginBottom: 15}}>
-                <h5 style={{padding: 0, margin: 0, color: "red"}}>invalid username or password</h5>
-              </div>)
+              (<span className="authorization__error">invalid username or password</span>)
           }
-        </div>
-        <div className="sign-in-block column-elements">
-          <h3 style={{margin: 0, marginTop: 15}}>Don't have account yet?</h3>
-          <Link to={`/sign-up`}>
-            <button className="block-button" type="button"
-                    onClick={() => dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED))}>
-              Sign up
-            </button>
+        </section>
+        <section className="authorization__section">
+          <h2>Don't have account yet?</h2>
+          <Link to={`/sign-up`} className="authorization__link"
+                onClick={() => dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED))}>
+            Sign up
           </Link>
-        </div>
+        </section>
       </div>
   );
 }

@@ -5,6 +5,8 @@ import {fetchPipeline} from "../../store/api-actions";
 import Cell from "../../components/cell/cell";
 import CreateButtons from "../../components/create-buttons/create-buttons";
 import {getCurrentPipeline, getIsPipelineLoading} from "../../store/pipeline-reducer/selectors";
+import Loading from "../../components/loading/loading";
+import NotFound from "../not-found/not-found";
 
 function Pipeline(): JSX.Element {
     const id = useParams().id;
@@ -23,24 +25,22 @@ function Pipeline(): JSX.Element {
 
     if (pipeline === null) {
         if (isLoading) {
-            return (<h1>Loading...</h1>);
+            return (<Loading />);
         } else {
-            return (<h1>Not found</h1>);
+            return (<NotFound />);
         }
     }
 
     return (
         <React.Fragment>
-            <div className="main-page-head">
-                <h1 className="header">{pipeline.name}</h1>
-                <button onClick={() => setVisible(!visible)} className="block-button head-button">Create</button>
-                <div className="func-buttons">
-                {
-                    visible && <CreateButtons pipelineId={id}/>
-                }
-                </div>
-                <button className="block-button head-button" onClick={() => {window.location.href="/"}}>Back to main</button>
-            </div>
+            <header className="pipeline-header">
+                <h1>{pipeline.name}</h1>
+                <button onClick={() => setVisible(!visible)} className="pipeline-header__button">Create</button>
+                <button className="pipeline-header__button" onClick={() => {window.location.href="/"}}>Back to main</button>
+            </header>
+            {
+                visible && <CreateButtons pipelineId={id}/>
+            }
             {
                 pipeline.cells.map((cellInfo) => (<Cell cellInfo={cellInfo} pipelineId={id}/>))
             }

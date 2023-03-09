@@ -24,44 +24,32 @@ function SignUp(): JSX.Element {
     }
 
     return (
-        <div className="center">
-            <div className="column-elements sign-in-block">
+        <div className="authorization">
+            <section className="authorization__section">
                 <h1>Sign up</h1>
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <div style={{marginBottom: 5}}>
-                            <input placeholder="Login" name="user-login" required className="text-input"
-                                   id="user-login" value={login}
-                                   onChange={(e) => setLogin(e.target.value)}
-                            />
-                        </div>
-                        <div>
-                            <input type="password" placeholder="Password" name="user-password" required className="text-input"
-                                   id="user-password" value={password}
-                                   onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </div>
-                    </div>
-                    <div className="column-elements">
-                        <button className="block-button" type="submit"><span>Continue</span></button>
-                    </div>
+                <form onSubmit={handleSubmit} className="authorization__form">
+                    <input placeholder="Login" required
+                           className="authorization__login" value={login}
+                           onChange={(e) => setLogin(e.target.value)}
+                    />
+                    <input type="password" placeholder="Password" required
+                           className="authorization__password" value={password}
+                           onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <button className="authorization__button" type="submit">Continue</button>
                 </form>
                 {
                     authorizationStatus === AuthorizationStatus.BAD_REGISTER &&
-                        (<div className="column-elements" style={{margin: 0, padding: 0, marginBottom: 15}}>
-                            <h5 style={{padding: 0, margin: 0, color: "red"}}>account already exist</h5>
-                        </div>)
+                        (<span className="authorization__error">account already exist</span>)
                 }
-            </div>
-            <div className="column-elements sign-in-block">
-                <h3 style={{margin: 0, marginTop: 15}}>Already have an account?</h3>
-                <Link to={`/sign-in`}>
-                    <button className="block-button" type="button"
-                            onClick={() => dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED))}>
-                        Sign in
-                    </button>
+            </section>
+            <section className="authorization__section">
+                <h2>Already have an account?</h2>
+                <Link to="/sign-in" className="authorization__link"
+                      onClick={() => dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED))}>
+                    Sign in
                 </Link>
-            </div>
+            </section>
         </div>
     );
 }
