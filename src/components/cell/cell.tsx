@@ -172,18 +172,24 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
         setCellParams((state) => {return {...state, graphOutputs: {...state.graphOutputs, [fieldName]: value}}});
     }
 
+    const getStatusStyle = (status: string) => {
+        if (CellStatusStyle.hasOwnProperty(status)) {
+            return CellStatusStyle[status as keyof typeof CellStatusStyle];
+        }
+        return {color: "red"};
+    }
+
     return (
-        <Draggable handle=".drag-handle" onStop={stopHandler}
+        <Draggable handle=".cell__header" onStop={stopHandler}
                    defaultPosition={{x: cellInfo.x, y: cellInfo.y}}
                    bounds={{left: 0, top: 0}} key={cellInfo.id}>
-            <div className="column-elements cell">
-                <div className="drag-handle row-elements">
-                    {/*@ts-ignore*/}
-                    <h3 style={{color: "red", ...CellStatusStyle[cellStatus], userSelect: "none"}}>{cellStatus}</h3>
-                    <h3 style={{margin: 0, marginLeft: "10px", userSelect: "none"}}>{cellInfo.function}</h3>
-                    <button className="block-button head-button" onClick={deleteCellHandler}>Delete</button>
-                </div>
-                <div className="column-elements" style={{width: "100%"}}>
+            <div className="cell">
+                <header className="cell__header">
+                    <span style={{...getStatusStyle(cellStatus)}} className="cell__status">{cellStatus}</span>
+                    <h2 className="cell__function-name">{cellInfo.function}</h2>
+                    <button className="cell__header-button" onClick={deleteCellHandler}>Delete</button>
+                </header>
+                <div className="cell__body">
                     <Inputs cellId={cellInfo.id}
                             updateInputHandler={updateInputHandler}
                             updateColumnHandler={updateInputColumnHandler}
@@ -202,7 +208,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
                              updateShowGraphHandler={updateShowGraphOutputHandler}/>
                     <Graphs cellId={cellInfo.id} cellParams={cellParams} outputs={cellInfo.outputs}/>
                 </div>
-                <button className="block-button cell-execute-button" key={cellInfo.id + "execute"}
+                <button className="cell__execute-button" key={cellInfo.id + "execute"}
                         onClick={executeHandler}>
                     Execute
                 </button>

@@ -55,7 +55,7 @@ function Outputs({cellId, outputs, updateOutputNameHandler, saveFilesHandler, ce
                                                checked={isShowGraph[output]}
                                                id={output} onChange={updateShowGraphHandler}/>
                                     </div>
-                                    <h3 className="cell-inside-block-element" style={{marginBottom: 0, marginTop: 0}}>{output}:</h3>
+                                    <span className="cell-inside-block-element" style={{marginBottom: 0, marginTop: 0}}>{output}:</span>
                                 </div>
                                 <input value={names[output]}
                                        className="cell-inside-block-element text-input"

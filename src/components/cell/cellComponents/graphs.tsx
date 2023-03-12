@@ -70,7 +70,7 @@ function Graphs({cellId, cellParams, outputs}: GraphsParams): JSX.Element {
                 graphs.map((graph) => {
                     return (
                         <li key={graph.name} className="column-elements">
-                            <h5 className="cell-inside-block-element" style={{margin: 0}}>{graph.name}</h5>
+                            <span className="cell-inside-block-element" style={{margin: 0}}>{graph.name}</span>
                             <Graph name={graph.name} timeSeries={graph.timeSeries} width={400} height={150}/>
                         </li>);
                 })

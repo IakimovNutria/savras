@@ -89,10 +89,10 @@ function InputParams({cellId, functionName, updateParamHandler, submitParamsHand
                             return (
                                 <li className="row-elements"
                                     key={cellId + param.name}>
-                                    <h3 className="cell-inside-block-element"
+                                    <span className="cell-inside-block-element"
                                         style={param.type === "checkbox" ? {transform: "translate(9px, 0)"} : {}}>
                                         {param.name}:
-                                    </h3>
+                                    </span>
                                     <input checked={inputsChecked[param.name]}
                                            value={inputsValues[param.name]}
                                            id={param.name} type={param.type}

@@ -14,7 +14,7 @@ body {
     align-items: center;
 }
 
-.main-header__button, .pipeline-header__button {
+.main-header__button, .pipeline-header__button, .cell__header-button {
     width: 150px;
     height: 50px;
     border: none;
@@ -99,7 +99,7 @@ body {
     text-decoration: none;
 }
 
-.main-body__section {
+.main-section {
     border-radius: 2px;
     background: white;
     width: 45%;
@@ -109,7 +109,7 @@ body {
     flex-direction: column;
 }
 
-.main-body__upload-form {
+.main-section__upload-form {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -122,10 +122,20 @@ body {
     height: fit-content;
 }
 
-.column-elements {
+.cell__body {
     display: flex;
     align-items: center;
     flex-direction: column;
+    width: 100%;
+}
+
+.cell__status {
+    user-select: none;
+}
+
+.cell__function-name {
+    user-select: none;
+    margin: 0 0 0 10px;
 }
 
 .row-elements {
@@ -138,9 +148,9 @@ body {
     padding: 0;
 }
 
-.main-body__item {
+.main-section__item {
     width: 100%;
-    height: 50px;
+    height: 40px;
     list-style-type: none;
     border-top: 1px solid #DDDDDD;
     border-bottom: 1px solid #DDDDDD;
@@ -149,7 +159,7 @@ body {
     align-items: center;
 }
 
-.main-body__items {
+.main-section__items {
     border: 5px solid #DDDDDD;
     border-top: 10px solid #DDDDDD;
     width: 95%;
@@ -169,11 +179,11 @@ body {
     justify-content: space-between;
 }
 
-.main-body__item_even {
+.main-section__item_even {
     background: white;
 }
 
-.main-body__item_odd {
+.main-section__item_odd {
     background: #F0F0F0;
 }
 
@@ -192,7 +202,9 @@ body {
 .block-button,
 .authorization__button,
 ::-webkit-file-upload-button,
-.main-body__upload-form-submit {
+.main-section__button,
+.main-section__item-button,
+.cell__execute-button {
     width: 130px;
     height: 50px;
     color: black;
@@ -209,7 +221,10 @@ body {
 .authorization__link:hover,
 .main-header__button:hover,
 .pipeline-header__button:hover,
-.main-body__upload-form-submit:hover{
+.main-section__button:hover,
+.main-section__item-button:hover,
+.cell__header-button:hover,
+.cell__execute-button:hover {
     background: #fcc521;
     color: #131D2B;
 }
@@ -220,9 +235,16 @@ body {
 .authorization__link:active,
 .main-header__button:active,
 .pipeline-header__button:active,
-.main-body__upload-form-submit:active {
+.main-section__button:active,
+.main-section__item-button:active,
+.cell__header-button:active,
+.cell__execute-button:active {
     background: #fab619;
     color: black;
+}
+
+.main-section__item-button {
+    height: 100%;
 }
 
 .not-block-button:hover {
@@ -335,13 +357,15 @@ body {
 }
 
 
-.drag-handle {
-    background: #ffdd2d;;
+.cell__header {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    background: #ffdd2d;
     width: 100%;
     height: 50px;
     margin: 0;
-    display: flex;
-    justify-content: space-between;
 }
 
 .cell-text-input {
@@ -379,6 +403,9 @@ body {
 }
 
 .cell {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     width: 800px;
     position: absolute;
     background: white;
@@ -432,7 +459,7 @@ body {
     padding: 0;
 }
 
-.cell-execute-button {
+.cell__execute-button {
     margin-top: 0;
     width: 500px;
 }

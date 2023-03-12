@@ -71,7 +71,7 @@ function Inputs({cellId, updateInputHandler, updateColumnHandler, submitInputsHa
                                            checked={isShowGraph[input.name]}
                                            id={input.name} onChange={updateShowGraphHandler}/>
                                 </div>
-                                <h3 style={{marginBottom: 0, marginTop: 0}}>{input.name}:</h3>
+                                <span style={{marginBottom: 0, marginTop: 0}}>{input.name}:</span>
                             </div>
                             <select value={(input.fileName === null) ? "choose file" : input.fileName}
                                     onChange={updateInputHandler}
