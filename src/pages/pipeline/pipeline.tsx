@@ -20,7 +20,7 @@ function Pipeline(): JSX.Element {
     }, [dispatch, id]);
 
     if (id === undefined) {
-        return (<h1>undefined</h1>);
+        return (<NotFound />);
     }
 
     if (pipeline === null) {

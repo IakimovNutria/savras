@@ -92,7 +92,7 @@ function MainPage(): JSX.Element {
                         }
                     </ul>
                 </section>
-                <section className="column-elements main-page-block">
+                <section className="main-body__section">
                     <h2 style={{display: "none"}}>pipelines</h2>
                     <h3>Create new pipeline</h3>
                     <form className="column-elements" onSubmit={handleCreatePipeline}>

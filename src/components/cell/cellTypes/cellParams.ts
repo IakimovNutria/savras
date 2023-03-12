@@ -1,6 +1,3 @@
-import Input from "./input";
-import Output from "./output";
-
 
 type CellParams = {
     inputParams: {[param: string]: any};
