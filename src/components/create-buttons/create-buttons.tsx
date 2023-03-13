@@ -19,14 +19,14 @@ function CreateButtons({pipelineId}: CreateButtonsProps) : JSX.Element {
     }
 
     return (
-    <div className="func-buttons">
+    <section className="cell-creation">
         {
-            <ul className="row-elements">
+            <ul className="cell-creation__func-types">
             {
                 [...new Set(functions.map((func) => func.group))].map((group) => (
-                    <li className="row-elements">
+                    <li>
                         <button onClick={() => setCurrentGroup(group)}
-                                className={`func-group-button ${group === currentGroup ? 'func-group-button_active' : ''}`}>
+                                className={`cell-creation__func-type ${group === currentGroup ? 'cell-creation__func-type_active' : ''}`}>
                             {group}
                         </button>
                     </li>))
@@ -34,13 +34,12 @@ function CreateButtons({pipelineId}: CreateButtonsProps) : JSX.Element {
             </ul>
         }
         {
-            (<ul className='row-elements'>
+            (<ul className='cell-creation__create-buttons'>
                 {
                     functions.filter((func) => func.group === currentGroup).map((func) => (
-                        <li className="row-elements" style={{margin: 0}} key={func.function}>
+                        <li key={func.function}>
                             <button id={func.function} onClick={handleCreate}
-                                    style={{border: "2px solid #fcc521"}}
-                                    className="block-button head-button">
+                                    className="cell-creation__create-button">
                                 {func.name}
                             </button>
                         </li>
@@ -48,7 +47,7 @@ function CreateButtons({pipelineId}: CreateButtonsProps) : JSX.Element {
                 }
             </ul>)
         }
-    </div>)
+    </section>)
 }
 
 export default CreateButtons;

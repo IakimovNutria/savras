@@ -29,11 +29,11 @@ function SignIn(): JSX.Element {
           <h1>Sign in</h1>
           <form onSubmit={handleSubmit} className="authorization__form">
             <input placeholder="Login" required
-                   className="authorization__login" value={login}
+                   className="authorization__login-input" value={login}
                    onChange={(e) => setLogin(e.target.value)}
             />
             <input type="password" placeholder="Password" required
-                   className="authorization__password" value={password}
+                   className="authorization__password-input" value={password}
                    onChange={(e) => setPassword(e.target.value)}
             />
             <button className="authorization__button" type="submit">Continue</button>

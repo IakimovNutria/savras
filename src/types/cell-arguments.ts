@@ -1,5 +1,5 @@
 
-type CellParams = {
+type CellArguments = {
     inputParams: {[param: string]: any};
     outputs: {[outputName: string]: string | null};
     inputsPath: {[inputName: string]: string | null};
@@ -8,4 +8,4 @@ type CellParams = {
     graphOutputs: {[name: string]: boolean};
 };
 
-export default CellParams;
+export default CellArguments;

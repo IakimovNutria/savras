@@ -4,6 +4,6 @@ enum AuthorizationStatus {
     BAD_AUTHENTICATE = 'bad authenticate',
     BAD_REGISTER = 'bad register',
     IN_PROCESS = 'in process'
-};
+}
 
 export default AuthorizationStatus;

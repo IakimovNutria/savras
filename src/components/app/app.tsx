@@ -9,6 +9,7 @@ import {useAppDispatch, useAppSelector} from "../../hooks";
 import AuthorizationStatus from "../../enums/authorization-status";
 import {fetchFilesAction, fetchSharedPipelinesAction, fetchUserPipelinesAction} from "../../store/api-actions";
 import {getAuthorizationStatus} from "../../store/authorization-reducer/selectors";
+import Loading from "../loading/loading";
 
 function App(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
@@ -21,7 +22,7 @@ function App(): JSX.Element {
     }
   }, [authorizationStatus]);
   if (authorizationStatus === AuthorizationStatus.IN_PROCESS) {
-    return (<h1>Loading</h1>);
+    return (<Loading />);
   }
 
 

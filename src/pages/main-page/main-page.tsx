@@ -95,8 +95,8 @@ function MainPage(): JSX.Element {
                 <section className="main-section">
                     <h2 style={{display: "none"}}>pipelines</h2>
                     <h3>Create new pipeline</h3>
-                    <form className="column-elements" onSubmit={handleCreatePipeline}>
-                        <input required className="main-page__input-text"
+                    <form className="main-section__create-form" onSubmit={handleCreatePipeline}>
+                        <input required className="main-page__text-input"
                                placeholder="Name" value={newPipelineName}
                                onChange={(e) => setNewPipelineName(e.target.value)}/>
                         <input className="main-section__button" type="submit" value="Create" />

@@ -1,8 +1,8 @@
 import React, {ChangeEvent, FormEvent, useEffect, useState} from "react";
-import {useAppSelector} from "../../../hooks";
-import ParamInput from "../cellTypes/paramInput";
-import CellParams from "../cellTypes/cellParams";
-import {getFunctions} from "../../../store/main-reducer/selectors";
+import {useAppSelector} from "../../hooks";
+import CellParamInput from "../../types/cell-param-input";
+import CellArguments from "../../types/cell-arguments";
+import {getFunctions} from "../../store/main-reducer/selectors";
 
 
 type InputParamsProps = {
@@ -11,14 +11,14 @@ type InputParamsProps = {
     functionName: string,
     updateParamHandler: (event: ChangeEvent<HTMLInputElement>) => void,
     submitParamsHandler: (event: FormEvent<HTMLButtonElement>) => void,
-    cellParams: CellParams
+    cellParams: CellArguments
 };
 
-function InputParams({cellId, functionName, updateParamHandler, submitParamsHandler, inputParams, cellParams}: InputParamsProps): JSX.Element {
+function CellParamInputs({cellId, functionName, updateParamHandler, submitParamsHandler, inputParams, cellParams}: InputParamsProps): JSX.Element {
     const functionsInfo = useAppSelector(getFunctions);
     const functionInfo = functionsInfo.find((elem) => (elem.function === functionName));
 
-    const defaultParams: ParamInput[] = [];
+    const defaultParams: CellParamInput[] = [];
     const [params, setParams] = useState(defaultParams);
     const defaultInputsChecked: {[key: string]: boolean} = {};
     const [inputsChecked, setInputsChecked] = useState(defaultInputsChecked);
@@ -30,7 +30,7 @@ function InputParams({cellId, functionName, updateParamHandler, submitParamsHand
         if (functionInfo !== undefined) {
             for (const key in functionInfo.input_params) {
                 const fieldType = functionInfo.input_params[key];
-                const toPush: ParamInput = {
+                const toPush: CellParamInput = {
                     name: key,
                     type: "",
                     pattern: "*",
@@ -70,34 +70,27 @@ function InputParams({cellId, functionName, updateParamHandler, submitParamsHand
         params.forEach((param) => {
            if (param.type === "checkbox") {
                setInputsChecked((state) => {return {...state, [param.name]: cellParams.inputParams[param.name]}});
-           } else {
-               if (cellParams.inputParams[param.name] !== null) {
-                   setInputsValues((state) => {
-                       return {...state, [param.name]: cellParams.inputParams[param.name]}
-                   });
-               }
+           } else if (cellParams.inputParams[param.name] !== null) {
+               setInputsValues((state) => {
+                   return {...state, [param.name]: cellParams.inputParams[param.name]}
+               });
            }
         });
     }, [cellParams, params]);
 
     return (
-        <div className="cell-inside-block row-elements">
-            <h3 className="cell-inside-block-element">Params</h3>
-            <ul className="row-elements cell-inside-ul">
+        <div className="cell__params">
+            <h3>Params</h3>
+            <ul className="cell__param-items">
                 {
                     params.map((param) => {
                             return (
-                                <li className="row-elements"
-                                    key={cellId + param.name}>
-                                    <span className="cell-inside-block-element"
-                                        style={param.type === "checkbox" ? {transform: "translate(9px, 0)"} : {}}>
-                                        {param.name}:
-                                    </span>
+                                <li className="cell__param-item" key={cellId + param.name}>
+                                    <span>{param.name}:</span>
                                     <input checked={inputsChecked[param.name]}
                                            value={inputsValues[param.name]}
                                            id={param.name} type={param.type}
-                                           className={`cell-inside-block-element ${param.type !== "checkbox" ? "text-input" : ""}`}
-                                           style={param.type === "checkbox" ? {transform: "translate(9px, 0)"} : {height: "35px", width: "80px"}}
+                                           className={param.type !== "checkbox" ? "cell__text-input" : ""}
                                            pattern={param.pattern} onChange={updateParamHandler}
                                     />
                                 </li>
@@ -106,8 +99,8 @@ function InputParams({cellId, functionName, updateParamHandler, submitParamsHand
                     )
                 }
             </ul>
-            <button className="block-button cell-inside-button" onClick={submitParamsHandler}>Save params</button>
+            <button className="cell__save-button" onClick={submitParamsHandler}>Save params</button>
         </div>);
 }
 
-export default InputParams;
+export default CellParamInputs;

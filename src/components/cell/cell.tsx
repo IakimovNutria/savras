@@ -10,12 +10,12 @@ import {
     updateParams
 } from "../../store/api-actions";
 import React, {FormEvent, useEffect, useState} from "react";
-import Inputs from "./cellComponents/inputs";
-import CellParams from "./cellTypes/cellParams";
-import InputParams from "./cellComponents/inputParams";
-import Outputs from "./cellComponents/outputs";
+import CellInputs from "../cell-inputs/cell-inputs";
+import CellArguments from "../../types/cell-arguments";
+import CellParamInputs from "../cell-param-inputs/cell-param-inputs";
+import CellOutputs from "../cell-outputs/cell-outputs";
 import {CellStatus, CellStatusStyle} from "../../enums/cell-status";
-import Graphs from "./cellComponents/graphs";
+import CellGraphs from "../cell-graphs/cell-graphs";
 import useInterval from "@use-it/interval";
 import {getFilesColumns, getFunctions} from "../../store/main-reducer/selectors";
 import {getCellsStatus} from "../../store/pipeline-reducer/selectors";
@@ -34,7 +34,7 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
     const dataColumns = useAppSelector(getFilesColumns);
     const cellStatus: string = useAppSelector(getCellsStatus)[cellInfo.id];
 
-    const defaultCellParams: CellParams = {
+    const defaultCellParams: CellArguments = {
         inputsPath: cellInfo.inputs,
         inputParams: cellInfo.input_params,
         outputs: {},
@@ -190,23 +190,23 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
                     <button className="cell__header-button" onClick={deleteCellHandler}>Delete</button>
                 </header>
                 <div className="cell__body">
-                    <Inputs cellId={cellInfo.id}
-                            updateInputHandler={updateInputHandler}
-                            updateColumnHandler={updateInputColumnHandler}
-                            submitInputsHandler={submitInputsHandler}
-                            updateShowGraphHandler={updateShowGraphInputsHandler}
-                            cellParams={cellParams}/>
-                    <InputParams cellId={cellInfo.id} functionName={cellInfo.function}
-                                 inputParams={cellInfo.input_params}
-                                 submitParamsHandler={submitParamsHandler}
-                                 updateParamHandler={updateParamHandler}
-                                 cellParams={cellParams}/>
-                    <Outputs cellId={cellInfo.id} outputs={cellInfo.outputs}
-                             saveFilesHandler={saveFilesHandler}
-                             updateOutputNameHandler={updateOutputNameHandler}
-                             cellParams={cellParams}
-                             updateShowGraphHandler={updateShowGraphOutputHandler}/>
-                    <Graphs cellId={cellInfo.id} cellParams={cellParams} outputs={cellInfo.outputs}/>
+                    <CellInputs cellId={cellInfo.id}
+                                updateInputHandler={updateInputHandler}
+                                updateColumnHandler={updateInputColumnHandler}
+                                submitInputsHandler={submitInputsHandler}
+                                updateShowGraphHandler={updateShowGraphInputsHandler}
+                                cellParams={cellParams}/>
+                    <CellParamInputs cellId={cellInfo.id} functionName={cellInfo.function}
+                                     inputParams={cellInfo.input_params}
+                                     submitParamsHandler={submitParamsHandler}
+                                     updateParamHandler={updateParamHandler}
+                                     cellParams={cellParams}/>
+                    <CellOutputs cellId={cellInfo.id} outputs={cellInfo.outputs}
+                                 saveFilesHandler={saveFilesHandler}
+                                 updateOutputNameHandler={updateOutputNameHandler}
+                                 cellParams={cellParams}
+                                 updateShowGraphHandler={updateShowGraphOutputHandler}/>
+                    <CellGraphs cellId={cellInfo.id} cellParams={cellParams} outputs={cellInfo.outputs}/>
                 </div>
                 <button className="cell__execute-button" key={cellInfo.id + "execute"}
                         onClick={executeHandler}>

@@ -1,19 +1,19 @@
 import React, {useEffect, useState} from "react";
-import Graph from "../../graph/graph";
-import {getFileTimeSeries} from "../../../store/api-actions";
-import {useAppDispatch, useAppSelector} from "../../../hooks";
-import TimeSeries from "../../../types/time-series";
-import CellParams from "../cellTypes/cellParams";
-import {getGraphs} from "../../../store/pipeline-reducer/selectors";
+import Graph from "../graph/graph";
+import {getFileTimeSeries} from "../../store/api-actions";
+import {useAppDispatch, useAppSelector} from "../../hooks";
+import TimeSeries from "../../types/time-series";
+import CellArguments from "../../types/cell-arguments";
+import {getGraphs} from "../../store/pipeline-reducer/selectors";
 
 
 type GraphsParams = {
     cellId: string;
-    cellParams: CellParams;
+    cellParams: CellArguments;
     outputs: {[key: string]: string | null};
 };
 
-function Graphs({cellId, cellParams, outputs}: GraphsParams): JSX.Element {
+function CellGraphs({cellId, cellParams, outputs}: GraphsParams): JSX.Element {
     const graphsInfo = useAppSelector(getGraphs)[cellId];
     const dispatch = useAppDispatch();
     const defaultGraphsValue: {name: string, timeSeries: TimeSeries}[] = [];
@@ -65,12 +65,12 @@ function Graphs({cellId, cellParams, outputs}: GraphsParams): JSX.Element {
 
 
     return (graphs.length !== 0) ? (
-        <ul className="block cell-inside-graphs row-elements">
+        <ul className="cell__graphs">
             {
                 graphs.map((graph) => {
                     return (
-                        <li key={graph.name} className="column-elements">
-                            <span className="cell-inside-block-element" style={{margin: 0}}>{graph.name}</span>
+                        <li key={graph.name} className="cell__graph-item">
+                            <span className="cell__graph-name" style={{margin: 0}}>{graph.name}</span>
                             <Graph name={graph.name} timeSeries={graph.timeSeries} width={400} height={150}/>
                         </li>);
                 })
@@ -79,4 +79,4 @@ function Graphs({cellId, cellParams, outputs}: GraphsParams): JSX.Element {
     ) : <></>;
 }
 
-export default Graphs;
+export default CellGraphs;
