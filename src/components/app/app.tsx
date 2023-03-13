@@ -1,6 +1,6 @@
 import SignIn from '../../pages/sign-in/sign-in';
 import SignUp from '../../pages/sign-up/sign-up';
-import MainPage from '../../pages/main-page/main-page';
+import Main from '../../pages/main/main';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import Pipeline from '../../pages/pipeline/pipeline';
 import PrivateRoute from "../private-route/private-route";
@@ -32,7 +32,7 @@ function App(): JSX.Element {
         <Route path='sign-in' element={(<SignIn />)}/>
         <Route path='sign-up' element={(<SignUp />)}/>
         <Route path='/' element={<PrivateRoute hasAccess={authorizationStatus === AuthorizationStatus.AUTHORIZED}
-                                               navigateTo={<MainPage />}/>}/>
+                                               navigateTo={<Main />}/>}/>
         <Route path='pipeline/:id' element={<PrivateRoute hasAccess={authorizationStatus === AuthorizationStatus.AUTHORIZED}
                                                           navigateTo={<Pipeline />} />}/>
       </Routes>

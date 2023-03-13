@@ -33,10 +33,10 @@ function Pipeline(): JSX.Element {
 
     return (
         <React.Fragment>
-            <header className="pipeline-header">
+            <header className="pipeline__header">
                 <h1>{pipeline.name}</h1>
-                <button onClick={() => setVisible(!visible)} className="pipeline-header__button">Create</button>
-                <button className="pipeline-header__button" onClick={() => {window.location.href="/"}}>Back to main</button>
+                <button onClick={() => setVisible(!visible)} className="pipeline__header-button">Create</button>
+                <button className="pipeline__header-button" onClick={() => {window.location.href="/"}}>Back to main</button>
             </header>
             {
                 visible && <CreateButtons pipelineId={id}/>
