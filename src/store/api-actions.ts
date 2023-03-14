@@ -268,14 +268,15 @@ export const deleteEdge = createAsyncThunk<void, {cellIdFrom: string, cellIdTo: 
     },
 );
 
-export const forkPipeline = createAsyncThunk<void, {pipelineId: string}, {
+export const forkPipeline = createAsyncThunk<ShortPipelineInfo, {pipelineId: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
     '/pipelines/fork',
-    async ({pipelineId}, {dispatch, extra: api}) => {
-        const data = await api.post('/pipelines/fork', {pipeline_id: pipelineId});
+    async ({pipelineId}, {extra: api}) => {
+        const {data} = await api.post<ShortPipelineInfo>('/pipelines/fork', {pipeline_id: pipelineId});
+        return data;
     },
 );
 

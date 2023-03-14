@@ -7,7 +7,8 @@ import {
     createPipeline,
     deleteFile,
     deletePipeline, downloadFile,
-    uploadFile
+    uploadFile, sharePipeline,
+    forkPipeline
 } from '../../store/api-actions';
 import {getFiles, getSharedPipelines, getUserPipelines} from '../../store/main-reducer/selectors';
 import {Link} from 'react-router-dom';
@@ -20,8 +21,10 @@ function Main(): JSX.Element {
     const [showDeleteFileModal, setShowDeleteFileModal] = useState(false);
     const [showDeletePipelineModal, setShowDeletePipelineModal] = useState(false);
     const [showShareModal, setShowShareModal] = useState(false);
+    const [pipelineToShare, setPipelineToShare] = useState('');
     const [fileToDelete, setFileToDelete] = useState('');
     const [pipelineToDelete, setPipelineToDelete] = useState('');
+    const [userToShare, setUserToShare] = useState('');
     const [, , removeCookie] = useCookies(['token']);
     const dispatch = useAppDispatch();
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -79,6 +82,19 @@ function Main(): JSX.Element {
         dispatch(downloadFile({path: path, name: name}));
     }
 
+    function openShareModal(event: FormEvent<HTMLButtonElement>) {
+        event.preventDefault();
+        const pipelineId = event.currentTarget.id;
+        setPipelineToShare(pipelineId);
+        setShowShareModal(true);
+    }
+
+    function sharePipelineHandler() {
+        dispatch(sharePipeline({username: userToShare, pipelineId: pipelineToShare}));
+        setUserToShare('');
+        setShowShareModal(false);
+    }
+
     return (
         <React.Fragment>
             <header className='main__header'>
@@ -120,12 +136,17 @@ function Main(): JSX.Element {
                     <h3>My pipelines</h3>
                     <ul className='main__list'>
                         {
-                            // TODO: добавить кнопку share, fork
                             userPipelines.map((pipeline, index) => (
                                 <li className={`main__list-item ${index % 2 === 0 ? 'main__list-item_even' : 'main__list-item_odd'}`} key={pipeline.id}>
                                     <Link className='main__list-item-link' id={pipeline.id}
                                           to={`/pipeline/${pipeline.id}`}>Open</Link>
+                                    <button className='main__list-item-button' id={pipeline.id}
+                                            onClick={() => dispatch(forkPipeline({pipelineId: pipeline.id}))}>
+                                        Fork
+                                    </button>
                                     <span>{pipeline.name}</span>
+                                    <button className='main__list-item-button' id={pipeline.id}
+                                            onClick={openShareModal}>Share</button>
                                     <button className='main__list-item-button' id={pipeline.id}
                                             onClick={openDeletePipelineModal}>Delete</button>
                                 </li>
@@ -136,12 +157,15 @@ function Main(): JSX.Element {
                     <h3>Shared pipelines</h3>
                     <ul className='main__list'>
                         {
-                            // TODO: добавить кнопку fork
                             sharedPipelines.map((pipeline, index) => (
                                 <li className={`main__list-item ${index % 2 === 0 ? 'main__list-item_even' : 'main__list-item_odd'}`}
                                     key={pipeline.id}>
-                                    <button className='main__list-item-button' id={pipeline.id} name={pipeline.name}
-                                            onClick={() => {window.location.href=`/pipeline/${pipeline.id}`}}>Open</button>
+                                    <Link className='main__list-item-link' id={pipeline.id}
+                                          to={`/pipeline/${pipeline.id}`}>Open</Link>
+                                    <button className='main__list-item-button' id={pipeline.id}
+                                            onClick={() => dispatch(forkPipeline({pipelineId: pipeline.id}))}>
+                                        Fork
+                                    </button>
                                     <span>{pipeline.name}</span>
                                     <button className='main__list-item-button' id={pipeline.id}
                                             onClick={openDeletePipelineModal}>Delete</button>
@@ -169,10 +193,11 @@ function Main(): JSX.Element {
             }
             {
                 showShareModal && (
-                    <Modal text={'Share pipeline'} title={'Enter the login of the user you want to share the pipeline with'}>
+                    <Modal text={'Enter the login of the user you want to share the pipeline with'} title={'Share pipeline'}>
                         <form>
-                            <input type='text'/>
-                            <input type='submit'>Confirm</input>
+                            <input type='text' value={userToShare} onChange={(e) => setUserToShare(e.currentTarget.value)}/>
+                            <button onClick={sharePipelineHandler}>Confirm</button>
+                            <button onClick={() => setShowShareModal(false)}>Exit</button>
                         </form>
                     </Modal>
                 )

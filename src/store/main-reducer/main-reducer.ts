@@ -5,7 +5,7 @@ import {
     createPipeline,
     deleteFile, deletePipeline, fetchCellsFunctionsInfo, fetchFileColumns, fetchFilesAction,
     fetchSharedPipelinesAction,
-    fetchUserPipelinesAction,
+    fetchUserPipelinesAction, forkPipeline,
     saveFile,
     uploadFile
 } from "../api-actions";
@@ -41,6 +41,9 @@ export const mainReducer = createSlice({
                 state.userPipelines = action.payload;
             })
             .addCase(createPipeline.fulfilled, (state, action) => {
+                state.userPipelines = [action.payload].concat(state.userPipelines);
+            })
+            .addCase(forkPipeline.fulfilled, (state, action) => {
                 state.userPipelines = [action.payload].concat(state.userPipelines);
             })
             .addCase(fetchFilesAction.fulfilled, (state, action) => {
