@@ -24,10 +24,11 @@ import {getCellsStatus} from "../../store/pipeline-reducer/selectors";
 type CellProps = {
     cellInfo: CellInfo;
     pipelineId: string;
+    canEdit: boolean;
 };
 
 
-function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
+function Cell({cellInfo, pipelineId, canEdit}: CellProps): JSX.Element {
     const dispatch = useAppDispatch();
     const functionsInfo = useAppSelector(getFunctions);
     const functionInfo = functionsInfo.find((elem) => (elem.function === cellInfo.function));
@@ -182,7 +183,8 @@ function Cell({cellInfo, pipelineId}: CellProps): JSX.Element {
     return (
         <Draggable handle=".cell__header" onStop={stopHandler}
                    defaultPosition={{x: cellInfo.x, y: cellInfo.y}}
-                   bounds={{left: 0, top: 0}} key={cellInfo.id}>
+                   bounds={{left: 0, top: 0}} key={cellInfo.id}
+                   disabled={!canEdit}>
             <div className="cell">
                 <header className="cell__header">
                     <span style={{...getStatusStyle(cellStatus)}} className="cell__status">{cellStatus}</span>
