@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import Graph from '../graph/graph';
 import { getFileTimeSeries } from '../../store/api-actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -15,9 +15,7 @@ type GraphsParams = {
 function CellGraphs({ cellId, cellParams, outputs }: GraphsParams): JSX.Element {
 	const graphsInfo = useAppSelector(getGraphs)[cellId];
 	const dispatch = useAppDispatch();
-	const defaultGraphsValue: {name: string, timeSeries: TimeSeries}[] = [];
-	const [graphs, setGraphs] = useState(defaultGraphsValue);
-	useEffect(() => {
+	const graphs: {name: string, timeSeries: TimeSeries}[] = useMemo(() => {
 		const newGraphs = [];
 		for (const key in graphsInfo) {
 			if (graphsInfo[key] && cellParams.graphInputs[key]) {
@@ -29,7 +27,7 @@ function CellGraphs({ cellId, cellParams, outputs }: GraphsParams): JSX.Element 
 				newGraphs.push({ name: key, timeSeries: graphsInfo[key] });
 			}
 		}
-		setGraphs(newGraphs);
+		return newGraphs;
 	}, [cellParams, graphsInfo]);
 
 	useEffect(() => {
