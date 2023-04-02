@@ -1,47 +1,46 @@
-import {createAsyncThunk} from '@reduxjs/toolkit';
-import {AppDispatch, State} from '../types/state';
-import {AxiosInstance} from 'axios';
-import AuthorizationInfo from "../types/authorization-info";
-import FileInfo from "../types/file-info";
-import {saveAs} from "file-saver";
-import TimeSeries from "../types/time-series";
-import PipelineInfo from "../types/pipeline-info";
-import ShortPipelineInfo from "../types/short-pipeline-info";
-import CellInfo from "../types/cell-info";
-import CellsFunction from "../types/cells-function";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AxiosInstance } from 'axios';
+import { saveAs } from 'file-saver';
+import { AppDispatch, State } from '../types/state';
+import AuthorizationInfo from '../types/authorization-info';
+import FileInfo from '../types/file-info';
+import TimeSeries from '../types/time-series';
+import PipelineInfo from '../types/pipeline-info';
+import ShortPipelineInfo from '../types/short-pipeline-info';
+import CellInfo from '../types/cell-info';
+import CellsFunction from '../types/cells-function';
 
 export const fetchFilesAction = createAsyncThunk<FileInfo[], undefined, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
-    '/files',
-    async (_arg, {extra: api}) => {
-        const {data} = await api.get<FileInfo[]>('/files');
-        return data;
-    }
+	'/files',
+	async (_arg, { extra: api }) => {
+		const { data } = await api.get<FileInfo[]>('/files');
+		return data;
+	},
 );
 
 export const fetchFileColumns = createAsyncThunk<{columns: string[], path: string}, {path: string}, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
-}>('/files/columns',async ({path}, {extra: api}) => {
-        const {data} = await api.get<string[]>('/files/columns', {params: {path: path}});
-        return {columns: data, path: path};
-    }
-);
+}>('/files/columns', async ({ path }, { extra: api }) => {
+	const { data } = await api.get<string[]>('/files/columns', { params: { path } });
+	return { columns: data, path };
+});
 
 export const fetchUserPipelinesAction = createAsyncThunk<ShortPipelineInfo[], undefined, {
     dispatch: AppDispatch,
     state: State,
     extra: AxiosInstance
 }>(
-    '/pipelines/own',
-    async (_arg, {extra: api}) => {
-        const {data} = await api.get<ShortPipelineInfo[]>('/pipelines/own');
-        return data;
-    },
+	'/pipelines/own',
+	async (_arg, { extra: api }) => {
+		const { data } = await api.get<ShortPipelineInfo[]>('/pipelines/own');
+		return data;
+	},
 );
 
 export const fetchSharedPipelinesAction = createAsyncThunk<ShortPipelineInfo[], undefined, {
@@ -49,11 +48,11 @@ export const fetchSharedPipelinesAction = createAsyncThunk<ShortPipelineInfo[], 
     state: State,
     extra: AxiosInstance
 }>(
-    '/pipelines/shared',
-    async (_arg, {extra: api}) => {
-        const {data} = await api.get<ShortPipelineInfo[]>('/pipelines/shared');
-        return data;
-    },
+	'/pipelines/shared',
+	async (_arg, { extra: api }) => {
+		const { data } = await api.get<ShortPipelineInfo[]>('/pipelines/shared');
+		return data;
+	},
 );
 
 export const checkAuthAction = createAsyncThunk<void, undefined, {
@@ -61,10 +60,10 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
     state: State,
     extra: AxiosInstance
 }>(
-    '/user',
-    async (_arg, {extra: api}) => {
-        await api.get("/user");
-    },
+	'/user',
+	async (_arg, { extra: api }) => {
+		await api.get('/user');
+	},
 );
 
 export const signInAction = createAsyncThunk<void, AuthorizationInfo, {
@@ -72,10 +71,10 @@ export const signInAction = createAsyncThunk<void, AuthorizationInfo, {
     state: State,
     extra: AxiosInstance
 }>(
-    '/user/authentication',
-    async ({login, password}, {extra: api}) => {
-        await api.post("/user/authentication", `username=${login}&password=${password}`);
-    },
+	'/user/authentication',
+	async ({ login, password }, { extra: api }) => {
+		await api.post('/user/authentication', `username=${login}&password=${password}`);
+	},
 );
 
 export const signUpAction = createAsyncThunk<void, AuthorizationInfo, {
@@ -83,10 +82,10 @@ export const signUpAction = createAsyncThunk<void, AuthorizationInfo, {
     state: State,
     extra: AxiosInstance
 }>(
-    '/user/registration',
-    async ({login, password}, {extra: api}) => {
-        await api.post("/user/registration", {username: login, password: password});
-    },
+	'/user/registration',
+	async ({ login, password }, { extra: api }) => {
+		await api.post('/user/registration', { username: login, password });
+	},
 );
 
 export const fetchCellInfo = createAsyncThunk<CellInfo, {cellId: string}, {
@@ -94,11 +93,11 @@ export const fetchCellInfo = createAsyncThunk<CellInfo, {cellId: string}, {
     state: State,
     extra: AxiosInstance
 }>(
-    '/cells',
-    async ({cellId}, {extra: api}) => {
-        const {data} = await api.get("/cells", {params: {cell_id: cellId}});
-        return data;
-    },
+	'/cells',
+	async ({ cellId }, { extra: api }) => {
+		const { data } = await api.get('/cells', { params: { cell_id: cellId } });
+		return data;
+	},
 );
 
 export const fetchCellsFunctionsInfo = createAsyncThunk<CellsFunction[], undefined, {
@@ -106,11 +105,11 @@ export const fetchCellsFunctionsInfo = createAsyncThunk<CellsFunction[], undefin
     state: State,
     extra: AxiosInstance
 }>(
-    '/cells/functions',
-    async (_arg, {extra: api}) => {
-        const {data} = await api.get("/cells/functions");
-        return data;
-    },
+	'/cells/functions',
+	async (_arg, { extra: api }) => {
+		const { data } = await api.get('/cells/functions');
+		return data;
+	},
 );
 
 export const fetchPipeline = createAsyncThunk<PipelineInfo, {pipelineId: string}, {
@@ -118,11 +117,11 @@ export const fetchPipeline = createAsyncThunk<PipelineInfo, {pipelineId: string}
     state: State,
     extra: AxiosInstance
 }>(
-    '/pipelines',
-    async ({pipelineId}, {extra: api}) => {
-        const {data} = await api.get<PipelineInfo>("/pipelines", {params: {pipeline_id: pipelineId}});
-        return data;
-    },
+	'/pipelines',
+	async ({ pipelineId }, { extra: api }) => {
+		const { data } = await api.get<PipelineInfo>('/pipelines', { params: { pipeline_id: pipelineId } });
+		return data;
+	},
 );
 
 export const createCell = createAsyncThunk<CellInfo, {pipelineId: string, functionName: string}, {
@@ -130,11 +129,11 @@ export const createCell = createAsyncThunk<CellInfo, {pipelineId: string, functi
     state: State,
     extra: AxiosInstance
 }>(
-    '/cells/create',
-    async ({pipelineId, functionName}, {extra: api}) => {
-        const {data} = await api.post("/cells/create", {pipeline_id: pipelineId, function: functionName});
-        return data;
-    },
+	'/cells/create',
+	async ({ pipelineId, functionName }, { extra: api }) => {
+		const { data } = await api.post('/cells/create', { pipeline_id: pipelineId, function: functionName });
+		return data;
+	},
 );
 
 export const uploadFile = createAsyncThunk<FileInfo, {formData: FormData}, {
@@ -142,11 +141,11 @@ export const uploadFile = createAsyncThunk<FileInfo, {formData: FormData}, {
     state: State,
     extra: AxiosInstance
 }>(
-    '/files/upload',
-    async ({formData}, {extra: api}) => {
-        const {data} = await api.post<FileInfo>('/files/upload', formData, {headers: {"Content-Type": "multipart/form-data"}});
-        return data;
-    },
+	'/files/upload',
+	async ({ formData }, { extra: api }) => {
+		const { data } = await api.post<FileInfo>('/files/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+		return data;
+	},
 );
 
 export const downloadFile = createAsyncThunk<void, {path: string, name: string}, {
@@ -154,11 +153,11 @@ export const downloadFile = createAsyncThunk<void, {path: string, name: string},
     state: State,
     extra: AxiosInstance
 }>(
-    '/files/download',
-    async ({path, name}, {extra: api}) => {
-        api.get('/files/download', {params: {path: path}, responseType: "blob"})
-            .then((r) => saveAs(r.data, name));
-    },
+	'/files/download',
+	async ({ path, name }, { extra: api }) => {
+		api.get('/files/download', { params: { path }, responseType: 'blob' })
+			.then((r) => saveAs(r.data, name));
+	},
 );
 
 export const deleteFile = createAsyncThunk<{path: string}, {path: string}, {
@@ -166,11 +165,11 @@ export const deleteFile = createAsyncThunk<{path: string}, {path: string}, {
     state: State,
     extra: AxiosInstance
 }>(
-    '/files/delete',
-    async ({path}, {dispatch, extra: api}) => {
-        await api.delete('/files/delete', {params: {path: path}});
-        return {path: path};
-    },
+	'/files/delete',
+	async ({ path }, { extra: api }) => {
+		await api.delete('/files/delete', { params: { path } });
+		return { path };
+	},
 );
 
 export const getFileTimeSeries = createAsyncThunk<
@@ -180,11 +179,13 @@ export const getFileTimeSeries = createAsyncThunk<
     state: State,
     extra: AxiosInstance
 }>(
-    '/files/time_series',
-    async ({path, dataColumn, cellId, graphName}, {extra: api}) => {
-        const {data} = await api.get<TimeSeries>('/files/time_series', {params: {path: path, data_column: dataColumn}});
-        return {cellId: cellId, name: graphName, timeSeries: data};
-    },
+	'/files/time_series',
+	async ({
+		path, dataColumn, cellId, graphName,
+	}, { extra: api }) => {
+		const { data } = await api.get<TimeSeries>('/files/time_series', { params: { path, data_column: dataColumn } });
+		return { cellId, name: graphName, timeSeries: data };
+	},
 );
 
 export const renameFile = createAsyncThunk<{path: string, newName: string}, {path: string, newName: string}, {
@@ -192,11 +193,11 @@ export const renameFile = createAsyncThunk<{path: string, newName: string}, {pat
     state: State,
     extra: AxiosInstance
 }>(
-    '/files/rename',
-    async ({path, newName}, {dispatch, extra: api}) => {
-        await api.post('/files/rename', {new_name: newName, path: path});
-        return {path: path, newName: newName};
-    },
+	'/files/rename',
+	async ({ path, newName }, { extra: api }) => {
+		await api.post('/files/rename', { new_name: newName, path });
+		return { path, newName };
+	},
 );
 
 export const createPipeline = createAsyncThunk<ShortPipelineInfo, {name: string}, {
@@ -204,11 +205,11 @@ export const createPipeline = createAsyncThunk<ShortPipelineInfo, {name: string}
     state: State,
     extra: AxiosInstance
 }>(
-    'pipelines/create',
-    async ({name}, {extra: api}) => {
-        const {data} = await api.post<ShortPipelineInfo>('pipelines/create', {name: name});
-        return data;
-    },
+	'pipelines/create',
+	async ({ name }, { extra: api }) => {
+		const { data } = await api.post<ShortPipelineInfo>('pipelines/create', { name });
+		return data;
+	},
 );
 
 export const deletePipeline = createAsyncThunk<{pipelineId: string}, {pipelineId: string}, {
@@ -216,11 +217,11 @@ export const deletePipeline = createAsyncThunk<{pipelineId: string}, {pipelineId
     state: State,
     extra: AxiosInstance
 }>(
-    '/pipelines/delete',
-    async ({pipelineId}, {extra: api}) => {
-        await api.delete('/pipelines', {params: {pipeline_id: pipelineId}});
-        return {pipelineId: pipelineId};
-    },
+	'/pipelines/delete',
+	async ({ pipelineId }, { extra: api }) => {
+		await api.delete('/pipelines', { params: { pipeline_id: pipelineId } });
+		return { pipelineId };
+	},
 );
 
 export const sharePipeline = createAsyncThunk<void, {username: string, pipelineId: string}, {
@@ -228,10 +229,10 @@ export const sharePipeline = createAsyncThunk<void, {username: string, pipelineI
     state: State,
     extra: AxiosInstance
 }>(
-    '/pipelines/share',
-    async ({username, pipelineId}, {dispatch, extra: api}) => {
-        await api.post('/pipelines/share', {added_user: username, pipeline_id: pipelineId});
-    },
+	'/pipelines/share',
+	async ({ username, pipelineId }, { extra: api }) => {
+		await api.post('/pipelines/share', { added_user: username, pipeline_id: pipelineId });
+	},
 );
 
 export const renamePipeline = createAsyncThunk<{pipelineId: string, newName: string}, {newName: string, pipelineId: string}, {
@@ -239,11 +240,11 @@ export const renamePipeline = createAsyncThunk<{pipelineId: string, newName: str
     state: State,
     extra: AxiosInstance
 }>(
-    '/pipelines/rename',
-    async ({newName, pipelineId}, {dispatch, extra: api}) => {
-        await api.post('/pipelines/rename', {new_name: newName, pipeline_id: pipelineId});
-        return {pipelineId: pipelineId, newName: newName};
-    },
+	'/pipelines/rename',
+	async ({ newName, pipelineId }, { extra: api }) => {
+		await api.post('/pipelines/rename', { new_name: newName, pipeline_id: pipelineId });
+		return { pipelineId, newName };
+	},
 );
 
 export const addEdge = createAsyncThunk<void, {cellIdFrom: string, cellIdTo: string}, {
@@ -251,10 +252,10 @@ export const addEdge = createAsyncThunk<void, {cellIdFrom: string, cellIdTo: str
     state: State,
     extra: AxiosInstance
 }>(
-    '/pipelines/edge',
-    async ({cellIdFrom, cellIdTo}, {dispatch, extra: api}) => {
-        const data = await api.post('/pipelines/edge', {cell_id_from: cellIdFrom, cell_id_to: cellIdTo});
-    },
+	'/pipelines/edge',
+	async ({ cellIdFrom, cellIdTo }, { extra: api }) => {
+		await api.post('/pipelines/edge', { cell_id_from: cellIdFrom, cell_id_to: cellIdTo });
+	},
 );
 
 export const deleteEdge = createAsyncThunk<void, {cellIdFrom: string, cellIdTo: string}, {
@@ -262,10 +263,10 @@ export const deleteEdge = createAsyncThunk<void, {cellIdFrom: string, cellIdTo: 
     state: State,
     extra: AxiosInstance
 }>(
-    '/pipelines/edge',
-    async ({cellIdFrom, cellIdTo}, {dispatch, extra: api}) => {
-        const data = await api.delete('/pipelines/edge', {params: {cell_id_from: cellIdFrom, cell_id_to: cellIdTo}});
-    },
+	'/pipelines/edge',
+	async ({ cellIdFrom, cellIdTo }, { extra: api }) => {
+		await api.delete('/pipelines/edge', { params: { cell_id_from: cellIdFrom, cell_id_to: cellIdTo } });
+	},
 );
 
 export const forkPipeline = createAsyncThunk<ShortPipelineInfo, {pipelineId: string}, {
@@ -273,11 +274,11 @@ export const forkPipeline = createAsyncThunk<ShortPipelineInfo, {pipelineId: str
     state: State,
     extra: AxiosInstance
 }>(
-    '/pipelines/fork',
-    async ({pipelineId}, {extra: api}) => {
-        const {data} = await api.post<ShortPipelineInfo>('/pipelines/fork', {pipeline_id: pipelineId});
-        return data;
-    },
+	'/pipelines/fork',
+	async ({ pipelineId }, { extra: api }) => {
+		const { data } = await api.post<ShortPipelineInfo>('/pipelines/fork', { pipeline_id: pipelineId });
+		return data;
+	},
 );
 
 export const deleteCell = createAsyncThunk<{cellId: string, pipelineId: string}, {cellId: string, pipelineId: string}, {
@@ -285,11 +286,11 @@ export const deleteCell = createAsyncThunk<{cellId: string, pipelineId: string},
     state: State,
     extra: AxiosInstance
 }>(
-    '/cells/delete',
-    async ({cellId, pipelineId}, {extra: api}) => {
-        await api.delete('/cells', {params: {cell_id: cellId}});
-        return {cellId: cellId, pipelineId: pipelineId};
-    },
+	'/cells/delete',
+	async ({ cellId, pipelineId }, { extra: api }) => {
+		await api.delete('/cells', { params: { cell_id: cellId } });
+		return { cellId, pipelineId };
+	},
 );
 
 export const moveCell = createAsyncThunk<{cellId: string, x: number, y: number}, {cellId: string, x: number, y: number}, {
@@ -297,11 +298,11 @@ export const moveCell = createAsyncThunk<{cellId: string, x: number, y: number},
     state: State,
     extra: AxiosInstance
 }>(
-    '/cells/move',
-    async ({cellId, x, y}, {extra: api}) => {
-        await api.post('/cells/move', {cell_id: cellId, x: x, y: y});
-        return {cellId: cellId, x: x, y: y};
-    },
+	'/cells/move',
+	async ({ cellId, x, y }, { extra: api }) => {
+		await api.post('/cells/move', { cell_id: cellId, x, y });
+		return { cellId, x, y };
+	},
 );
 
 export const updateParams = createAsyncThunk<
@@ -311,11 +312,11 @@ export const updateParams = createAsyncThunk<
     state: State,
     extra: AxiosInstance
 }>(
-    '/cells/update/params',
-    async ({cellId, params}, {extra: api}) => {
-        await api.post('/cells/update/params', {cell_id: cellId, params: params});
-        return {cellId: cellId, params: params};
-    },
+	'/cells/update/params',
+	async ({ cellId, params }, { extra: api }) => {
+		await api.post('/cells/update/params', { cell_id: cellId, params });
+		return { cellId, params };
+	},
 );
 
 export const updateInputs = createAsyncThunk<
@@ -325,11 +326,11 @@ export const updateInputs = createAsyncThunk<
     state: State,
     extra: AxiosInstance
 }>(
-    '/cells/update/inputs',
-    async ({cellId, inputs}, {extra: api}) => {
-        await api.post('/cells/update/inputs', {cell_id: cellId, inputs: inputs});
-        return {cellId: cellId, inputs: inputs};
-    },
+	'/cells/update/inputs',
+	async ({ cellId, inputs }, { extra: api }) => {
+		await api.post('/cells/update/inputs', { cell_id: cellId, inputs });
+		return { cellId, inputs };
+	},
 );
 
 export const executeCell = createAsyncThunk<{cellId: string}, {cellId: string}, {
@@ -337,11 +338,11 @@ export const executeCell = createAsyncThunk<{cellId: string}, {cellId: string}, 
     state: State,
     extra: AxiosInstance
 }>(
-    '/cells/execute',
-    async ({cellId}, {extra: api}) => {
-        await api.post('/cells/execute', {cell_id: cellId});
-        return {cellId: cellId};
-    },
+	'/cells/execute',
+	async ({ cellId }, { extra: api }) => {
+		await api.post('/cells/execute', { cell_id: cellId });
+		return { cellId };
+	},
 );
 
 export const saveFile = createAsyncThunk<{path: string, name: string}, {path: string, name: string}, {
@@ -349,9 +350,9 @@ export const saveFile = createAsyncThunk<{path: string, name: string}, {path: st
     state: State,
     extra: AxiosInstance
 }>(
-    '/files/save',
-    async ({path, name}, {dispatch, extra: api}) => {
-        await api.post('/files/save', {path: path, name: name});
-        return {path: path, name: name};
-    },
+	'/files/save',
+	async ({ path, name }, { extra: api }) => {
+		await api.post('/files/save', { path, name });
+		return { path, name };
+	},
 );

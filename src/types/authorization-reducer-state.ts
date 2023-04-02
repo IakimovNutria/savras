@@ -1,4 +1,4 @@
-import AuthorizationStatus from "../enums/authorization-status";
+import AuthorizationStatus from '../enums/authorization-status';
 
 type AuthorizationReducerState = {
     authorization: AuthorizationStatus;

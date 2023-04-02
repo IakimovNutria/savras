@@ -1,6 +1,6 @@
-import ShortPipelineInfo from "./short-pipeline-info";
-import CellsFunction from "./cells-function";
-import FileInfo from "./file-info";
+import ShortPipelineInfo from './short-pipeline-info';
+import CellsFunction from './cells-function';
+import FileInfo from './file-info';
 
 type MainReducerState = {
     files: FileInfo[];

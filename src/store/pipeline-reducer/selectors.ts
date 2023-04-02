@@ -1,8 +1,8 @@
-import {State} from '../../types/state';
-import {ReducerName} from "../../enums/reducer-name";
-import {CellStatus} from "../../enums/cell-status";
-import PipelineInfo from "../../types/pipeline-info";
-import TimeSeries from "../../types/time-series";
+import { State } from '../../types/state';
+import { ReducerName } from '../../enums/reducer-name';
+import { CellStatus } from '../../enums/cell-status';
+import PipelineInfo from '../../types/pipeline-info';
+import TimeSeries from '../../types/time-series';
 
 export const getCellsStatus = (state: State): {[cellId: string]: CellStatus | string} => state[ReducerName.Pipeline].cellsStatus;
 export const getCurrentPipeline = (state: State): PipelineInfo | null => state[ReducerName.Pipeline].currentPipeline;

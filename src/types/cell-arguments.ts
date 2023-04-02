@@ -1,6 +1,5 @@
-
 type CellArguments = {
-    inputParams: {[param: string]: any};
+    inputParams: {[param: string]: string | number | boolean};
     outputs: {[outputName: string]: string | null};
     inputsPath: {[inputName: string]: string | null};
     selectedInputsColumn: {[inputColumn: string]: string | null};

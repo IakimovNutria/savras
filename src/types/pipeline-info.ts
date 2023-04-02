@@ -1,4 +1,4 @@
-import CellInfo from "./cell-info";
+import CellInfo from './cell-info';
 
 type PipelineInfo = {
     id: string;

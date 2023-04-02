@@ -4,6 +4,7 @@
 
 body {
     margin: 0;
+    background-color: #F0F0F0;
 }
 
 .main__header, .pipeline__header {

@@ -1,6 +1,6 @@
-import PipelineInfo from "./pipeline-info";
-import TimeSeries from "./time-series";
-import {CellStatus} from "../enums/cell-status";
+import PipelineInfo from './pipeline-info';
+import TimeSeries from './time-series';
+import { CellStatus } from '../enums/cell-status';
 
 type PipelineReducerState = {
     currentPipeline: PipelineInfo | null;

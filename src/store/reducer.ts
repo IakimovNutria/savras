@@ -4,9 +4,8 @@ import { authorizationReducer } from './authorization-reducer/authorization-redu
 import { pipelineReducer } from './pipeline-reducer/pipeline-reducer';
 import { mainReducer } from './main-reducer/main-reducer';
 
-
 export const reducer = combineReducers({
-    [ReducerName.Pipeline]: pipelineReducer.reducer,
-    [ReducerName.Main]: mainReducer.reducer,
-    [ReducerName.Authorization]: authorizationReducer.reducer
+	[ReducerName.Pipeline]: pipelineReducer.reducer,
+	[ReducerName.Main]: mainReducer.reducer,
+	[ReducerName.Authorization]: authorizationReducer.reducer,
 });
