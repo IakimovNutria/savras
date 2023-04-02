@@ -1,5 +1,5 @@
 import React, {
-	ChangeEvent, FormEvent, useEffect, useState,
+	ChangeEvent, FormEvent, useMemo,
 } from 'react';
 import { useAppSelector } from '../../hooks';
 import CellInput from '../../types/cell-input';
@@ -22,23 +22,14 @@ function CellInputs({
 	const dataColumns = useAppSelector(getFilesColumns);
 	const inputPaths = cellParams.inputsPath;
 	const inputColumns = cellParams.selectedInputsColumn;
-	const defaultInputsArray: CellInput[] = [];
-	const [inputsArray, setInputsArray] = useState(defaultInputsArray);
-	const defaultIsShowGraph: {[key: string]: boolean} = {};
-	const [isShowGraph, setIsShowGraph] = useState(defaultIsShowGraph);
-
-	useEffect(() => {
-		function getFileName(path: string | null) {
+	const inputsArray: CellInput[] = useMemo(() => {
+		const getFileName = (path: string | null) => {
 			const file = files.find((elem) => elem.path === path);
 			if (file === undefined) {
 				return null;
 			}
 			return file.name;
-		}
-		for (const key in cellParams.inputsPath) {
-			const graphInput = cellParams.graphInputs[key];
-			setIsShowGraph((state) => ({ ...state, [key]: graphInput }));
-		}
+		};
 		const newInputsArray = [];
 		for (const key in inputPaths) {
 			const toPush: CellInput = {
@@ -49,8 +40,15 @@ function CellInputs({
 			};
 			newInputsArray.push(toPush);
 		}
-		setInputsArray(newInputsArray);
+		return newInputsArray;
 	}, [cellParams, inputColumns, inputPaths, files]);
+	const isShowGraph: {[key: string]: boolean} = useMemo(() => {
+		const newIsShow: {[key: string]: boolean} = {};
+		for (const key in cellParams.inputsPath) {
+			newIsShow[key] = cellParams.graphInputs[key];
+		}
+		return newIsShow;
+	}, [cellParams]);
 
 	const getFileColumns = (path: string | null) => {
 		if (path && Object.prototype.hasOwnProperty.call(dataColumns, path)) {

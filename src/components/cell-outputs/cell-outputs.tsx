@@ -1,5 +1,5 @@
 import React, {
-	ChangeEvent, FormEvent, useEffect, useState,
+	ChangeEvent, FormEvent, useMemo,
 } from 'react';
 import CellArguments from '../../types/cell-arguments';
 
@@ -15,33 +15,30 @@ type OutputsParams = {
 function CellOutputs({
 	cellId, outputs, updateOutputNameHandler, saveFilesHandler, cellParams, updateShowGraphHandler,
 }: OutputsParams): JSX.Element {
-	const defaultOutputNames: string[] = [];
-	const [outputNames, setOutputNames] = useState(defaultOutputNames);
-	const defaultIsShowGraph: {[key: string]: boolean} = {};
-	const [isShowGraph, setIsShowGraph] = useState(defaultIsShowGraph);
-	const defaultName: {[key: string]: string} = {};
-	const [names, setNames] = useState(defaultName);
-
-	useEffect(() => {
+	const outputNames: string[] = useMemo(() => {
 		const newOutputNames = [];
 		for (const key in outputs) {
 			if (outputs[key] !== null) {
 				newOutputNames.push(key);
 			}
 		}
-		setOutputNames(newOutputNames);
+		return newOutputNames;
 	}, [outputs]);
-
-	useEffect(() => {
+	const isShowGraph = useMemo(() => {
+		const newIsShow: {[key: string]: boolean} = {};
 		for (const key in outputs) {
-			const graphOutput = cellParams.graphOutputs[key];
-			setIsShowGraph((state) => ({ ...state, [key]: graphOutput }));
+			newIsShow[key] = cellParams.graphOutputs[key];
 		}
+		return newIsShow;
+	}, [cellParams]);
+	const names: {[key: string]: string} = useMemo(() => {
+		const newNames: {[key: string]: string} = {};
 		for (const key in cellParams.outputs) {
 			const output = cellParams.outputs[key];
-			setNames((state) => ({ ...state, [key]: output === null ? '' : output }));
+			newNames[key] = output === null ? '' : output;
 		}
-	}, [cellParams, outputs]);
+		return newNames;
+	}, [cellParams]);
 
 	return (
 		<div className="cell__outputs">

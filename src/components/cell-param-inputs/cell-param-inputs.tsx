@@ -1,5 +1,5 @@
 import React, {
-	ChangeEvent, FormEvent, useEffect, useState,
+	ChangeEvent, FormEvent, useMemo,
 } from 'react';
 import { useAppSelector } from '../../hooks';
 import CellParamInput from '../../types/cell-param-input';
@@ -18,15 +18,7 @@ type InputParamsProps = {
 function CellParamInputs({cellId, functionName, updateParamHandler, submitParamsHandler, inputParams, cellParams}: InputParamsProps): JSX.Element {
 	const functionsInfo = useAppSelector(getFunctions);
 	const functionInfo = functionsInfo.find((elem) => (elem.function === functionName));
-
-	const defaultParams: CellParamInput[] = [];
-	const [params, setParams] = useState(defaultParams);
-	const defaultInputsChecked: {[key: string]: boolean} = {};
-	const [inputsChecked, setInputsChecked] = useState(defaultInputsChecked);
-	const defaultInputsValues: {[key: string]: string | number | boolean} = {};
-	const [inputsValues, setInputsValues] = useState(defaultInputsValues);
-
-	useEffect(() => {
+	const params = useMemo(() => {
 		const newParams = [];
 		if (functionInfo !== undefined) {
 			for (const key in functionInfo.input_params) {
@@ -64,18 +56,27 @@ function CellParamInputs({cellId, functionName, updateParamHandler, submitParams
 				newParams.push(toPush);
 			}
 		}
-		setParams(newParams);
+		return newParams;
 	}, [functionInfo, inputParams]);
-
-	useEffect(() => {
+	const inputsChecked: {[key: string]: boolean} = useMemo(() => {
+		const newInputsChecked: {[key: string]: boolean} = {};
 		params.forEach((param) => {
 			if (param.type === 'checkbox' && typeof cellParams.inputParams[param.name] === 'boolean') {
-				setInputsChecked((state) => ({ ...state, [param.name]: Boolean(cellParams.inputParams[param.name]) }));
-			} else if (cellParams.inputParams[param.name] !== null) {
-				setInputsValues((state) => ({ ...state, [param.name]: cellParams.inputParams[param.name] }));
+				newInputsChecked[param.name] = Boolean(cellParams.inputParams[param.name]);
 			}
 		});
-	}, [cellParams, params]);
+		return newInputsChecked;
+	}, [params, cellParams]);
+
+	const inputsValues: {[key: string]: string | number | boolean} = useMemo(() => {
+		const newInputsValues: {[key: string]: string | number | boolean} = {};
+		params.forEach((param) => {
+			if ((cellParams.inputParams[param.name] !== null) && (param.type !== 'checkbox' || typeof cellParams.inputParams[param.name] !== 'boolean')) {
+				newInputsValues[param.name] = cellParams.inputParams[param.name];
+			}
+		});
+		return newInputsValues;
+	}, []);
 
 	return (
 		<div className="cell__params">
@@ -86,8 +87,7 @@ function CellParamInputs({cellId, functionName, updateParamHandler, submitParams
 						<li className="cell__param-item"
 							key={cellId + param.name}>
 							<span>
-								{param.name}
-    :
+								{param.name}:
 							</span>
 							<input
 								checked={inputsChecked[param.name]}
