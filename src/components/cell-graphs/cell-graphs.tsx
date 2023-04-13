@@ -66,8 +66,7 @@ function CellGraphs({ cellId, cellParams, outputs }: GraphsParams): JSX.Element 
 				graphs.map((graph) => (
 					<li key={graph.name}
 						className="cell__graph-item">
-						<span className="cell__graph-name"
-							style={{ margin: 0 }}>{graph.name}</span>
+						<span className="cell__graph-name">{graph.name}</span>
 						<Graph name={graph.name}
 							timeSeries={graph.timeSeries}
 							width={400}

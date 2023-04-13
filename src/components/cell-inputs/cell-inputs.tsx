@@ -1,5 +1,5 @@
 import React, {
-	ChangeEvent, FormEvent, useMemo,
+	ChangeEvent, FormEvent, useCallback, useMemo,
 } from 'react';
 import { useAppSelector } from '../../hooks';
 import CellInput from '../../types/cell-input';
@@ -42,20 +42,13 @@ function CellInputs({
 		}
 		return newInputsArray;
 	}, [cellParams, inputColumns, inputPaths, files]);
-	const isShowGraph: {[key: string]: boolean} = useMemo(() => {
-		const newIsShow: {[key: string]: boolean} = {};
-		for (const key in cellParams.inputsPath) {
-			newIsShow[key] = cellParams.graphInputs[key];
-		}
-		return newIsShow;
-	}, [cellParams]);
 
-	const getFileColumns = (path: string | null) => {
+	const getFileColumns = useCallback((path: string | null) => {
 		if (path && Object.prototype.hasOwnProperty.call(dataColumns, path)) {
 			return dataColumns[path];
 		}
 		return [];
-	};
+	}, [dataColumns]);
 
 	return (
 		<div className="cell__inputs">
@@ -69,17 +62,17 @@ function CellInputs({
 								<img alt="graph-icon"
 									src="/img/graph-icon.png"
 									width={15}
-									height={15} />
+									height={15}
+								/>
 								<input
 									type="checkbox"
-									checked={isShowGraph[input.name]}
+									checked={cellParams.graphInputs[input.name]}
 									id={input.name}
 									onChange={updateShowGraphHandler}
 								/>
 							</div>
 							<span>
-								{input.name}
-    :
+								{input.name}:
 							</span>
 							<select
 								value={(input.fileName === null) ? 'choose file' : input.fileName}
@@ -126,7 +119,9 @@ function CellInputs({
 				}
 			</ul>
 			<button className="cell__save-button"
-				onClick={submitInputsHandler}>Save inputs</button>
+				onClick={submitInputsHandler}>
+				Save inputs
+			</button>
 		</div>);
 }
 

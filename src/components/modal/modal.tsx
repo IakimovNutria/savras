@@ -1,4 +1,5 @@
 import React from 'react';
+import './modal.css';
 
 type ModalProps = {
     text: string;
@@ -9,7 +10,6 @@ type ModalProps = {
 export default function Modal({ title, text, children }: ModalProps): JSX.Element {
 	return (
 		<div className="modal">
-
 			<div className="modal__content">
 				<header className="modal__header">
 					{title}

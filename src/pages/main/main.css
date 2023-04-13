@@ -1,0 +1,152 @@
+:root {
+    --main-item-height: 40px;
+}
+
+.main__header {
+    height: 50px;
+    width: 100%;
+    background: #ffdd2d;
+}
+
+.main__header-button {
+    width: 150px;
+    height: 50px;
+    border: none;
+    border-left: 3px solid #fcc521;
+    border-right: 3px solid #fcc521;
+    cursor: pointer;
+    background: #ffdd2d;
+}
+
+.main__body {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.main__create-form-input:hover {
+    background: #AAAAAA;
+}
+
+.main__create-form-input::placeholder {
+    opacity: 1;
+    color: rgba(5, 5, 5, 0.5);
+}
+
+.main__create-form-input:focus {
+    background: white;
+}
+
+.main__section {
+    border-radius: 2px;
+    background: white;
+    width: 45%;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.main__upload-form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.main__list-item {
+    width: 100%;
+    height: var(--main-item-height);
+    list-style-type: none;
+    border-top: 1px solid #DDDDDD;
+    border-bottom: 1px solid #DDDDDD;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main__list {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border: 5px solid #DDDDDD;
+    border-top: 10px solid #DDDDDD;
+    width: 95%;
+    min-height: var(--main-item-height);
+    border-radius: 10px;
+    padding-left: 0;
+}
+
+.main__list-item_even {
+    background: white;
+}
+
+.main__list-item_odd {
+    background: #F0F0F0;
+}
+
+::-webkit-file-upload-button,
+.main__submit-button,
+.main__list-item-button,
+.main__list-item-link {
+    width: 130px;
+    height: 50px;
+    color: black;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #ffdd2d;
+    padding: 0;
+    border-style: hidden;
+}
+
+::-webkit-file-upload-button:hover,
+.main__header-button:hover,
+.main__submit-button:hover,
+.main__list-item-button:hover,
+.main__list-item-link:hover {
+    background: #fcc521;
+    color: #131D2B;
+}
+
+::-webkit-file-upload-button:active,
+.main__header-button:active,
+.main__submit-button:active,
+.main__list-item-button:active,
+.main__list-item-link:active {
+    background: #fab619;
+    color: black;
+}
+
+.main__list-item-button, .main__list-item-link {
+    height: 100%;
+}
+
+.main__list-item-link {
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    align-items: center;
+}
+
+.main__create-form-input {
+    display: block;
+    height: 50px;
+    background: #CCCCCC;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    font-size: 20px;
+    line-height: 44px;
+    font-weight: 300;
+    padding-left: 25px;
+    -webkit-transition: border-color 0.2s;
+    transition: border-color 0.2s;
+    margin-bottom: 10px;
+}
+
+.main__create-form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}

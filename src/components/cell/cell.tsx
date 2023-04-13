@@ -19,6 +19,7 @@ import { CellStatus, CellStatusStyle } from '../../enums/cell-status';
 import CellGraphs from '../cell-graphs/cell-graphs';
 import { getFilesColumns, getFunctions } from '../../store/main-reducer/selectors';
 import { getCellsStatus } from '../../store/pipeline-reducer/selectors';
+import './cell.css';
 
 type CellProps = {
     cellInfo: CellInfo;

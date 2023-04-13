@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Link, useParams} from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchPipeline } from '../../store/api-actions';
 import Cell from '../../components/cell/cell';
-import CreateButtons from '../../components/create-buttons/create-buttons';
+import CellCreation from '../../components/cell-creation/cell-creation';
 import { getCurrentPipeline, getIsPipelineLoading } from '../../store/pipeline-reducer/selectors';
 import Loading from '../../components/loading/loading';
 import NotFound from '../not-found/not-found';
 import { getUserPipelines, getSharedPipelines } from '../../store/main-reducer/selectors';
 import NoAccess from '../no-access/no-access';
+import './pipeline.css';
 
 function Pipeline(): JSX.Element {
 	const { id } = useParams();
@@ -25,6 +26,8 @@ function Pipeline(): JSX.Element {
 	useEffect(() => {
 		dispatch(fetchPipeline({ pipelineId: id === undefined ? '' : id }));
 	}, [dispatch, id]);
+
+	const changeVisible = useCallback(() => setVisible(!visible), [setVisible, visible]);
 
 	if (id === undefined) {
 		return <NotFound />;
@@ -43,14 +46,14 @@ function Pipeline(): JSX.Element {
 			<header className="pipeline__header">
 				<h1>{pipeline.name}</h1>
 				{
-					canEdit && <button onClick={() => setVisible(!visible)}
+					canEdit && <button onClick={changeVisible}
 						className="pipeline__header-button">Create</button>
 				}
-				<button className="pipeline__header-button"
-					onClick={() => { window.location.href = '/'; }}>Back to main</button>
+				<Link className="pipeline__header-button"
+					to="/">Back to main</Link>
 			</header>
 			{
-				visible && <CreateButtons pipelineId={id} />
+				visible && <CellCreation pipelineId={id} />
 			}
 			{
 				pipeline.cells.map((cellInfo) => (

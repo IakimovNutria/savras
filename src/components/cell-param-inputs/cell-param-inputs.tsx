@@ -76,7 +76,7 @@ function CellParamInputs({cellId, functionName, updateParamHandler, submitParams
 			}
 		});
 		return newInputsValues;
-	}, []);
+	}, [params, cellParams]);
 
 	return (
 		<div className="cell__params">
@@ -91,7 +91,7 @@ function CellParamInputs({cellId, functionName, updateParamHandler, submitParams
 							</span>
 							<input
 								checked={inputsChecked[param.name]}
-								value={inputsValues[param.name].toString()}
+								value={inputsValues[param.name]?.toString()}
 								id={param.name}
 								type={param.type}
 								className={param.type !== 'checkbox' ? 'cell__text-input' : ''}

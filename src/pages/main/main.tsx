@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setAuthorization } from '../../store/actions';
 import AuthorizationStatus from '../../enums/authorization-status';
+import './main.css';
 import {
 	createPipeline,
 	deleteFile,
@@ -126,7 +127,7 @@ function Main(): JSX.Element {
 										name={file.name}
 										onClick={downloadFileHandler}
 									>
-  Download
+										Download
 									</button>
 									<span>{file.name}</span>
 									<button
@@ -134,7 +135,7 @@ function Main(): JSX.Element {
 										id={file.path}
 										onClick={openDeleteFileModal}
 									>
-  Delete
+										Delete
 									</button>
 								</li>
 							))
@@ -168,14 +169,14 @@ function Main(): JSX.Element {
 										id={pipeline.id}
 										to={`/pipeline/${pipeline.id}`}
 									>
-  Open
+										Open
 									</Link>
 									<button
 										className="main__list-item-button"
 										id={pipeline.id}
 										onClick={() => dispatch(forkPipeline({ pipelineId: pipeline.id }))}
 									>
-  Fork
+										Fork
 									</button>
 									<span>{pipeline.name}</span>
 									<button
@@ -183,14 +184,14 @@ function Main(): JSX.Element {
 										id={pipeline.id}
 										onClick={openShareModal}
 									>
-  Share
+										Share
 									</button>
 									<button
 										className="main__list-item-button"
 										id={pipeline.id}
 										onClick={openDeletePipelineModal}
 									>
-  Delete
+										Delete
 									</button>
 								</li>
 							))
@@ -210,14 +211,14 @@ function Main(): JSX.Element {
 										id={pipeline.id}
 										to={`/pipeline/${pipeline.id}`}
 									>
-  Open
+										Open
 									</Link>
 									<button
 										className="main__list-item-button"
 										id={pipeline.id}
 										onClick={() => dispatch(forkPipeline({ pipelineId: pipeline.id }))}
 									>
-  Fork
+										Fork
 									</button>
 									<span>{pipeline.name}</span>
 									<button
@@ -225,7 +226,7 @@ function Main(): JSX.Element {
 										id={pipeline.id}
 										onClick={openDeletePipelineModal}
 									>
-  Delete
+										Delete
 									</button>
 								</li>
 							))

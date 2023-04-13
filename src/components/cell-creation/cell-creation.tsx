@@ -1,21 +1,22 @@
-import React, { MouseEvent, useState } from 'react';
+import React, {MouseEvent, useCallback, useState} from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { createCell } from '../../store/api-actions';
 import { getFunctions } from '../../store/main-reducer/selectors';
+import './cell-creation.css';
 
 type CreateButtonsProps = {
     pipelineId: string;
 };
 
-function CreateButtons({ pipelineId }: CreateButtonsProps) : JSX.Element {
+function CellCreation({ pipelineId }: CreateButtonsProps) : JSX.Element {
 	const functions = useAppSelector(getFunctions);
 	const dispatch = useAppDispatch();
 	const [currentGroup, setCurrentGroup] = useState(functions[0].group);
 
-	function handleCreate(event: MouseEvent<HTMLButtonElement>) {
+	const handleCreate = useCallback((event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		dispatch(createCell({ pipelineId, functionName: event.currentTarget.id }));
-	}
+	}, [pipelineId, dispatch]);
 
 	return (
 		<section className="cell-creation">
@@ -54,4 +55,4 @@ function CreateButtons({ pipelineId }: CreateButtonsProps) : JSX.Element {
 		</section>);
 }
 
-export default CreateButtons;
+export default CellCreation;

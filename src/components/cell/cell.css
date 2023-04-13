@@ -1,0 +1,175 @@
+.cell__header-button {
+    width: 150px;
+    height: 50px;
+    border: none;
+    border-left: 3px solid #fcc521;
+    border-right: 3px solid #fcc521;
+    cursor: pointer;
+    background: #ffdd2d;
+}
+
+.cell__text-input:hover {
+    background: #AAAAAA;
+}
+
+.cell__text-input::placeholder {
+    opacity: 1;
+    color: rgba(5, 5, 5, 0.5);
+}
+
+.cell__text-input:focus {
+    background: white;
+}
+
+.cell__body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 95%;
+}
+
+.cell__status {
+    margin-left: 10px;
+    user-select: none;
+}
+
+.cell__function-name {
+    user-select: none;
+    margin: 0 0 0 10px;
+}
+
+.cell__text-input {
+    text-align: center;
+    height: 20px;
+    width: 50px;
+    background: #CCCCCC;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 300;
+    -webkit-transition: border-color 0.2s;
+    transition: border-color 0.2s;
+    flex-shrink: 0;
+}
+
+
+.cell__execute-button,
+.cell__save-button {
+    width: 130px;
+    height: 50px;
+    color: black;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #ffdd2d;
+    padding: 0;
+    border-style: hidden;
+}
+
+.cell__header-button:hover,
+.cell__execute-button:hover,
+.cell__save-button:hover {
+    background: #fcc521;
+    color: #131D2B;
+}
+
+.cell__header-button:active,
+.cell__execute-button:active,
+.cell__save-button:active {
+    background: #fab619;
+    color: black;
+}
+
+
+.cell__header {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    background: #ffdd2d;
+    width: 100%;
+    height: 50px;
+    margin: 0;
+}
+
+.cell {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 800px;
+    position: absolute;
+    background: white;
+    padding: 0;
+}
+
+.cell__param-items, .cell__input-items, .cell__output-items {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 15px;
+    padding: 0;
+    margin: 0 10px 0 10px;
+    height: 60px;
+    max-width: 750px;
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+
+.cell__input-item, .cell__param-item, .cell__output-item {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.cell__graph-name {
+    margin: 0;
+}
+
+.cell__inputs, .cell__params, .cell__outputs {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    border-style: none;
+    justify-content: space-between;
+    width: 100%;
+    height: 60px;
+    margin: 0;
+}
+
+.cell__show-graph-checkbox {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 0;
+}
+
+.cell__save-button {
+    flex-shrink: 0;
+    width: 60px;
+}
+
+.cell__graphs {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    height: 200px;
+    margin: 0;
+    padding: 0;
+}
+
+.cell__graph-item {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.cell__execute-button {
+    margin-top: 0;
+    width: 500px;
+    height: 40px;
+    margin-bottom: 5px;
+}

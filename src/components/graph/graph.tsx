@@ -16,7 +16,7 @@ function Graph({
 	const series = [{ name, data: timeSeries.map((t) => t.value) }];
 	const options = {
 		chart: {
-			id: 'apexchart-example',
+			id: name,
 		},
 		xaxis: {
 			categories,
