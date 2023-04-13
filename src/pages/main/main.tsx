@@ -9,12 +9,12 @@ import {
 	createPipeline,
 	deleteFile,
 	deletePipeline, downloadFile,
-	uploadFile, sharePipeline,
+	uploadFile,
 	forkPipeline,
 } from '../../store/api-actions';
 import { getFiles, getSharedPipelines, getUserPipelines } from '../../store/main-reducer/selectors';
 import ConfirmationModal from '../../components/confirmation-modal/confirmation-modal';
-import Modal from '../../components/modal/modal';
+import ShareModal from '../../components/share-modal/share-modal';
 
 function Main(): JSX.Element {
 	const [newPipelineName, setNewPipelineName] = useState('');
@@ -24,7 +24,6 @@ function Main(): JSX.Element {
 	const [pipelineToShare, setPipelineToShare] = useState('');
 	const [fileToDelete, setFileToDelete] = useState('');
 	const [pipelineToDelete, setPipelineToDelete] = useState('');
-	const [userToShare, setUserToShare] = useState('');
 	const [, , removeCookie] = useCookies(['token']);
 	const dispatch = useAppDispatch();
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -87,12 +86,6 @@ function Main(): JSX.Element {
 		const pipelineId = event.currentTarget.id;
 		setPipelineToShare(pipelineId);
 		setShowShareModal(true);
-	}
-
-	function sharePipelineHandler() {
-		dispatch(sharePipeline({ username: userToShare, pipelineId: pipelineToShare }));
-		setUserToShare('');
-		setShowShareModal(false);
 	}
 
 	return (
@@ -255,18 +248,9 @@ function Main(): JSX.Element {
 				)
 			}
 			{
-				showShareModal && (
-					<Modal text="Enter the login of the user you want to share the pipeline with"
-						title="Share pipeline">
-						<form>
-							<input type="text"
-								value={userToShare}
-								onChange={(e) => setUserToShare(e.currentTarget.value)} />
-							<button onClick={sharePipelineHandler}>Confirm</button>
-							<button onClick={() => setShowShareModal(false)}>Exit</button>
-						</form>
-					</Modal>
-				)
+				showShareModal &&
+				<ShareModal setShowShareModal={setShowShareModal}
+					pipelineId={pipelineToShare} />
 			}
 		</React.Fragment>);
 }

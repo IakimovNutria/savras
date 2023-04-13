@@ -11,23 +11,28 @@
 }
 
 .modal__content {
-    width: 400px;
+    width: 558px;
+    height: 225px;
+    border-top: 8px solid #000000D1;
+    border-radius: 15px;
     background-color: white;
 }
 
 .modal__header {
     text-align: center;
-    padding: 12px;
+    margin-top: 18px;
+    font-family: 'Disket Mono', serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 27px;
 }
 
 .modal__body {
-    padding: 20px;
     text-align: center;
-}
-
-.modal__footer {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 20px;
+    font-family: 'Hubballi', cursive;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 19px;
 }

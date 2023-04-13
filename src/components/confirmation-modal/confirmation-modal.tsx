@@ -1,5 +1,6 @@
 import Modal from '../modal/modal';
 import React from 'react';
+import './confirmation-modal.css';
 
 type ConfirmationModalProps = {
     title: string;
@@ -13,11 +14,15 @@ export default function ConfirmationModal({
 }: ConfirmationModalProps): JSX.Element {
 	return (
 		<Modal title={title}
-			text={text}>
-			<>
-				<button onClick={onConfirm}>Yes</button>
-				<button onClick={onNotConfirm}>No</button>
-			</>
+			text={text}
+			headerBodyGap={22}
+		>
+			<div className="confirmation">
+				<button onClick={onConfirm}
+					className="confirmation__button">Yes</button>
+				<button onClick={onNotConfirm}
+					className="confirmation__button">No</button>
+			</div>
 		</Modal>
 	);
 }
