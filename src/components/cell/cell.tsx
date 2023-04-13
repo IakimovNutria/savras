@@ -1,11 +1,13 @@
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, {FormEvent, useCallback, useEffect, useState} from 'react';
 import useInterval from '@use-it/interval';
 import CellInfo from '../../types/cell-info';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import {
 	deleteCell,
-	executeCell, fetchCellInfo, fetchFileColumns,
+	executeCell,
+	fetchCellInfo,
+	fetchFileColumns,
 	moveCell,
 	saveFile,
 	updateInputs,
@@ -15,11 +17,12 @@ import CellInputs from '../cell-inputs/cell-inputs';
 import CellArguments from '../../types/cell-arguments';
 import CellParamInputs from '../cell-param-inputs/cell-param-inputs';
 import CellOutputs from '../cell-outputs/cell-outputs';
-import { CellStatus, CellStatusStyle } from '../../enums/cell-status';
+import { CellStatus } from '../../enums/cell-status';
 import CellGraphs from '../cell-graphs/cell-graphs';
 import { getFilesColumns, getFunctions } from '../../store/main-reducer/selectors';
 import { getCellsStatus } from '../../store/pipeline-reducer/selectors';
 import './cell.css';
+import {getStatusStyle} from '../../utils/get-status-style';
 
 type CellProps = {
     cellInfo: CellInfo;
@@ -66,12 +69,12 @@ function Cell({ cellInfo, pipelineId, canEdit }: CellProps): JSX.Element {
 		dispatch(fetchCellInfo({ cellId: cellInfo.id }));
 	}, cellStatus === CellStatus.IN_PROCESS ? 1000 * 5 : null);
 
-	const stopHandler = (event: DraggableEvent, data: DraggableData) => {
+	const stopHandler = useCallback((event: DraggableEvent, data: DraggableData) => {
 		event.preventDefault();
 		dispatch(moveCell({ cellId: cellInfo.id, x: data.x, y: data.y }));
-	};
+	}, [dispatch]);
 
-	const updateInputHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+	const updateInputHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
 		event.preventDefault();
 		const select = event.target;
 		const { options } = select;
@@ -82,47 +85,47 @@ function Cell({ cellInfo, pipelineId, canEdit }: CellProps): JSX.Element {
 			dispatch(fetchFileColumns({ path }));
 		}
 		setCellParams((state) => ({ ...state, inputsPath: { ...state.inputsPath, [fieldName]: path } }));
-	};
+	}, [dataColumns, dispatch]);
 
-	const updateInputColumnHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+	const updateInputColumnHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
 		event.preventDefault();
 		const select = event.target;
 		const { options } = select;
 		const { selectedIndex } = options;
-		const value = (options.selectedIndex !== -1) ? options[selectedIndex].value : '';
+		const value = (selectedIndex !== -1) ? options[selectedIndex].value : '';
 		const fieldName = select.id;
 		setCellParams((state) => ({ ...state, selectedInputsColumn: { ...state.selectedInputsColumn, [fieldName]: value } }));
-	};
+	}, []);
 
-	const updateParamHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const updateParamHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
 		event.preventDefault();
 		const fieldName = event.currentTarget.id;
 		const value = event.currentTarget.type === 'checkbox' ? event.target.checked : event.target.value;
 		setCellParams((state) => ({ ...state, inputParams: { ...state.inputParams, [fieldName]: value } }));
-	};
+	}, []);
 
-	const updateOutputNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const updateOutputNameHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
 		event.preventDefault();
 		const fieldName = event.currentTarget.id;
 		const { value } = event.target;
 		setCellParams((state) => ({ ...state, outputs: { ...state.outputs, [fieldName]: value } }));
-	};
+	}, []);
 
-	const submitInputsHandler = async (event: FormEvent<HTMLButtonElement>) => {
-		const elem = cellParams;
+	const submitInputsHandler = useCallback(async (event: FormEvent<HTMLButtonElement>) => {
+		event.preventDefault();
 		const toUpdate: {path: string, data_column: string, field: string}[] = [];
-		for (const key in elem.inputsPath) {
-			const path = elem.inputsPath[key];
-			const dataColumn = elem.selectedInputsColumn[key];
+		for (const key in cellParams.inputsPath) {
+			const path = cellParams.inputsPath[key];
+			const dataColumn = cellParams.selectedInputsColumn[key];
 			if (path !== null && dataColumn !== null) {
 				toUpdate.push({ path, data_column: dataColumn, field: key });
 			}
 		}
 		dispatch(updateInputs({ cellId: cellInfo.id, inputs: toUpdate }));
-		event.preventDefault();
-	};
+	}, [cellParams, dispatch, cellInfo.id]);
 
-	const submitParamsHandler = async (event: FormEvent<HTMLButtonElement>) => {
+	const submitParamsHandler = useCallback(async (event: FormEvent<HTMLButtonElement>) => {
+		event.preventDefault();
 		const toUpdate: {field: string, value: string | boolean | number}[] = [];
 		for (const key in cellParams.inputParams) {
 			const notNumberValue = cellParams.inputParams[key];
@@ -131,13 +134,12 @@ function Cell({ cellInfo, pipelineId, canEdit }: CellProps): JSX.Element {
 			toUpdate.push({ field: key, value });
 		}
 		dispatch(updateParams({ cellId: cellInfo.id, params: toUpdate }));
-		event.preventDefault();
-	};
+	}, [cellParams, cellInfo.id, dispatch]);
 
-	const saveFilesHandler = (event: FormEvent<HTMLButtonElement>) => {
-		const elem = cellParams;
-		for (const key in elem.outputs) {
-			const value = elem.outputs[key];
+	const saveFilesHandler = useCallback((event: FormEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		for (const key in cellParams.outputs) {
+			const value = cellParams.outputs[key];
 			if (value !== '' && value != null) {
 				const path = cellInfo.outputs[key];
 				if (path !== null) {
@@ -145,39 +147,31 @@ function Cell({ cellInfo, pipelineId, canEdit }: CellProps): JSX.Element {
 				}
 			}
 		}
-		event.preventDefault();
-	};
+	}, [cellParams, dispatch, cellInfo.outputs]);
 
-	const executeHandler = async (event: FormEvent<HTMLButtonElement>) => {
+	const executeHandler = useCallback((event: FormEvent<HTMLButtonElement>) => {
+		event.preventDefault();
 		dispatch(executeCell({ cellId: cellInfo.id }));
-		event.preventDefault();
-	};
+	}, [dispatch, cellInfo.id]);
 
-	const deleteCellHandler = (event: FormEvent<HTMLButtonElement>) => {
+	const deleteCellHandler = useCallback((event: FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		dispatch(deleteCell({ cellId: cellInfo.id, pipelineId }));
-	};
+	}, [dispatch, cellInfo.id, pipelineId]);
 
-	const updateShowGraphInputsHandler = (event: FormEvent<HTMLInputElement>) => {
+	const updateShowGraphInputsHandler = useCallback((event: FormEvent<HTMLInputElement>) => {
 		event.preventDefault();
 		const fieldName = event.currentTarget.id;
 		const value = event.currentTarget.checked;
 		setCellParams((state) => ({ ...state, graphInputs: { ...state.graphInputs, [fieldName]: value } }));
-	};
+	}, []);
 
-	const updateShowGraphOutputHandler = (event: FormEvent<HTMLInputElement>) => {
+	const updateShowGraphOutputHandler = useCallback((event: FormEvent<HTMLInputElement>) => {
 		event.preventDefault();
 		const fieldName = event.currentTarget.id;
 		const value = event.currentTarget.checked;
 		setCellParams((state) => ({ ...state, graphOutputs: { ...state.graphOutputs, [fieldName]: value } }));
-	};
-
-	const getStatusStyle = (status: string) => {
-		if (Object.prototype.hasOwnProperty.call(CellStatusStyle, status)) {
-			return CellStatusStyle[status as keyof typeof CellStatusStyle];
-		}
-		return { color: 'red' };
-	};
+	}, []);
 
 	return (
 		<Draggable
@@ -230,7 +224,7 @@ function Cell({ cellInfo, pipelineId, canEdit }: CellProps): JSX.Element {
 					key={`${cellInfo.id}execute`}
 					onClick={executeHandler}
 				>
-  Execute
+					Execute
 				</button>
 			</div>
 		</Draggable>);

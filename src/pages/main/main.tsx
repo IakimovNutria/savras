@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef, useState } from 'react';
+import React, {ChangeEvent, FormEvent, useCallback, useRef, useState} from 'react';
 import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -8,7 +8,8 @@ import './main.css';
 import {
 	createPipeline,
 	deleteFile,
-	deletePipeline, downloadFile,
+	deletePipeline,
+	downloadFile,
 	uploadFile,
 	forkPipeline,
 } from '../../store/api-actions';
@@ -31,62 +32,69 @@ function Main(): JSX.Element {
 	const userPipelines = useAppSelector(getUserPipelines);
 	const sharedPipelines = useAppSelector(getSharedPipelines);
 
-	function createPipelineHandler(event: FormEvent<HTMLFormElement>) {
+	const createPipelineHandler = useCallback((event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		dispatch(createPipeline({ name: newPipelineName }));
 		setNewPipelineName('');
-	}
+	}, [newPipelineName, dispatch]);
 
-	function openDeletePipelineModal(event: FormEvent<HTMLButtonElement>) {
+	const openDeletePipelineModal = useCallback((event: FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		setPipelineToDelete(event.currentTarget.id);
 		setShowDeletePipelineModal(true);
-	}
+	}, []);
 
-	function deletePipelineHandler() {
+	const deletePipelineHandler = useCallback(() => {
 		setShowDeletePipelineModal(false);
 		dispatch(deletePipeline({ pipelineId: pipelineToDelete }));
-	}
+	}, [dispatch, pipelineToDelete]);
 
-	function signOutHandler(event: FormEvent<HTMLButtonElement>) {
+	const signOutHandler = useCallback((event: FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		removeCookie('token');
 		dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
-	}
+	}, [dispatch]);
 
-	function uploadFileHandler(event: FormEvent<HTMLFormElement>) {
+	const uploadFileHandler = useCallback((event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		const toSend = new FormData();
 		if (fileInputRef.current !== null && fileInputRef.current.files !== null) {
 			toSend.append('file', fileInputRef.current.files[0]);
 			dispatch(uploadFile({ formData: toSend }));
 		}
-	}
+	}, [fileInputRef, dispatch]);
 
-	function openDeleteFileModal(event: FormEvent<HTMLButtonElement>) {
+	const openDeleteFileModal = useCallback((event: FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		setFileToDelete(event.currentTarget.id);
 		setShowDeleteFileModal(true);
-	}
+	}, []);
 
-	function deleteFileHandler() {
+	const deleteFileHandler = useCallback(() => {
 		setShowDeleteFileModal(false);
 		dispatch(deleteFile({ path: fileToDelete }));
-	}
+	}, [dispatch, fileToDelete]);
 
-	function downloadFileHandler(event: FormEvent<HTMLButtonElement>) {
+	const downloadFileHandler = useCallback((event: FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		const path = event.currentTarget.id;
 		const { name } = event.currentTarget;
 		dispatch(downloadFile({ path, name }));
-	}
+	}, [dispatch]);
 
-	function openShareModal(event: FormEvent<HTMLButtonElement>) {
+	const openShareModal = useCallback((event: FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		const pipelineId = event.currentTarget.id;
 		setPipelineToShare(pipelineId);
 		setShowShareModal(true);
-	}
+	}, []);
+
+	const hideDeletePipelineModal = useCallback(() => setShowDeletePipelineModal(false), []);
+	const hideDeleteFileModal = useCallback(() => setShowDeleteFileModal(false), []);
+	const updateNewPipelineName = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+		event.preventDefault();
+		setNewPipelineName(event.target.value);
+	}, []);
 
 	return (
 		<React.Fragment>
@@ -145,7 +153,7 @@ function Main(): JSX.Element {
 							className="main__create-form-input"
 							placeholder="Name"
 							value={newPipelineName}
-							onChange={(e) => setNewPipelineName(e.target.value)}
+							onChange={updateNewPipelineName}
 						/>
 						<input className="main__submit-button"
 							type="submit"
@@ -233,7 +241,7 @@ function Main(): JSX.Element {
 						title="Delete file"
 						text={`Are you sure you want to delete the file titled ${files.find((file) => file.path === fileToDelete)?.name}?`}
 						onConfirm={deleteFileHandler}
-						onNotConfirm={() => setShowDeleteFileModal(false)}
+						onNotConfirm={hideDeleteFileModal}
 					/>
 				)
 			}
@@ -243,7 +251,7 @@ function Main(): JSX.Element {
 						title="Delete pipeline"
 						text={`Are you sure you want to delete the pipeline titled ${userPipelines.find((pipeline) => pipeline.id === pipelineToDelete)?.name}?`}
 						onConfirm={deletePipelineHandler}
-						onNotConfirm={() => setShowDeletePipelineModal(false)}
+						onNotConfirm={hideDeletePipelineModal}
 					/>
 				)
 			}
