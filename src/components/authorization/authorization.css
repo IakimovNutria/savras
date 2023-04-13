@@ -110,30 +110,11 @@
     background: white;
 }
 
-.authorization__button {
-    width: 300px;
-    height: 50px;
-    color: black;
-    background: #FFDD2D;
-    box-shadow: 0 10px 10px rgba(160, 160, 160, 0.27);
-    border-radius: 15px;
-    cursor: pointer;
-    padding: 0;
-    border-style: hidden;
-    font-family: 'Hubballi', cursive;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-    line-height: 23px;
-}
-
-.authorization__button:hover,
 .authorization__link:hover {
     background: #fcc521;
     color: #131D2B;
 }
 
-.authorization__button:active,
 .authorization__link:active {
     background: #fab619;
     color: black;

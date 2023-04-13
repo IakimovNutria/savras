@@ -1,0 +1,24 @@
+
+.button {
+    background: #FFDD2D;
+    border-radius: 5px;
+    border: none;
+    font-family: 'Hubballi', cursive;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 19px;
+    cursor: pointer;
+}
+
+.button_has-shadow {
+    box-shadow: 0 10px 10px rgba(160, 160, 160, 0.27);
+}
+
+.button:hover {
+    background: #FCC521;
+}
+
+.button:active {
+    background: #FAB619;
+}

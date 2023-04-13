@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import {setAuthorization} from '../../store/actions';
 import {useAppDispatch} from '../../hooks';
 import './authorization.css';
+import {Button} from '../button/button';
 
 type AuthorizationFormProps = {
 	onSubmit: (action: {login: string, password: string}) => void;
@@ -53,8 +54,11 @@ export function Authorization({onSubmit, mainTitle, error, linkTitle, linkTo, li
 						value={password}
 						onChange={passwordOnChange}
 					/>
-					<button className="authorization__button"
-						type="submit">Continue</button>
+					<Button width={300}
+						height={50}
+						type="submit"
+						hasShadow
+						borderRadius="15px">Continue</Button>
 				</form>
 				<span className="authorization__error">{error}</span>
 			</section>

@@ -2,6 +2,7 @@ import Modal from '../modal/modal';
 import React, {useState} from 'react';
 import {sharePipeline} from '../../store/api-actions';
 import {useAppDispatch} from '../../hooks';
+import {Button} from '../button/button';
 import './share-modal.css';
 
 type ConfirmationModalProps = {
@@ -26,17 +27,29 @@ export default function ShareModal({
 			headerBodyGap={11}
 		>
 			<div className="share-modal">
-				<form className="share-modal__form">
+				<form className="share-modal__form"
+					onSubmit={sharePipelineHandler}>
 					<input className="share-modal__input"
 						placeholder="user login"
 						type="text"
 						value={userToShare}
 						onChange={(e) => setUserToShare(e.currentTarget.value)} />
-					<button onClick={sharePipelineHandler}
-						className="share-modal__confirm">Confirm</button>
+					<Button type="submit"
+						width={88}
+						height={40}
+						borderRadius="0px 5px 5px 0px"
+					>
+						Confirm
+					</Button>
 				</form>
-				<button onClick={() => setShowShareModal(false)}
-					className="share-modal__exit">Exit</button>
+				<Button onClick={() => setShowShareModal(false)}
+					hasShadow
+					width={88}
+					height={40}
+					borderRadius="5px"
+				>
+					Exit
+				</Button>
 			</div>
 		</Modal>
 	);

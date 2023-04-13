@@ -1,10 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Hubballi&display=swap');
 
-body {
-    margin: 0;
-    background-color: #F0F0F0;
-}
-
 @font-face {
     font-family: "Disket Mono";
     src: url("../fonts/Disket-Mono-Regular.ttf") format("truetype");
@@ -19,3 +14,7 @@ body {
     font-weight: normal;
 }
 
+body {
+    margin: 0;
+    background-color: #F0F0F0;
+}
