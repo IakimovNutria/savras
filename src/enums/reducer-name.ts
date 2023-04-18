@@ -1,5 +1,5 @@
 export enum ReducerName {
-    Authorization = 'authorizationReducer',
-    Main = 'mainReducer',
-    Pipeline = 'pipelineReducer'
+    AUTHORIZATION = 'authorizationReducer',
+    MAIN = 'mainReducer',
+    PIPELINE = 'pipelineReducer'
 }

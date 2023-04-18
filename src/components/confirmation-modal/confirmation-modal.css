@@ -1,6 +1,13 @@
 .confirmation {
+    margin-top: 22px;
+    padding-left: 38px;
+    margin-right: 38px;
+    margin-bottom: 49px;
+}
+
+.confirmation__buttons {
+    justify-content: center;
     display: flex;
-    padding: 41px 65px 49px;
     gap: 179px;
 }
 
@@ -24,4 +31,8 @@
 
 .confirmation__button:active {
     background: #FAB619;
+}
+
+.confirmation__text {
+    margin-bottom: 41px;
 }

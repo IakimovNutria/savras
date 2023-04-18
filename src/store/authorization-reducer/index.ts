@@ -2,15 +2,19 @@ import { createSlice } from '@reduxjs/toolkit';
 import { ReducerName } from '../../enums/reducer-name';
 import AuthorizationStatus from '../../enums/authorization-status';
 import AuthorizationReducerState from '../../types/authorization-reducer-state';
-import { checkAuthAction, signInAction, signUpAction } from '../api-actions';
-import { setAuthorization } from '../actions';
+import {
+	setAuthorization,
+	checkAuthAction,
+	signInAction,
+	signUpAction
+} from './actions';
 
 const initialState: AuthorizationReducerState = {
 	authorization: AuthorizationStatus.IN_PROCESS,
 };
 
 export const authorizationReducer = createSlice({
-	name: ReducerName.Authorization,
+	name: ReducerName.AUTHORIZATION,
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {

@@ -13,15 +13,17 @@ export default function ConfirmationModal({
 	title, text, onConfirm, onNotConfirm,
 }: ConfirmationModalProps): JSX.Element {
 	return (
-		<Modal title={title}
-			text={text}
-			headerBodyGap={22}
-		>
+		<Modal title={title}>
 			<div className="confirmation">
-				<button onClick={onConfirm}
-					className="confirmation__button">Yes</button>
-				<button onClick={onNotConfirm}
-					className="confirmation__button">No</button>
+				<div className="confirmation__text">
+					{text}
+				</div>
+				<div className="confirmation__buttons">
+					<button onClick={onConfirm}
+						className="confirmation__button">Yes</button>
+					<button onClick={onNotConfirm}
+						className="confirmation__button">No</button>
+				</div>
 			</div>
 		</Modal>
 	);

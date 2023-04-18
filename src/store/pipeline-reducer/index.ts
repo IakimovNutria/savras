@@ -3,15 +3,16 @@ import { ReducerName } from '../../enums/reducer-name';
 import PipelineReducerState from '../../types/pipeline-reducer-state';
 import {
 	createCell,
-	deleteCell, executeCell, fetchCellInfo,
+	deleteCell,
+	executeCell,
+	fetchCellInfo,
 	fetchPipeline,
 	getFileTimeSeries,
 	updateInputs,
 	updateParams,
-} from '../api-actions';
+} from './actions';
 import getCellStatus from '../../utils/get-cell-status';
 import { CellStatus } from '../../enums/cell-status';
-import { addCell, addGraphData, setPipeline } from '../actions';
 
 const initialState: PipelineReducerState = {
 	cellsStatus: {},
@@ -21,7 +22,7 @@ const initialState: PipelineReducerState = {
 };
 
 export const pipelineReducer = createSlice({
-	name: ReducerName.Pipeline,
+	name: ReducerName.PIPELINE,
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
@@ -106,23 +107,6 @@ export const pipelineReducer = createSlice({
 					state.currentPipeline.cells.push(action.payload);
 				}
 				state.cellsStatus[action.payload.id] = CellStatus.NOT_EXECUTED;
-			})
-			.addCase(setPipeline, (state, action) => {
-				state.currentPipeline = action.payload;
-			})
-			.addCase(addCell, (state, action) => {
-				if (state.currentPipeline !== null) {
-					state.currentPipeline.cells.push(action.payload);
-				}
-			})
-			.addCase(addGraphData, (state, action) => {
-				state.graphs = {
-					...state.graphs,
-					[action.payload.cellId]: {
-						...state.graphs[action.payload.cellId],
-						[action.payload.name]: action.payload.timeSeries,
-					},
-				};
 			});
 	},
 });

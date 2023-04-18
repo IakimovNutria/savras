@@ -3,15 +3,18 @@ import { ReducerName } from '../../enums/reducer-name';
 import MainReducerState from '../../types/main-reducer-state';
 import {
 	createPipeline,
-	deleteFile, deletePipeline, fetchCellsFunctionsInfo, fetchFileColumns, fetchFilesAction,
+	deleteFile,
+	deletePipeline,
+	fetchCellsFunctionsInfo,
+	fetchFileColumns,
+	fetchFilesAction,
 	fetchSharedPipelinesAction,
-	fetchUserPipelinesAction, forkPipeline,
+	fetchUserPipelinesAction,
+	forkPipeline,
 	saveFile,
 	uploadFile,
-} from '../api-actions';
-import {
-	setCellsFunctions, setFiles, setSharedPipelines, setUserPipelines,
-} from '../actions';
+} from './actions';
+
 
 const initialState: MainReducerState = {
 	files: [],
@@ -22,7 +25,7 @@ const initialState: MainReducerState = {
 };
 
 export const mainReducer = createSlice({
-	name: ReducerName.Main,
+	name: ReducerName.MAIN,
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
@@ -60,18 +63,6 @@ export const mainReducer = createSlice({
 			})
 			.addCase(fetchFileColumns.fulfilled, (state, action) => {
 				state.filesColumns = { ...state.filesColumns, [action.payload.path]: action.payload.columns };
-			})
-			.addCase(setUserPipelines, (state, action) => {
-				state.userPipelines = action.payload;
-			})
-			.addCase(setFiles, (state, action) => {
-				state.files = action.payload;
-			})
-			.addCase(setSharedPipelines, (state, action) => {
-				state.sharedPipelines = action.payload;
-			})
-			.addCase(setCellsFunctions, (state, action) => {
-				state.functions = action.payload;
 			});
 	},
 });

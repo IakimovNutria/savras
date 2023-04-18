@@ -4,11 +4,8 @@ import { CookiesProvider } from 'react-cookie';
 import { Provider } from 'react-redux';
 import App from './components/app/app';
 import { store } from './store';
-import {
-	checkAuthAction, fetchCellsFunctionsInfo,
-} from './store/api-actions';
+import { fetchCellsFunctionsInfo } from './store/main-reducer/actions';
 
-store.dispatch(checkAuthAction());
 store.dispatch(fetchCellsFunctionsInfo());
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);

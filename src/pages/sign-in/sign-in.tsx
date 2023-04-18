@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { signInAction } from '../../store/api-actions';
+import { signInAction } from '../../store/authorization-reducer/actions';
 import AuthorizationStatus from '../../enums/authorization-status';
 import { getAuthorizationStatus } from '../../store/authorization-reducer/selectors';
 import {Authorization} from '../../components/authorization/authorization';

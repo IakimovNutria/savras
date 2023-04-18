@@ -1,10 +1,10 @@
-import React, {useCallback} from 'react';
+import React, { useCallback } from 'react';
 import { Navigate } from 'react-router-dom';
-import {signUpAction} from '../../store/api-actions';
+import { signUpAction } from '../../store/authorization-reducer/actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import AuthorizationStatus from '../../enums/authorization-status';
 import { getAuthorizationStatus } from '../../store/authorization-reducer/selectors';
-import {Authorization} from '../../components/authorization/authorization';
+import { Authorization } from '../../components/authorization/authorization';
 
 function SignUp(): JSX.Element {
 	const dispatch = useAppDispatch();

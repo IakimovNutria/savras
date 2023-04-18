@@ -1,8 +1,9 @@
 .share-modal {
-    padding: 12px 39px 35px;
+    margin-top: 11px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 35px;
 }
 
 .share-modal__form {
@@ -40,4 +41,22 @@
 .share-modal__input:focus {
     outline: 0;
     outline-offset: 0;
+}
+
+.share-modal__text {
+    margin-bottom: 12px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.share-modal__input-button {
+    width: 88px;
+    height: 40px;
+    border-radius: 0 5px 5px 0;
+}
+
+.share-modal__exit-button {
+    width: 88px;
+    height: 40px;
+    border-radius: 5px;
 }

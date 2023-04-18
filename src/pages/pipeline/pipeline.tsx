@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Link, useParams} from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchPipeline } from '../../store/api-actions';
+import { fetchPipeline } from '../../store/pipeline-reducer/actions';
 import Cell from '../../components/cell/cell';
 import CellCreation from '../../components/cell-creation/cell-creation';
 import { getCurrentPipeline, getIsPipelineLoading } from '../../store/pipeline-reducer/selectors';
@@ -53,7 +53,10 @@ function Pipeline(): JSX.Element {
 					to="/">Back to main</Link>
 			</header>
 			{
-				visible && <CellCreation pipelineId={id} />
+				visible &&
+				<CellCreation pipelineId={id}
+					changeVisible={changeVisible}
+				/>
 			}
 			{
 				pipeline.cells.map((cellInfo) => (

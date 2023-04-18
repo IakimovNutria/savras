@@ -2,20 +2,20 @@ import React, {ChangeEvent, FormEvent, useCallback, useRef, useState} from 'reac
 import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setAuthorization } from '../../store/actions';
+import { setAuthorization } from '../../store/authorization-reducer/actions';
 import AuthorizationStatus from '../../enums/authorization-status';
 import './main.css';
 import {
 	createPipeline,
 	deleteFile,
 	deletePipeline,
-	downloadFile,
 	uploadFile,
 	forkPipeline,
-} from '../../store/api-actions';
+} from '../../store/main-reducer/actions';
 import { getFiles, getSharedPipelines, getUserPipelines } from '../../store/main-reducer/selectors';
 import ConfirmationModal from '../../components/confirmation-modal/confirmation-modal';
 import ShareModal from '../../components/share-modal/share-modal';
+import {downloadFile} from '../../utils/download-file';
 
 function Main(): JSX.Element {
 	const [newPipelineName, setNewPipelineName] = useState('');
@@ -79,7 +79,7 @@ function Main(): JSX.Element {
 		event.preventDefault();
 		const path = event.currentTarget.id;
 		const { name } = event.currentTarget;
-		dispatch(downloadFile({ path, name }));
+		downloadFile(path, name);
 	}, [dispatch]);
 
 	const openShareModal = useCallback((event: FormEvent<HTMLButtonElement>) => {
@@ -214,20 +214,13 @@ function Main(): JSX.Element {
 									>
 										Open
 									</Link>
+									<span>{pipeline.name}</span>
 									<button
 										className="main__list-item-button"
 										id={pipeline.id}
 										onClick={() => dispatch(forkPipeline({ pipelineId: pipeline.id }))}
 									>
 										Fork
-									</button>
-									<span>{pipeline.name}</span>
-									<button
-										className="main__list-item-button"
-										id={pipeline.id}
-										onClick={openDeletePipelineModal}
-									>
-										Delete
 									</button>
 								</li>
 							))

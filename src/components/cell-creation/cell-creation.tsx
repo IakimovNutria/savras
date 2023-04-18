@@ -1,14 +1,15 @@
 import React, {MouseEvent, useCallback, useState} from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { createCell } from '../../store/api-actions';
+import { createCell } from '../../store/pipeline-reducer/actions';
 import { getFunctions } from '../../store/main-reducer/selectors';
 import './cell-creation.css';
 
 type CreateButtonsProps = {
-    pipelineId: string;
+	pipelineId: string;
+	changeVisible: () => void;
 };
 
-function CellCreation({ pipelineId }: CreateButtonsProps) : JSX.Element {
+function CellCreation({ pipelineId, changeVisible }: CreateButtonsProps) : JSX.Element {
 	const functions = useAppSelector(getFunctions);
 	const dispatch = useAppDispatch();
 	const [currentGroup, setCurrentGroup] = useState(functions[0].group);
@@ -16,6 +17,7 @@ function CellCreation({ pipelineId }: CreateButtonsProps) : JSX.Element {
 	const handleCreate = useCallback((event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		dispatch(createCell({ pipelineId, functionName: event.currentTarget.id }));
+		changeVisible();
 	}, [pipelineId, dispatch]);
 
 	return (

@@ -1,4 +1,4 @@
-type CellArguments = {
+type CellParams = {
     inputParams: {[param: string]: string | number | boolean};
     outputs: {[outputName: string]: string | null};
     inputsPath: {[inputName: string]: string | null};
@@ -7,4 +7,4 @@ type CellArguments = {
     graphOutputs: {[name: string]: boolean};
 };
 
-export default CellArguments;
+export default CellParams;

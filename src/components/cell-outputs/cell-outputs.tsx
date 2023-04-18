@@ -1,20 +1,30 @@
-import React, {
-	ChangeEvent, FormEvent, useMemo,
-} from 'react';
-import CellArguments from '../../types/cell-arguments';
+import React, {FormEvent, useCallback, useContext, useMemo} from 'react';
+import CellParams from '../../types/cell-params';
+import CellOutput from '../cell-output/cell-output';
+import {saveFile} from '../../store/main-reducer/actions';
+import {useAppDispatch} from '../../hooks';
+import {CellContext} from '../../contexts/cell-context';
 
 type OutputsParams = {
     cellId: string;
     outputs: {[key: string]: string | null};
-    updateOutputNameHandler: (event: ChangeEvent<HTMLInputElement>) => void;
-    saveFilesHandler: (event: FormEvent<HTMLButtonElement>) => void;
-    cellParams: CellArguments;
-    updateShowGraphHandler: (event: FormEvent<HTMLInputElement>) => void;
 };
 
-function CellOutputs({
-	cellId, outputs, updateOutputNameHandler, saveFilesHandler, cellParams, updateShowGraphHandler,
-}: OutputsParams): JSX.Element {
+function CellOutputs({cellId, outputs}: OutputsParams): JSX.Element {
+	const dispatch = useAppDispatch();
+	const {cellParams} = useContext(CellContext);
+	const saveFilesHandler = useCallback((event: FormEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		for (const key in cellParams.outputs) {
+			const value = cellParams.outputs[key];
+			if (value !== '' && value != null) {
+				const path = outputs[key];
+				if (path !== null) {
+					dispatch(saveFile({ path, name: value }));
+				}
+			}
+		}
+	}, [cellParams, dispatch, outputs]);
 	const outputNames: string[] = useMemo(() => {
 		const newOutputNames = [];
 		for (const key in outputs) {
@@ -48,28 +58,9 @@ function CellOutputs({
 					outputNames.map((output) => (
 						<li key={cellId + output}
 							className="cell__output-item">
-							<div className="cell__show-graph-checkbox">
-								<img alt="graph-icon"
-									src="/img/graph-icon.png"
-									width={15}
-									height={15} />
-								<input
-									type="checkbox"
-									checked={isShowGraph[output]}
-									id={output}
-									onChange={updateShowGraphHandler}
-								/>
-							</div>
-							<span>
-								{output}
-    :
-							</span>
-							<input
-								value={names[output]}
-								className="cell__text-input"
-								type="text"
-								id={output}
-								onChange={updateOutputNameHandler}
+							<CellOutput isShowGraph={isShowGraph[output]}
+								output={output}
+								outputName={names[output]}
 							/>
 						</li>))
 				}

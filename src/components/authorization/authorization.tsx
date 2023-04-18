@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FormEvent, useCallback, useState} from 'react';
 import AuthorizationStatus from '../../enums/authorization-status';
 import {Link} from 'react-router-dom';
-import {setAuthorization} from '../../store/actions';
+import {setAuthorization} from '../../store/authorization-reducer/actions';
 import {useAppDispatch} from '../../hooks';
 import './authorization.css';
 import {Button} from '../button/button';
@@ -54,11 +54,12 @@ export function Authorization({onSubmit, mainTitle, error, linkTitle, linkTo, li
 						value={password}
 						onChange={passwordOnChange}
 					/>
-					<Button width={300}
-						height={50}
-						type="submit"
+					<Button type="submit"
 						hasShadow
-						borderRadius="15px">Continue</Button>
+						className="authorization__button"
+					>
+						Continue
+					</Button>
 				</form>
 				<span className="authorization__error">{error}</span>
 			</section>

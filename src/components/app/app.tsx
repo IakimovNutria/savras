@@ -7,13 +7,23 @@ import Pipeline from '../../pages/pipeline/pipeline';
 import PrivateRoute from '../private-route/private-route';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import AuthorizationStatus from '../../enums/authorization-status';
-import { fetchFilesAction, fetchSharedPipelinesAction, fetchUserPipelinesAction } from '../../store/api-actions';
+import {
+	fetchFilesAction,
+	fetchSharedPipelinesAction,
+	fetchUserPipelinesAction
+} from '../../store/main-reducer/actions';
+import {
+	checkAuthAction
+} from '../../store/authorization-reducer/actions';
 import { getAuthorizationStatus } from '../../store/authorization-reducer/selectors';
 import Loading from '../loading/loading';
 
 function App(): JSX.Element {
 	const authorizationStatus = useAppSelector(getAuthorizationStatus);
 	const dispatch = useAppDispatch();
+	useEffect(() => {
+		dispatch(checkAuthAction());
+	}, []);
 	useEffect(() => {
 		if (authorizationStatus === AuthorizationStatus.AUTHORIZED) {
 			dispatch(fetchFilesAction());

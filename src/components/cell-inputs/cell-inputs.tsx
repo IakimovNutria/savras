@@ -1,28 +1,22 @@
-import React, {
-	ChangeEvent, FormEvent, useCallback, useMemo,
-} from 'react';
-import { useAppSelector } from '../../hooks';
-import CellInput from '../../types/cell-input';
-import CellArguments from '../../types/cell-arguments';
-import { getFiles, getFilesColumns } from '../../store/main-reducer/selectors';
+import React, {FormEvent, useCallback, useContext, useMemo} from 'react';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import Input from '../../types/input';
+import { getFiles } from '../../store/main-reducer/selectors';
+import CellInput from '../cell-input/cell-input';
+import {CellContext} from '../../contexts/cell-context';
+import {updateInputs} from '../../store/pipeline-reducer/actions';
 
 type InputProps = {
     cellId: string;
-    updateInputHandler: (event: ChangeEvent<HTMLSelectElement>) => void;
-    updateShowGraphHandler: (event: FormEvent<HTMLInputElement>) => void;
-    updateColumnHandler: (event: ChangeEvent<HTMLSelectElement>) => void;
-    submitInputsHandler: (event: FormEvent<HTMLButtonElement>) => void;
-    cellParams: CellArguments;
 };
 
-function CellInputs({
-	cellId, updateInputHandler, updateColumnHandler, submitInputsHandler, updateShowGraphHandler, cellParams,
-}: InputProps): JSX.Element {
+function CellInputs({cellId}: InputProps): JSX.Element {
+	const { cellParams } = useContext(CellContext);
 	const files = useAppSelector(getFiles);
-	const dataColumns = useAppSelector(getFilesColumns);
 	const inputPaths = cellParams.inputsPath;
 	const inputColumns = cellParams.selectedInputsColumn;
-	const inputsArray: CellInput[] = useMemo(() => {
+	const dispatch = useAppDispatch();
+	const inputsArray: Input[] = useMemo(() => {
 		const getFileName = (path: string | null) => {
 			const file = files.find((elem) => elem.path === path);
 			if (file === undefined) {
@@ -32,7 +26,7 @@ function CellInputs({
 		};
 		const newInputsArray = [];
 		for (const key in inputPaths) {
-			const toPush: CellInput = {
+			const toPush: Input = {
 				name: key,
 				fileName: getFileName(inputPaths[key]),
 				inputColumn: inputColumns[key],
@@ -43,12 +37,18 @@ function CellInputs({
 		return newInputsArray;
 	}, [cellParams, inputColumns, inputPaths, files]);
 
-	const getFileColumns = useCallback((path: string | null) => {
-		if (path && Object.prototype.hasOwnProperty.call(dataColumns, path)) {
-			return dataColumns[path];
+	const submitInputsHandler = useCallback(async (event: FormEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		const toUpdate: {path: string, data_column: string, field: string}[] = [];
+		for (const key in cellParams.inputsPath) {
+			const path = cellParams.inputsPath[key];
+			const dataColumn = cellParams.selectedInputsColumn[key];
+			if (path !== null && dataColumn !== null) {
+				toUpdate.push({ path, data_column: dataColumn, field: key });
+			}
 		}
-		return [];
-	}, [dataColumns]);
+		dispatch(updateInputs({ cellId, inputs: toUpdate }));
+	}, [cellParams, dispatch, cellId]);
 
 	return (
 		<div className="cell__inputs">
@@ -58,62 +58,9 @@ function CellInputs({
 					inputsArray.map((input) => (
 						<li className="cell__input-item"
 							key={cellId + input.name}>
-							<div className="cell__show-graph-checkbox">
-								<img alt="graph-icon"
-									src="/img/graph-icon.png"
-									width={15}
-									height={15}
-								/>
-								<input
-									type="checkbox"
-									checked={cellParams.graphInputs[input.name]}
-									id={input.name}
-									onChange={updateShowGraphHandler}
-								/>
-							</div>
-							<span>
-								{input.name}:
-							</span>
-							<select
-								value={(input.fileName === null) ? 'choose file' : input.fileName}
-								onChange={updateInputHandler}
-								name={input.name}
-								id={input.name}
-							>
-								{
-									(input.fileName === null) && (<option id="">choose file</option>)
-								}
-								{
-									files.map((file) => (
-										<option id={file.path}
-											key={file.path}
-										>
-											{file.name}
-										</option>
-									))
-								}
-							</select>
-							{
-								(input.fileName !== null) && (
-									<select value={input.inputColumn ? input.inputColumn : 'choose column'}
-										onChange={updateColumnHandler}
-										id={input.name}
-									>
-										{
-											input.inputColumn || (<option id="">choose column</option>)
-										}
-										{
-											getFileColumns(input.path).map((elem) => (
-												<option id={input.name + elem}
-													key={input.name + elem}
-												>
-													{elem}
-												</option>
-											))
-										}
-									</select>
-								)
-							}
+							<CellInput input={input}
+								cellParams={cellParams}
+							/>
 						</li>
 					))
 				}

@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo } from 'react';
 import Graph from '../graph/graph';
-import { getFileTimeSeries } from '../../store/api-actions';
+import { getFileTimeSeries } from '../../store/pipeline-reducer/actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import TimeSeries from '../../types/time-series';
-import CellArguments from '../../types/cell-arguments';
+import CellParams from '../../types/cell-params';
 import { getGraphs } from '../../store/pipeline-reducer/selectors';
 
 type GraphsParams = {
     cellId: string;
-    cellParams: CellArguments;
+    cellParams: CellParams;
     outputs: {[key: string]: string | null};
 };
 
