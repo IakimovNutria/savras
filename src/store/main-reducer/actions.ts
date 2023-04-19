@@ -109,7 +109,7 @@ export const deletePipeline = createAsyncThunk<{pipelineId: string}, {pipelineId
 	state: State,
 	extra: AxiosInstance
 }>(
-	'/pipelines/delete',
+	'/pipelines-section/delete',
 	async ({ pipelineId }, { extra: api }) => {
 		await api.delete(ApiRoute.PIPELINES, { params: { pipeline_id: pipelineId } });
 		return { pipelineId };

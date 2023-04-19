@@ -1,5 +1,4 @@
 import React, {FormEvent, useCallback, useContext, useMemo} from 'react';
-import CellParams from '../../types/cell-params';
 import CellOutput from '../cell-output/cell-output';
 import {saveFile} from '../../store/main-reducer/actions';
 import {useAppDispatch} from '../../hooks';
@@ -66,7 +65,9 @@ function CellOutputs({cellId, outputs}: OutputsParams): JSX.Element {
 				}
 			</ul>
 			<button className="cell__save-button"
-				onClick={saveFilesHandler}>Save output files</button>
+				onClick={saveFilesHandler}>
+				Save output files
+			</button>
 		</div>);
 }
 

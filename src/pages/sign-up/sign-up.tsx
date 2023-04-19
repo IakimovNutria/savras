@@ -8,12 +8,9 @@ import { Authorization } from '../../components/authorization/authorization';
 
 function SignUp(): JSX.Element {
 	const dispatch = useAppDispatch();
-
+	const authorizationStatus = useAppSelector(getAuthorizationStatus);
 	const handleSubmit = useCallback(({login, password}: {login: string, password: string}) =>
 		dispatch(signUpAction({login, password})), [dispatch]);
-
-	const authorizationStatus = useAppSelector(getAuthorizationStatus);
-
 	if (authorizationStatus === AuthorizationStatus.AUTHORIZED) {
 		return (<Navigate to="/" />);
 	}

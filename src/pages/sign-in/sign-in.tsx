@@ -1,14 +1,14 @@
-import React, {useCallback} from 'react';
+import React, { useCallback } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks';
 import { signInAction } from '../../store/authorization-reducer/actions';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import AuthorizationStatus from '../../enums/authorization-status';
 import { getAuthorizationStatus } from '../../store/authorization-reducer/selectors';
-import {Authorization} from '../../components/authorization/authorization';
+import { Authorization } from '../../components/authorization/authorization';
 
 function SignIn(): JSX.Element {
-	const authorizationStatus = useAppSelector(getAuthorizationStatus);
 	const dispatch = useAppDispatch();
+	const authorizationStatus = useAppSelector(getAuthorizationStatus);
 	const handleSubmit = useCallback(({login, password}: {login: string, password: string}) =>
 		dispatch(signInAction({login, password})), [dispatch]);
 	if (authorizationStatus === AuthorizationStatus.AUTHORIZED) {

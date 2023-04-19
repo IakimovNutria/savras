@@ -40,7 +40,13 @@
         "react/jsx-max-props-per-line": [
             "error",
             {"maximum": 1}
-        ]
+        ],
+        "no-trailing-spaces": "error",
+        "arrow-parens": [
+            "error",
+            "always"
+        ],
+        "keyword-spacing": "error"
     },
     "globals": {
         "JSX": true
