@@ -1,0 +1,45 @@
+:root {
+    --main-list__item-height: 50px;
+}
+
+.main-list__items {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 0;
+    padding-left: 0;
+    width: 480px;
+    background: rgba(160, 162, 215, 0.26);
+    box-shadow: 0 -4px 0 rgba(0, 0, 0, 0.51);
+    border-radius: 5px;
+    min-height: var(--main-list__item-height);
+}
+
+.main-list__item {
+    width: 100%;
+    height: var(--main-list__item-height);
+    list-style-type: none;
+    border-top: 1px solid #DDDDDD;
+    border-bottom: 1px solid #DDDDDD;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main-list__item_even {
+    background: white;
+}
+
+.main-list__item_odd {
+    background: #F0F0F0;
+}
+
+.main-list__title {
+    margin-top: 5px;
+    font-family: Disket Mono bold, serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 23px;
+    letter-spacing: 0;
+    text-align: left;
+}

@@ -1,0 +1,82 @@
+.files-section {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
+}
+
+.files-section__title {
+    margin-bottom: 39px;
+    font-family: Disket Mono bold, serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 27px;
+    letter-spacing: 0;
+    text-align: left;
+}
+
+.files-section__upload-form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 39px;
+}
+
+.files-section__file-input-label {
+    width: 166px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    border-radius: 15px 0 0 15px;
+    cursor: pointer;
+    background: #ffdd2d;
+    padding: 0;
+    border-style: hidden;
+    box-shadow: 0 10px 10px rgba(160, 160, 160, 0.27);
+    font-family: Hubballi, serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 14px;
+}
+
+.files-section__file-input-label:hover {
+    background: #fcc521;
+    color: #131D2B;
+}
+
+.files-section__file-input-label:active {
+    background: #fab619;
+    color: black;
+}
+
+.files-section__file-input {
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.files-section__file-input-name {
+    width: 211px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #CCCCCC;
+    border-radius: 0 15px 15px 0;
+    box-shadow: 0 10px 10px rgba(160, 160, 160, 0.25);
+    font-family: Hubballi, serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 14px;
+    letter-spacing: 0;
+    text-align: left;
+}
+
+.files-section__form-submit {
+    width: 106px;
+    height: 50px;
+    border-radius: 15px;
+}

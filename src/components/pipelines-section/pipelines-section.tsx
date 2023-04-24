@@ -6,6 +6,8 @@ import {getSharedPipelines, getUserPipelines} from '../../store/main-reducer/sel
 import ConfirmationModal from '../confirmation-modal/confirmation-modal';
 import ShareModal from '../share-modal/share-modal';
 import MainList from '../main-list/main-list';
+import {Button} from '../button/button';
+import './pipelines-section.css';
 
 export default function PipelinesSection(): JSX.Element {
 	const dispatch = useAppDispatch();
@@ -46,25 +48,26 @@ export default function PipelinesSection(): JSX.Element {
 
 	return (
 		<>
-			<section className="main__section">
+			<section className="pipelines-section">
 				<h2 style={{ display: 'none' }}>pipelines</h2>
-				<h3>Create new pipeline</h3>
-				<form className="main__create-form"
+				<h3 className="pipelines-section__title">Create new pipeline</h3>
+				<form className="pipelines-section__form"
 					onSubmit={createPipelineHandler}>
 					<input
 						required
-						className="main__create-form-input"
+						className="pipelines-section__input"
 						placeholder="Name"
 						value={newPipelineName}
 						onChange={updateNewPipelineName}
 					/>
-					<input className="main__submit-button"
+					<Button className="pipelines-section__submit-button"
 						type="submit"
-						value="Create" />
+					>
+						Create
+					</Button>
 				</form>
-				<h3>My pipelines</h3>
 				<MainList items={userPipelines}
-					getItemKey={(pipeline) => pipeline.id}
+					keyExtractor={(pipeline) => pipeline.id}
 					renderItem={(pipeline) => (
 						<>
 							<Link
@@ -95,10 +98,10 @@ export default function PipelinesSection(): JSX.Element {
 							</button>
 						</>
 					)}
+					title="My pipelines"
 				/>
-				<h3>Shared pipelines</h3>
 				<MainList items={sharedPipelines}
-					getItemKey={(pipeline) => pipeline.id}
+					keyExtractor={(pipeline) => pipeline.id}
 					renderItem={(pipeline) => (
 						<>
 							<Link
@@ -118,6 +121,7 @@ export default function PipelinesSection(): JSX.Element {
 							</button>
 						</>
 					)}
+					title="Shared pipelines"
 				/>
 			</section>
 			{

@@ -1,21 +1,21 @@
-import React, {MouseEventHandler} from 'react';
+import React from 'react';
 import './button.css';
 import cn from 'classnames';
 
 
 type ButtonProps = {
-	onClick?: MouseEventHandler<HTMLButtonElement>;
-	type?: 'button' | 'submit' | 'reset';
 	className?: string;
 	children?: JSX.Element | string;
 	hasShadow?: boolean;
+	[key: string]: unknown;
 };
 
-export const Button: React.FC<ButtonProps> = ({onClick, type, children, hasShadow, className}: ButtonProps) => {
+export const Button: React.FC<ButtonProps> = ({children, hasShadow, className, ...buttonProps}: ButtonProps) => {
 	return (
 		<button className={cn('button', hasShadow && 'button_has-shadow', className)}
-			onClick={onClick}
-			type={type}>{children}
+			{...buttonProps}
+		>
+			{children}
 		</button>
 	);
 };

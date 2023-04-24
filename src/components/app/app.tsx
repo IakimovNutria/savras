@@ -61,7 +61,8 @@ function App(): JSX.Element {
 					)}
 				/>
 			</Routes>
-		</BrowserRouter>);
+		</BrowserRouter>
+	);
 }
 
 export default App;

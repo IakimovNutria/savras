@@ -21,14 +21,16 @@ function Main(): JSX.Element {
 		<React.Fragment>
 			<header className="main__header">
 				<button className="main__header-button"
-					onClick={signOutHandler}>Sign out</button>
+					onClick={signOutHandler}>SIGN OUT</button>
 			</header>
 			<div className="main__body">
 				<h1 style={{ display: 'none' }}>main page</h1>
 				<FilesSection />
+				<div className="main__divide-line" />
 				<PipelinesSection />
 			</div>
-		</React.Fragment>);
+		</React.Fragment>
+	);
 }
 
 export default Main;
