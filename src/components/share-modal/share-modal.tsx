@@ -1,5 +1,5 @@
 import Modal from '../modal/modal';
-import React, {useState} from 'react';
+import React, {ChangeEvent, useCallback, useState} from 'react';
 import {sharePipeline} from '../../store/main-reducer/actions';
 import {useAppDispatch} from '../../hooks';
 import {Button} from '../button/button';
@@ -20,9 +20,14 @@ export default function ShareModal({
 		setUserToShare('');
 		setShowShareModal(false);
 	}
+	const closeModal = useCallback(() => setShowShareModal(false),
+		[setShowShareModal]);
+	const changeUserToShare = useCallback((e: ChangeEvent<HTMLInputElement>) => setUserToShare(e.currentTarget.value),
+		[setUserToShare]);
 
 	return (
-		<Modal title="Share pipeline">
+		<Modal title="Share pipeline"
+			closeModal={closeModal}>
 			<div className="share-modal">
 				<div className="share-modal__text">
 					Enter the login of the user you want to share the pipeline with
@@ -33,14 +38,14 @@ export default function ShareModal({
 						placeholder="user login"
 						type="text"
 						value={userToShare}
-						onChange={(e) => setUserToShare(e.currentTarget.value)} />
+						onChange={changeUserToShare} />
 					<Button type="submit"
 						className="share-modal__input-button"
 					>
 						Confirm
 					</Button>
 				</form>
-				<Button onClick={() => setShowShareModal(false)}
+				<Button onClick={closeModal}
 					hasShadow
 					className="share-modal__exit-button"
 				>

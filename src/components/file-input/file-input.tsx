@@ -1,18 +1,17 @@
-import React, {FormEvent, useCallback, useContext} from 'react';
-import CellParams from '../../types/cell-params';
+import React, {Dispatch, SetStateAction, useCallback} from 'react';
 import Input from '../../types/input';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {getFiles, getFilesColumns} from '../../store/main-reducer/selectors';
 import {fetchFileColumns} from '../../store/main-reducer/actions';
-import {CellContext} from '../../contexts/cell-context';
+import './file-input.css';
 
 type CellInputProps = {
-	cellParams: CellParams;
 	input: Input;
+	setInputsColumns: Dispatch<SetStateAction<{[p: string]: string | null}>>;
+	setInputsPaths: Dispatch<SetStateAction<{[p: string]: string | null}>>;
 };
 
-export default function CellInput({cellParams, input}: CellInputProps): JSX.Element {
-	const {setCellParams} = useContext(CellContext);
+export default function FileInput({input, setInputsColumns, setInputsPaths}: CellInputProps): JSX.Element {
 	const files = useAppSelector(getFiles);
 	const dataColumns = useAppSelector(getFilesColumns);
 	const dispatch = useAppDispatch();
@@ -33,8 +32,8 @@ export default function CellInput({cellParams, input}: CellInputProps): JSX.Elem
 		if (path && !Object.prototype.hasOwnProperty.call(dataColumns, path)) {
 			dispatch(fetchFileColumns({ path }));
 		}
-		setCellParams((state) => ({ ...state, inputsPath: { ...state.inputsPath, [fieldName]: path } }));
-	}, [dataColumns, dispatch]);
+		setInputsPaths((state) => ({...state, [fieldName]: path}));
+	}, [dataColumns, dispatch, setInputsPaths]);
 
 	const updateColumnHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
 		event.preventDefault();
@@ -43,31 +42,12 @@ export default function CellInput({cellParams, input}: CellInputProps): JSX.Elem
 		const { selectedIndex } = options;
 		const value = (selectedIndex !== -1) ? options[selectedIndex].value : '';
 		const fieldName = select.id;
-		setCellParams((state) => ({ ...state, selectedInputsColumn: { ...state.selectedInputsColumn, [fieldName]: value } }));
-	}, []);
-
-	const updateShowGraphHandler = useCallback((event: FormEvent<HTMLInputElement>) => {
-		const fieldName = event.currentTarget.id;
-		const value = event.currentTarget.checked;
-		setCellParams((state) => ({ ...state, graphInputs: { ...state.graphInputs, [fieldName]: value } }));
-	}, []);
+		setInputsColumns((state) => ({...state, [fieldName]: value}));
+	}, [setInputsColumns]);
 
 	return (
-		<>
-			<div className="cell__show-graph-checkbox">
-				<img alt="graph-icon"
-					src="/img/graph-icon.png"
-					width={15}
-					height={15}
-				/>
-				<input
-					type="checkbox"
-					checked={cellParams.graphInputs[input.name]}
-					id={input.name}
-					onChange={updateShowGraphHandler}
-				/>
-			</div>
-			<span>
+		<span className="file-input">
+			<span className="file-input__name">
 				{input.name}:
 			</span>
 			<select
@@ -110,6 +90,6 @@ export default function CellInput({cellParams, input}: CellInputProps): JSX.Elem
 					</select>
 				)
 			}
-		</>
+		</span>
 	);
 }

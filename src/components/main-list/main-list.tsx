@@ -1,7 +1,7 @@
 import React from 'react';
 import './main-list.css';
 
-interface MainListProps<T> {
+type MainListProps<T> = {
 	items: T[];
 	keyExtractor: (item: T) => React.Key;
 	renderItem: (item: T) => JSX.Element;

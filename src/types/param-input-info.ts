@@ -1,8 +1,8 @@
-type ParamInput = {
+type ParamInputInfo = {
     name: string,
     value: string | boolean | number,
     type: string,
     pattern: string
 };
 
-export default ParamInput;
+export default ParamInputInfo;

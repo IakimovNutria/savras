@@ -13,7 +13,8 @@ export default function ConfirmationModal({
 	title, text, onConfirm, onNotConfirm,
 }: ConfirmationModalProps): JSX.Element {
 	return (
-		<Modal title={title}>
+		<Modal title={title}
+			closeModal={onNotConfirm}>
 			<div className="confirmation">
 				<div className="confirmation__text">
 					{text}

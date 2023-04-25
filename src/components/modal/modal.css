@@ -13,9 +13,11 @@
 .modal__content {
     width: 558px;
     min-height: 225px;
+    max-height: 80%;
     border-top: 8px solid #000000D1;
     border-radius: 15px;
     background-color: white;
+    overflow-y: scroll;
 }
 
 .modal__header {
@@ -35,4 +37,5 @@
     font-weight: 400;
     font-size: 20px;
     line-height: 19px;
+    white-space: pre-line;
 }

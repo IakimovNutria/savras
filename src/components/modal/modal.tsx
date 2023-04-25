@@ -1,15 +1,19 @@
-import React from 'react';
+import React, {FormEvent, ReactNode, useCallback} from 'react';
 import './modal.css';
 
 type ModalProps = {
     title: string;
-    children: JSX.Element;
+    children: ReactNode;
+	closeModal: () => void;
 }
 
-export default function Modal({ title, children }: ModalProps): JSX.Element {
+export default function Modal({ title, children, closeModal }: ModalProps): JSX.Element {
+	const stopPropagation = useCallback((event: FormEvent<HTMLDivElement>) => event.stopPropagation(), []);
 	return (
-		<div className="modal">
-			<div className="modal__content">
+		<div className="modal"
+			onClick={closeModal}>
+			<div className="modal__content"
+				onClick={stopPropagation}>
 				<header className="modal__header">
 					{title}
 				</header>

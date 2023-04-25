@@ -1,0 +1,36 @@
+.output {
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.output__name {
+    font-family: Hubballi, serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0;
+}
+
+.output__text-input {
+    text-align: center;
+    height: 20px;
+    width: 50px;
+    background: #CCCCCC;
+    border-radius: 5px;
+    border: none;
+    flex-shrink: 0;
+    font-family: Hubballi, serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0;
+}
+
+.output__text-input:hover {
+    background: #AAAAAA;
+}
+
+.output__text-input:focus {
+    background: white;
+}
