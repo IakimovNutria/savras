@@ -71,3 +71,11 @@
     background: #A0A0A0;
     margin-top: 26px;
 }
+
+.main__exit-icon {
+    background-image: url("../../../public/img/exit.png");
+    background-size: 30px;
+    height: 30px;
+    width: 30px;
+    margin: 0 10px;
+}

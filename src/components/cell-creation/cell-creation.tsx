@@ -12,7 +12,7 @@ type CreateButtonsProps = {
 function CellCreation({ pipelineId, changeVisible }: CreateButtonsProps) : JSX.Element {
 	const functions = useAppSelector(getFunctions);
 	const dispatch = useAppDispatch();
-	const [currentGroup, setCurrentGroup] = useState(functions[0].group);
+	const [currentGroup, setCurrentGroup] = useState(functions.length !== 0 ? functions[0].group : '');
 
 	const handleCreate = useCallback((event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();

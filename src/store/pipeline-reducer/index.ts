@@ -46,6 +46,24 @@ export const pipelineReducer = createSlice({
 				if (state.cellsStatus[action.meta.arg.cellId] !== CellStatus.IN_PROCESS) {
 					state.cellsStatus[action.payload.cellId] = CellStatus.SAVED;
 				}
+				if (state.currentPipeline) {
+					state.currentPipeline.cells = state.currentPipeline.cells.map((cell) => {
+						if (cell.id !== action.payload.cellId) {
+							return cell;
+						}
+						return {
+							...cell,
+							input_params:
+								{
+									...cell.input_params,
+									...action.payload.params.reduce((result: {[key: string]: string | number | boolean}, item) => {
+										result[item.field] = item.value;
+										return result;
+									}, {})
+								}
+						};
+					});
+				}
 			})
 			.addCase(updateParams.rejected, (state, action) => {
 				if (state.cellsStatus[action.meta.arg.cellId] !== CellStatus.IN_PROCESS) {
@@ -61,6 +79,32 @@ export const pipelineReducer = createSlice({
 			.addCase(updateInputs.fulfilled, (state, action) => {
 				if (state.cellsStatus[action.meta.arg.cellId] !== CellStatus.IN_PROCESS) {
 					state.cellsStatus[action.payload.cellId] = CellStatus.SAVED;
+				}
+				if (state.currentPipeline) {
+					state.currentPipeline.cells = state.currentPipeline.cells.map((cell) => {
+						if (cell.id !== action.payload.cellId) {
+							return cell;
+						}
+						return {
+							...cell,
+							inputs:
+								{
+									...cell.inputs,
+									...action.payload.inputs.reduce((result: {[key: string]: string}, item) => {
+										result[item.field] = item.path;
+										return result;
+									}, {})
+								},
+							data_columns:
+								{
+									...cell.data_columns,
+									...action.payload.inputs.reduce((result: {[key: string]: string}, item) => {
+										result[item.field] = item.data_column;
+										return result;
+									}, {})
+								}
+						};
+					});
 				}
 			})
 			.addCase(updateInputs.rejected, (state, action) => {

@@ -21,7 +21,10 @@ function Main(): JSX.Element {
 	return (
 		<React.Fragment>
 			<header className="main__header">
-				<HeaderButton onClick={signOutHandler}>SIGN OUT</HeaderButton>
+				<HeaderButton onClick={signOutHandler}
+					icon={<div className="main__exit-icon"/>}>
+					SIGN OUT
+				</HeaderButton>
 			</header>
 			<div className="main__body">
 				<h1 style={{ display: 'none' }}>main page</h1>

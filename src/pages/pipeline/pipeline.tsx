@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Link, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {fetchPipeline} from '../../store/pipeline-reducer/actions';
 import Cell from '../../components/cell/cell';
@@ -41,10 +41,43 @@ function Pipeline(): JSX.Element {
 		[setVisible, visible]);
 	const closeSidebar = useCallback(() => setSidebar({id: '', name: SidebarName.INPUTS}),
 		[setSidebar]);
+	const sidebarComponent = useMemo(() => {
+		if (pipeline === null) {
+			return null;
+		}
+		const sidebarCell = pipeline.cells.find((cellInfo) => cellInfo.id === sidebar.id);
+		if (!sidebarCell) {
+			return null;
+		}
+		if (sidebar.name === SidebarName.INPUTS) {
+			return (
+				<FileInputsSidebar cellId={sidebarCell.id}
+					inputsPaths={sidebarCell.inputs}
+					inputsColumns={sidebarCell.data_columns}
+					key={sidebarCell.id}
+				/>
+			);
+		}
+		if (sidebar.name === SidebarName.PARAMS) {
+			return (
+				<ParamInputsSidebar cellId={sidebarCell.id}
+					inputParams={sidebarCell.input_params}
+					functionName={sidebarCell.function}
+					key={sidebarCell.id}
+				/>
+			);
+		}
+		if (sidebar.name === SidebarName.OUTPUTS) {
+			return (
+				<OutputsSidebar cellId={sidebarCell.id}
+					outputs={sidebarCell.outputs}
+					key={sidebarCell.id}
+				/>
+			);
+		}
+		return null;
+	}, [pipeline, sidebar]);
 
-	console.log(modalFuncName);
-	console.log(modalFunc);
-	console.log(functionsInfo);
 	if (id === undefined) {
 		return <NotFound />;
 	}
@@ -65,8 +98,7 @@ function Pipeline(): JSX.Element {
 					{
 						canEdit && <HeaderButton onClick={changeVisible}>Create</HeaderButton>
 					}
-					<Link className="pipeline__header-button"
-						to="/">Main</Link>
+					<HeaderButton linkTo="/">Main</HeaderButton>
 				</div>
 			</header>
 			{
@@ -87,39 +119,7 @@ function Pipeline(): JSX.Element {
 				))
 			}
 			<CloseSidebarContext.Provider value={closeSidebar}>
-				{
-					pipeline.cells
-						.filter((cellInfo) => cellInfo.id === sidebar.id)
-						.map((cellInfo) => {
-							if (sidebar.name === SidebarName.INPUTS) {
-								return (
-									<FileInputsSidebar cellId={cellInfo.id}
-										inputsPaths={cellInfo.inputs}
-										inputsColumns={cellInfo.data_columns}
-										key={cellInfo.id}
-									/>
-								);
-							}
-							if (sidebar.name === SidebarName.PARAMS) {
-								return (
-									<ParamInputsSidebar cellId={cellInfo.id}
-										inputParams={cellInfo.input_params}
-										functionName={cellInfo.function}
-										key={cellInfo.id}
-									/>
-								);
-							}
-							if (sidebar.name === SidebarName.OUTPUTS) {
-								return (
-									<OutputsSidebar cellId={cellInfo.id}
-										outputs={cellInfo.outputs}
-										key={cellInfo.id}
-									/>
-								);
-							}
-							return null;
-						})
-				}
+				{sidebarComponent}
 			</CloseSidebarContext.Provider>
 			{
 				modalFunc &&

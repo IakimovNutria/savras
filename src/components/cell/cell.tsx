@@ -83,7 +83,10 @@ function Cell({ cellInfo, pipelineId, canEdit, setSidebar, setModalFuncName }: C
 							onClick={changeModalFuncName}
 						/>
 					</div>
-					<HeaderButton onClick={deleteCellHandler}>Delete</HeaderButton>
+					<HeaderButton onClick={deleteCellHandler}
+						icon={<div className="cell__trash-icon"/>}>
+						Delete
+					</HeaderButton>
 				</header>
 				<div className="cell__params-buttons">
 					<Button onClick={openInputs}
