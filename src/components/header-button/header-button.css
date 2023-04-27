@@ -16,3 +16,11 @@
     align-items: center;
     padding: 0 6px;
 }
+
+.header-button_without-left {
+    border-left: none;
+}
+
+.header-button_without-right {
+    border-right: none;
+}

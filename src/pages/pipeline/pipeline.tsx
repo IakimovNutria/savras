@@ -12,17 +12,16 @@ import NoAccess from '../no-access/no-access';
 import './pipeline.css';
 import {HeaderButton} from '../../components/header-button/header-button';
 import {SidebarName} from '../../enums/sidebar-name';
-import FileInputsSidebar from '../../components/file-inputs-sidebar/file-inputs-sidebar';
-import ParamInputsSidebar from '../../components/param-inputs-sidebar/param-inputs-sidebar';
-import OutputsSidebar from '../../components/outputs-sidebar/outputs-sidebar';
 import { CloseSidebarContext } from '../../contexts/close-sidebar-context';
 import Modal from '../../components/modal/modal';
+import {SidebarTabs} from '../../components/sidebar-tabs/sidebar-tabs';
+import ReactMarkdown from 'react-markdown';
 
-function Pipeline(): JSX.Element {
+function Pipeline() {
 	const { id } = useParams();
 	const dispatch = useAppDispatch();
 	const [visible, setVisible] = useState(false);
-	const [sidebar, setSidebar] = useState({id: '', name: SidebarName.INPUTS});
+	const [sidebar, setSidebar] = useState({id: null, name: null} as {id: null | string, name: null | SidebarName});
 	const [modalFuncName, setModalFuncName] = useState('');
 	const functionsInfo = useAppSelector(getFunctions);
 	const modalFunc = useMemo(() => functionsInfo.find((func) => func.function === modalFuncName),
@@ -39,44 +38,8 @@ function Pipeline(): JSX.Element {
 	}, [dispatch, id]);
 	const changeVisible = useCallback(() => setVisible((visible) => !visible),
 		[setVisible, visible]);
-	const closeSidebar = useCallback(() => setSidebar({id: '', name: SidebarName.INPUTS}),
+	const closeSidebar = useCallback(() => setSidebar({id: null, name: null}),
 		[setSidebar]);
-	const sidebarComponent = useMemo(() => {
-		if (pipeline === null) {
-			return null;
-		}
-		const sidebarCell = pipeline.cells.find((cellInfo) => cellInfo.id === sidebar.id);
-		if (!sidebarCell) {
-			return null;
-		}
-		if (sidebar.name === SidebarName.INPUTS) {
-			return (
-				<FileInputsSidebar cellId={sidebarCell.id}
-					inputsPaths={sidebarCell.inputs}
-					inputsColumns={sidebarCell.data_columns}
-					key={sidebarCell.id}
-				/>
-			);
-		}
-		if (sidebar.name === SidebarName.PARAMS) {
-			return (
-				<ParamInputsSidebar cellId={sidebarCell.id}
-					inputParams={sidebarCell.input_params}
-					functionName={sidebarCell.function}
-					key={sidebarCell.id}
-				/>
-			);
-		}
-		if (sidebar.name === SidebarName.OUTPUTS) {
-			return (
-				<OutputsSidebar cellId={sidebarCell.id}
-					outputs={sidebarCell.outputs}
-					key={sidebarCell.id}
-				/>
-			);
-		}
-		return null;
-	}, [pipeline, sidebar]);
 
 	if (id === undefined) {
 		return <NotFound />;
@@ -96,7 +59,8 @@ function Pipeline(): JSX.Element {
 				<h1 className="pipeline__title">{pipeline.name}</h1>
 				<div className="pipeline__header-buttons">
 					{
-						canEdit && <HeaderButton onClick={changeVisible}>Create</HeaderButton>
+						canEdit && <HeaderButton onClick={changeVisible}
+							withoutRightBorder>Create</HeaderButton>
 					}
 					<HeaderButton linkTo="/">Main</HeaderButton>
 				</div>
@@ -119,7 +83,8 @@ function Pipeline(): JSX.Element {
 				))
 			}
 			<CloseSidebarContext.Provider value={closeSidebar}>
-				{sidebarComponent}
+				<SidebarTabs sidebarId={sidebar.id}
+					sidebarName={sidebar.name} />
 			</CloseSidebarContext.Provider>
 			{
 				modalFunc &&
@@ -127,7 +92,9 @@ function Pipeline(): JSX.Element {
 					title={modalFunc.name}
 				>
 					<div className="pipeline__modal-doc">
-						{modalFunc.doc}
+						<ReactMarkdown>
+							{modalFunc.doc.replace(/\n+/g, '\n')}
+						</ReactMarkdown>
 					</div>
 				</Modal>
 			}

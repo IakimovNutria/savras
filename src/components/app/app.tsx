@@ -39,9 +39,9 @@ function App(): JSX.Element {
 		<BrowserRouter>
 			<Routes>
 				<Route path="sign-in"
-					element={(<SignIn />)} />
+					element={<SignIn />} />
 				<Route path="sign-up"
-					element={(<SignUp />)} />
+					element={<SignUp />} />
 				<Route
 					path="/"
 					element={(

@@ -1,16 +1,20 @@
 import React, {FormEvent, useCallback, useMemo, useState} from 'react';
 import Output from '../output/output';
 import {saveFile} from '../../store/main-reducer/actions';
-import {useAppDispatch} from '../../hooks';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 import {Sidebar} from '../sidebar/sidebar';
+import {getCurrentPipeline} from '../../store/pipeline-reducer/selectors';
 
 type OutputsParams = {
     cellId: string;
-    outputs: {[key: string]: string | null};
 };
 
-function OutputsSidebar({cellId, outputs}: OutputsParams): JSX.Element {
+function OutputsSidebar({cellId}: OutputsParams): JSX.Element | null {
 	const dispatch = useAppDispatch();
+	const outputs = useAppSelector(getCurrentPipeline)?.cells.find((cell) => cell.id === cellId)?.outputs;
+	if (!outputs) {
+		return null;
+	}
 	const [localOutputs, setLocalOutputs] = useState(outputs);
 	const saveFilesHandler = useCallback((event: FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
@@ -34,12 +38,12 @@ function OutputsSidebar({cellId, outputs}: OutputsParams): JSX.Element {
 		return newOutputNames;
 	}, [outputs]);
 
-	return (
+	return localOutputs && (
 		<Sidebar items={outputNames}
 			keyExtractor={(output) => cellId + output}
 			renderItem={(output) => (
 				<Output output={output}
-					outputName={outputs[output] ?? ''}
+					outputName={localOutputs[output] ?? ''}
 					setOutputs={setLocalOutputs}
 				/>
 			)}

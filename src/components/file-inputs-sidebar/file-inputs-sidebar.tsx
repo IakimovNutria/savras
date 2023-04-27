@@ -1,22 +1,27 @@
-import React, {FormEvent, useCallback, useMemo, useState} from 'react';
+import React, {FormEvent, useCallback, useEffect, useMemo, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import Input from '../../types/input';
 import { getFiles } from '../../store/main-reducer/selectors';
 import FileInput from '../file-input/file-input';
 import {updateInputs} from '../../store/pipeline-reducer/actions';
 import {Sidebar} from '../sidebar/sidebar';
+import {getCurrentPipeline} from '../../store/pipeline-reducer/selectors';
 
 type InputProps = {
     cellId: string;
-	inputsPaths: {[key: string]: string | null};
-	inputsColumns: {[key: string]: string | null};
 };
 
-function FileInputsSidebar({cellId, inputsPaths, inputsColumns}: InputProps): JSX.Element {
+function FileInputsSidebar({cellId}: InputProps): JSX.Element | null {
 	const files = useAppSelector(getFiles);
 	const dispatch = useAppDispatch();
-	const [localInputsPaths, setLocalInputsPaths] = useState(inputsPaths);
-	const [localInputsColumns, setLocalInputsColumns] = useState(inputsColumns);
+	const cell = useAppSelector(getCurrentPipeline)?.cells.find((cell) => cell.id === cellId);
+	if (!cell) {
+		return null;
+	}
+	const [localInputsPaths, setLocalInputsPaths] = useState(cell.inputs);
+	const [localInputsColumns, setLocalInputsColumns] = useState(cell.data_columns);
+	useEffect(() => setLocalInputsPaths(cell.inputs), [cell.inputs]);
+	useEffect(() => setLocalInputsColumns(cell.data_columns), [cell.data_columns]);
 	const getFileName = useCallback((path: string | null) => {
 		const file = files.find((elem) => elem.path === path);
 		if (file === undefined) {

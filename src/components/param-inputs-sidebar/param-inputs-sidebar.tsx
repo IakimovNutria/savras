@@ -1,4 +1,4 @@
-import React, {FormEvent, useCallback, useMemo, useState} from 'react';
+import React, {FormEvent, useCallback, useEffect, useMemo, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import ParamInputInfo from '../../types/param-input-info';
 import { getFunctions } from '../../store/main-reducer/selectors';
@@ -6,17 +6,22 @@ import ParamInput from '../param-input/param-input';
 import {updateParams} from '../../store/pipeline-reducer/actions';
 import {Sidebar} from '../sidebar/sidebar';
 import {ParamType} from '../../enums/param-type';
+import {getCurrentPipeline} from '../../store/pipeline-reducer/selectors';
 
 type InputParamsProps = {
-    inputParams: {[key: string]: string | number | boolean},
-    cellId: string,
-    functionName: string
+    cellId: string
 };
 
-function ParamInputsSidebar({cellId, functionName, inputParams}: InputParamsProps): JSX.Element {
+function ParamInputsSidebar({cellId}: InputParamsProps): JSX.Element | null {
 	const dispatch = useAppDispatch();
 	const functionsInfo = useAppSelector(getFunctions);
-	const functionInfo = functionsInfo.find((elem) => (elem.function === functionName));
+	const cell = useAppSelector(getCurrentPipeline)?.cells.find((cell) => cell.id === cellId);
+	if (!cell) {
+		return null;
+	}
+	const functionInfo = useMemo(() => functionsInfo.find((elem) => (elem.function === cell.function)),
+		[functionsInfo, cell.function]);
+	const inputParams = useMemo(() => cell.input_params, [cell.input_params]);
 	const params = useMemo(() => {
 		const newParams = [];
 		if (functionInfo !== undefined) {
@@ -51,6 +56,7 @@ function ParamInputsSidebar({cellId, functionName, inputParams}: InputParamsProp
 	}, [functionInfo, inputParams]);
 
 	const [localParams, setLocalParams] = useState(params);
+	useEffect(() => setLocalParams(params), [params]);
 
 	const submitParamsHandler = useCallback(async (event: FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();

@@ -36,7 +36,8 @@ export function Sidebar<T>({title, keyExtractor, renderItem, items, buttonTitle,
 					{buttonTitle}
 				</Button>
 			</div>
-			<button onClick={closeSidebar}/>
+			<button onClick={closeSidebar}
+				className="sidebar__back-button"/>
 		</div>
 	);
 }

@@ -18,7 +18,7 @@ type CellProps = {
     cellInfo: CellInfo;
     pipelineId: string;
     canEdit: boolean;
-	setSidebar: Dispatch<SetStateAction<{id: string, name: SidebarName}>>;
+	setSidebar: Dispatch<SetStateAction<{id: string | null, name: SidebarName | null}>>;
 	setModalFuncName: Dispatch<SetStateAction<string>>;
 };
 

@@ -53,4 +53,10 @@
 
 .pipeline__modal-doc {
     padding: 20px;
+    white-space: pre-line;
+}
+
+.pipeline__modal-doc > p {
+    margin: 0;
+    line-height: 30px;
 }
