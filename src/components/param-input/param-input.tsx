@@ -11,7 +11,7 @@ type CellParamInputProps = {
 function ParamInput({param, setParams}: CellParamInputProps): JSX.Element {
 	const updateParamHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
 		const fieldName = event.currentTarget.id;
-		const value = event.currentTarget.type === ParamType.BOOL ? event.target.checked : event.target.value;
+		const value = event.currentTarget.type === 'checkbox' ? event.target.checked : event.target.value;
 		setParams((state) => state.map((elem) => {
 			if (elem.name === fieldName) {
 				return {...elem, value};

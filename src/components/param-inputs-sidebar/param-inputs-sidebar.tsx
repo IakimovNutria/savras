@@ -21,7 +21,6 @@ function ParamInputsSidebar({cellId}: InputParamsProps): JSX.Element | null {
 	}
 	const functionInfo = useMemo(() => functionsInfo.find((elem) => (elem.function === cell.function)),
 		[functionsInfo, cell.function]);
-	const inputParams = useMemo(() => cell.input_params, [cell.input_params]);
 	const params = useMemo(() => {
 		const newParams = [];
 		if (functionInfo !== undefined) {
@@ -31,7 +30,7 @@ function ParamInputsSidebar({cellId}: InputParamsProps): JSX.Element | null {
 					name: key,
 					type: '',
 					pattern: '*',
-					value: inputParams[key],
+					value: cell.input_params[key],
 				};
 				if (fieldType === ParamType.BOOL) {
 					toPush.type = 'checkbox';
@@ -53,10 +52,10 @@ function ParamInputsSidebar({cellId}: InputParamsProps): JSX.Element | null {
 			}
 		}
 		return newParams;
-	}, [functionInfo, inputParams]);
+	}, [functionInfo, cell.input_params]);
 
 	const [localParams, setLocalParams] = useState(params);
-	useEffect(() => setLocalParams(params), [params]);
+	useEffect(() => setLocalParams(params), [cellId]);
 
 	const submitParamsHandler = useCallback(async (event: FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
@@ -68,7 +67,7 @@ function ParamInputsSidebar({cellId}: InputParamsProps): JSX.Element | null {
 			toUpdate.push({ field: param.name, value });
 		});
 		dispatch(updateParams({ cellId: cellId, params: toUpdate }));
-	}, [cellId, dispatch]);
+	}, [cellId, dispatch, localParams]);
 
 	return (
 		<Sidebar items={localParams}
