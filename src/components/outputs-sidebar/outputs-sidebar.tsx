@@ -21,7 +21,7 @@ function OutputsSidebar({cellId}: OutputsParams): JSX.Element | null {
 		for (const key in localOutputs) {
 			const value = localOutputs[key];
 			if (value !== '' && value != null) {
-				const path = localOutputs[key];
+				const path = key;
 				if (path !== null) {
 					dispatch(saveFile({ path, name: value }));
 				}

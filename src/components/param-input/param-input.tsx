@@ -1,6 +1,5 @@
 import React, {Dispatch, SetStateAction, useCallback} from 'react';
 import ParamInputInfo from '../../types/param-input-info';
-import {ParamType} from '../../enums/param-type';
 import './param-input.css';
 
 type CellParamInputProps = {
