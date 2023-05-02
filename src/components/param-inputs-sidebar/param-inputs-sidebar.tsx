@@ -6,22 +6,21 @@ import ParamInput from '../param-input/param-input';
 import {updateParams} from '../../store/pipeline-reducer/actions';
 import {Sidebar} from '../sidebar/sidebar';
 import {ParamType} from '../../enums/param-type';
-import {getCurrentPipeline} from '../../store/pipeline-reducer/selectors';
+import CellInfo from '../../types/cell-info';
 
 type InputParamsProps = {
-    cellId: string
+    cell: CellInfo;
 };
 
-function ParamInputsSidebar({cellId}: InputParamsProps): JSX.Element | null {
+function ParamInputsSidebar({cell}: InputParamsProps): JSX.Element | null {
 	const dispatch = useAppDispatch();
 	const functionsInfo = useAppSelector(getFunctions);
-	const cell = useAppSelector(getCurrentPipeline)?.cells.find((cell) => cell.id === cellId);
-	if (!cell) {
-		return null;
-	}
-	const functionInfo = useMemo(() => functionsInfo.find((elem) => (elem.function === cell.function)),
-		[functionsInfo, cell.function]);
+	const functionInfo = useMemo(() => functionsInfo.find((elem) => (elem.function === cell?.function)),
+		[functionsInfo, cell?.function]);
 	const params = useMemo(() => {
+		if (!cell) {
+			return [];
+		}
 		const newParams = [];
 		if (functionInfo !== undefined) {
 			for (const key in functionInfo.input_params) {
@@ -52,10 +51,10 @@ function ParamInputsSidebar({cellId}: InputParamsProps): JSX.Element | null {
 			}
 		}
 		return newParams;
-	}, [functionInfo, cell.input_params]);
+	}, [functionInfo, cell?.input_params]);
 
 	const [localParams, setLocalParams] = useState(params);
-	useEffect(() => setLocalParams(params), [cellId]);
+	useEffect(() => setLocalParams(params), [cell.id]);
 
 	const submitParamsHandler = useCallback(async (event: FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
@@ -66,12 +65,11 @@ function ParamInputsSidebar({cellId}: InputParamsProps): JSX.Element | null {
 			const value = (paramType === ParamType.INT || paramType === ParamType.FLOAT) ? Number(notNumberValue) : notNumberValue;
 			toUpdate.push({ field: param.name, value });
 		});
-		dispatch(updateParams({ cellId: cellId, params: toUpdate }));
-	}, [cellId, dispatch, localParams]);
-
+		dispatch(updateParams({ cellId: cell.id, params: toUpdate }));
+	}, [cell.id, dispatch, localParams]);
 	return (
 		<Sidebar items={localParams}
-			keyExtractor={(param) => cellId + param.name}
+			keyExtractor={(param) => cell.id + param.name}
 			renderItem={(param) => (
 				<ParamInput param={param}
 					setParams={setLocalParams}

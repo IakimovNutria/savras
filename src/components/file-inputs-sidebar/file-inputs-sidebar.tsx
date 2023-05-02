@@ -5,19 +5,15 @@ import { getFiles } from '../../store/main-reducer/selectors';
 import FileInput from '../file-input/file-input';
 import {updateInputs} from '../../store/pipeline-reducer/actions';
 import {Sidebar} from '../sidebar/sidebar';
-import {getCurrentPipeline} from '../../store/pipeline-reducer/selectors';
+import CellInfo from '../../types/cell-info';
 
 type InputProps = {
-    cellId: string;
+    cell: CellInfo;
 };
 
-function FileInputsSidebar({cellId}: InputProps): JSX.Element | null {
+function FileInputsSidebar({cell}: InputProps): JSX.Element | null {
 	const files = useAppSelector(getFiles);
 	const dispatch = useAppDispatch();
-	const cell = useAppSelector(getCurrentPipeline)?.cells.find((cell) => cell.id === cellId);
-	if (!cell) {
-		return null;
-	}
 	const [localInputsPaths, setLocalInputsPaths] = useState(cell.inputs);
 	const [localInputsColumns, setLocalInputsColumns] = useState(cell.data_columns);
 	useEffect(() => setLocalInputsPaths(cell.inputs), [cell.inputs]);
@@ -53,9 +49,8 @@ function FileInputsSidebar({cellId}: InputProps): JSX.Element | null {
 				toUpdate.push({ path, data_column: dataColumn, field: key });
 			}
 		}
-		dispatch(updateInputs({ cellId, inputs: toUpdate }));
-	}, [dispatch, cellId, localInputsColumns, localInputsPaths]);
-
+		dispatch(updateInputs({ cellId: cell.id, inputs: toUpdate }));
+	}, [dispatch, cell.id, localInputsColumns, localInputsPaths]);
 	return (
 		<Sidebar title="Inputs"
 			items={inputsArray}
@@ -65,7 +60,7 @@ function FileInputsSidebar({cellId}: InputProps): JSX.Element | null {
 					setInputsPaths={setLocalInputsPaths}
 				/>
 			)}
-			keyExtractor={(item) => cellId + item.name}
+			keyExtractor={(item) => cell.id + item.name}
 			buttonTitle="Save inputs"
 			buttonClickHandler={submitInputsHandler}
 		/>

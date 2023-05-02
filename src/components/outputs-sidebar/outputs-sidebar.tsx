@@ -1,20 +1,17 @@
 import React, {FormEvent, useCallback, useMemo, useState} from 'react';
 import Output from '../output/output';
 import {saveFile} from '../../store/main-reducer/actions';
-import {useAppDispatch, useAppSelector} from '../../hooks';
+import {useAppDispatch} from '../../hooks';
 import {Sidebar} from '../sidebar/sidebar';
-import {getCurrentPipeline} from '../../store/pipeline-reducer/selectors';
+import CellInfo from '../../types/cell-info';
 
 type OutputsParams = {
-    cellId: string;
+    cell: CellInfo;
 };
 
-function OutputsSidebar({cellId}: OutputsParams): JSX.Element | null {
+function OutputsSidebar({cell}: OutputsParams): JSX.Element | null {
 	const dispatch = useAppDispatch();
-	const outputsPaths = useAppSelector(getCurrentPipeline)?.cells.find((cell) => cell.id === cellId)?.outputs;
-	if (!outputsPaths) {
-		return null;
-	}
+	const outputsPaths = cell.outputs;
 	const initialLocalOutputs = useMemo(() => {
 		const value: {[key: string]: string | null} = {};
 		for (const key in outputsPaths) {
@@ -25,6 +22,9 @@ function OutputsSidebar({cellId}: OutputsParams): JSX.Element | null {
 	const [localOutputs, setLocalOutputs] = useState(initialLocalOutputs);
 	const saveFilesHandler = useCallback((event: FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
+		if (!outputsPaths) {
+			return;
+		}
 		for (const key in localOutputs) {
 			const value = localOutputs[key];
 			if (value !== '' && value != null) {
@@ -47,7 +47,7 @@ function OutputsSidebar({cellId}: OutputsParams): JSX.Element | null {
 
 	return localOutputs && (
 		<Sidebar items={outputNames}
-			keyExtractor={(output) => cellId + output}
+			keyExtractor={(output) => cell.id + output}
 			renderItem={(output) => (
 				<Output output={output}
 					outputName={localOutputs[output] ?? ''}
