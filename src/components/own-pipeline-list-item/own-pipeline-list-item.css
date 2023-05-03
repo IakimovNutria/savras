@@ -1,0 +1,6 @@
+.own-pipeline-list-item__buttons {
+    display: flex;
+    gap: 1px;
+    background: #767676;
+    border-radius: 5px;
+}

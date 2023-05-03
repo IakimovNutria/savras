@@ -1,5 +1,6 @@
-import React, {FormEvent, ReactNode, useCallback} from 'react';
+import React, {FormEvent, ReactNode, useCallback, useMemo} from 'react';
 import './modal.css';
+import ReactDOM from 'react-dom';
 
 type ModalProps = {
     title: string;
@@ -9,7 +10,8 @@ type ModalProps = {
 
 export default function Modal({ title, children, closeModal }: ModalProps): JSX.Element {
 	const stopPropagation = useCallback((event: FormEvent<HTMLDivElement>) => event.stopPropagation(), []);
-	return (
+	const appRoot = useMemo(() => document.getElementById('root'), []);
+	const modalComponent = useMemo(() => (
 		<div className="modal"
 			onClick={closeModal}>
 			<div className="modal__content"
@@ -22,5 +24,7 @@ export default function Modal({ title, children, closeModal }: ModalProps): JSX.
 				</div>
 			</div>
 		</div>
-	);
+	), [closeModal, stopPropagation, title, children]);
+
+	return appRoot ? ReactDOM.createPortal(modalComponent, appRoot) : modalComponent;
 }

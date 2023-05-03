@@ -67,8 +67,7 @@ export const pipelineReducer = createSlice({
 			})
 			.addCase(updateParams.rejected, (state, action) => {
 				if (state.cellsStatus[action.meta.arg.cellId] !== CellStatus.IN_PROCESS) {
-					const errorMessage = action.error.message;
-					state.cellsStatus[action.meta.arg.cellId] = errorMessage === undefined ? CellStatus.NOT_SAVED : errorMessage;
+					state.cellsStatus[action.meta.arg.cellId] = action.error.message ?? CellStatus.NOT_SAVED;
 				}
 			})
 			.addCase(updateInputs.pending, (state, action) => {

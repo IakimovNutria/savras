@@ -1,4 +1,4 @@
-import React, {FormEvent, useCallback} from 'react';
+import React, {FormEvent} from 'react';
 import { useCookies } from 'react-cookie';
 import { useAppDispatch } from '../../hooks';
 import { setAuthorization } from '../../store/authorization-reducer/actions';
@@ -12,11 +12,11 @@ function Main(): JSX.Element {
 	const [, , removeCookie] = useCookies(['token']);
 	const dispatch = useAppDispatch();
 
-	const signOutHandler = useCallback((event: FormEvent<HTMLButtonElement>) => {
+	const signOutHandler = (event: FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		removeCookie('token');
 		dispatch(setAuthorization(AuthorizationStatus.NOT_AUTHORIZED));
-	}, [dispatch]);
+	};
 
 	return (
 		<React.Fragment>
