@@ -7,6 +7,7 @@ import ConfirmationModal from '../confirmation-modal/confirmation-modal';
 import MainList from '../main-list/main-list';
 import {Button} from '../button/button';
 import './files-section.css';
+import {ButtonSize} from '../../enums/button-size';
 
 export default function FilesSection(): JSX.Element {
 	const dispatch = useAppDispatch();
@@ -67,8 +68,8 @@ export default function FilesSection(): JSX.Element {
 						</div>
 					</div>
 					<Button type="submit"
-						className="files-section__form-submit"
 						hasShadow
+						size={ButtonSize.MEDIUM}
 					>
 						Upload
 					</Button>
@@ -82,6 +83,7 @@ export default function FilesSection(): JSX.Element {
 									id={file.path}
 									name={file.name}
 									onClick={downloadFileHandler}
+									size={ButtonSize.SMALL}
 								>
 									Download
 								</Button>
@@ -89,6 +91,7 @@ export default function FilesSection(): JSX.Element {
 								<Button
 									id={file.path}
 									onClick={openDeleteFileModal}
+									size={ButtonSize.SMALL}
 								>
 									Delete
 								</Button>

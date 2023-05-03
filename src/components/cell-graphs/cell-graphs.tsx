@@ -1,18 +1,18 @@
-import React, { useEffect, useMemo } from 'react';
+import React from 'react';
+/*, { useEffect, useMemo } from 'react';
 import Graph from '../graph/graph';
 import { getFileTimeSeries } from '../../store/pipeline-reducer/actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import TimeSeries from '../../types/time-series';
-import CellParams from '../../types/cell-params';
 import { getGraphs } from '../../store/pipeline-reducer/selectors';
-
+*/
 type GraphsParams = {
     cellId: string;
-    cellParams: CellParams;
     outputs: {[key: string]: string | null};
 };
 
-function CellGraphs({ cellId, cellParams, outputs }: GraphsParams): JSX.Element {
+function CellGraphs({ cellId, outputs }: GraphsParams): JSX.Element {
+	/*
 	const graphsInfo = useAppSelector(getGraphs)[cellId];
 	const dispatch = useAppDispatch();
 	const graphs: {name: string, timeSeries: TimeSeries}[] = useMemo(() => {
@@ -75,6 +75,8 @@ function CellGraphs({ cellId, cellParams, outputs }: GraphsParams): JSX.Element 
 			}
 		</ul>
 	) : <></>;
+	*/
+	return <></>;
 }
 
 export default CellGraphs;

@@ -44,13 +44,6 @@
     line-height: 23px;
     letter-spacing: 0;
     text-align: left;
-
-}
-
-.cell__execute-button {
-    width: 130px;
-    height: 50px;
-    border-radius: 5px;
 }
 
 .cell__header {
@@ -72,7 +65,7 @@
     width: auto;
     position: absolute;
     background: white;
-    padding: 0;
+    padding: 0 0 20px;
 }
 
 .cell__graph-name {
@@ -95,18 +88,6 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-}
-
-.cell__execute-button {
-    width: 500px;
-    height: 40px;
-    margin: 0 0 20px;
-}
-
-.cell__button {
-    width: 118px;
-    height: 34px;
-    border-radius: 5px;
 }
 
 .cell__params-buttons {

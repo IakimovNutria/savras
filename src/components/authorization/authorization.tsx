@@ -5,6 +5,7 @@ import {setAuthorization} from '../../store/authorization-reducer/actions';
 import {useAppDispatch} from '../../hooks';
 import './authorization.css';
 import {Button} from '../button/button';
+import {ButtonSize} from '../../enums/button-size';
 
 type AuthorizationFormProps = {
 	onSubmit: (action: {login: string, password: string}) => void;
@@ -56,7 +57,7 @@ export function Authorization({onSubmit, mainTitle, error, linkTitle, linkTo, li
 					/>
 					<Button type="submit"
 						hasShadow
-						className="authorization__button"
+						size={ButtonSize.LARGE}
 					>
 						Continue
 					</Button>

@@ -24,14 +24,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-radius: 5px;
 }
 
 .main-list__item_even {
-    background: white;
+    background: #F0F0F0;
 }
 
 .main-list__item_odd {
-    background: #F0F0F0;
+    background: #E1E1E1;
 }
 
 .main-list__title {

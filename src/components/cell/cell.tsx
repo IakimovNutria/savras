@@ -13,6 +13,7 @@ import {getStatusStyle} from '../../utils/get-status-style';
 import {HeaderButton} from '../header-button/header-button';
 import {Button} from '../button/button';
 import {SidebarName} from '../../enums/sidebar-name';
+import {ButtonSize} from '../../enums/button-size';
 
 type CellProps = {
     cellInfo: CellInfo;
@@ -83,37 +84,43 @@ function Cell({ cellInfo, pipelineId, canEdit, setSidebar, setModalFuncName }: C
 							onClick={changeModalFuncName}
 						/>
 					</div>
-					<HeaderButton onClick={deleteCellHandler}
-						icon={<div className="cell__trash-icon"/>}>
-						Delete
-					</HeaderButton>
+					{
+						canEdit &&
+						<HeaderButton onClick={deleteCellHandler}
+							icon={<div className="cell__trash-icon"/>}>
+							Delete
+						</HeaderButton>
+					}
 				</header>
 				<div className="cell__params-buttons">
 					<Button onClick={openInputs}
-						className="cell__button"
 						hasShadow
+						size={ButtonSize.MEDIUM}
 					>
 						Inputs
 					</Button>
 					<Button onClick={openParams}
-						className="cell__button"
+						size={ButtonSize.MEDIUM}
 						hasShadow
 					>
 						Params
 					</Button>
 					<Button onClick={openOutputs}
-						className="cell__button"
 						hasShadow
+						size={ButtonSize.MEDIUM}
 					>
 						Outputs
 					</Button>
 				</div>
-				<Button className="cell__execute-button"
-					onClick={executeHandler}
-					hasShadow
-				>
-					Execute
-				</Button>
+				{
+					canEdit &&
+					<Button onClick={executeHandler}
+						hasShadow
+						size={ButtonSize.LARGE}
+					>
+						Execute
+					</Button>
+				}
 			</div>
 		</Draggable>
 	);

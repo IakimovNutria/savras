@@ -20,7 +20,8 @@ export const HeaderButton: React.FC<HeaderButtonProps> = ({children, icon, linkT
 		linkTo ? (
 			<Link className={className}
 				to={linkTo}
-				{...buttonProps}>
+				{...buttonProps}
+			>
 				{children}
 				{icon}
 			</Link>

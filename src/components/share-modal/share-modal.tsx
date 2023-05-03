@@ -4,6 +4,7 @@ import {sharePipeline} from '../../store/main-reducer/actions';
 import {useAppDispatch} from '../../hooks';
 import {Button} from '../button/button';
 import './share-modal.css';
+import {ButtonSize} from '../../enums/button-size';
 
 type ConfirmationModalProps = {
 	setShowShareModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -40,14 +41,15 @@ export default function ShareModal({
 						value={userToShare}
 						onChange={changeUserToShare} />
 					<Button type="submit"
-						className="share-modal__input-button"
+						size={ButtonSize.MEDIUM}
+						plainLeft
 					>
 						Confirm
 					</Button>
 				</form>
 				<Button onClick={closeModal}
 					hasShadow
-					className="share-modal__exit-button"
+					size={ButtonSize.MEDIUM}
 				>
 					Exit
 				</Button>

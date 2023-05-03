@@ -1,6 +1,8 @@
 import Modal from '../modal/modal';
 import React from 'react';
 import './confirmation-modal.css';
+import {Button} from '../button/button';
+import {ButtonSize} from '../../enums/button-size';
 
 type ConfirmationModalProps = {
     title: string;
@@ -20,10 +22,18 @@ export default function ConfirmationModal({
 					{text}
 				</div>
 				<div className="confirmation__buttons">
-					<button onClick={onConfirm}
-						className="confirmation__button">Yes</button>
-					<button onClick={onNotConfirm}
-						className="confirmation__button">No</button>
+					<Button onClick={onConfirm}
+						size={ButtonSize.MEDIUM}
+						hasShadow
+					>
+						Yes
+					</Button>
+					<Button onClick={onNotConfirm}
+						size={ButtonSize.MEDIUM}
+						hasShadow
+					>
+						No
+					</Button>
 				</div>
 			</div>
 		</Modal>

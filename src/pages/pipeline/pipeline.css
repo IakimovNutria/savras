@@ -7,36 +7,6 @@
     background: white;
 }
 
-.pipeline__header-button {
-    width: 150px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    color: black;
-    border: 0 solid #E5C000;
-    border-right-width: 3px;
-    border-left-width: 3px;
-    cursor: pointer;
-    background: inherit;
-    font-family: Disket Mono, serif;
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 23px;
-    letter-spacing: 0;
-}
-
-.pipeline__header-button:hover {
-    background: #fcc521;
-    color: #131D2B;
-}
-
-.pipeline__header-button:active {
-    background: #fab619;
-    color: black;
-}
-
 .pipeline__header-buttons {
     display: flex;
 }
@@ -52,7 +22,7 @@
 }
 
 .pipeline__modal-doc {
-    padding: 20px;
+    padding: 10px 0 20px;
     white-space: pre-line;
 }
 

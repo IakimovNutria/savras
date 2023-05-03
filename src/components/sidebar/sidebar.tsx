@@ -2,6 +2,7 @@ import React, {FormEvent, useContext} from 'react';
 import './sidebar.css';
 import {Button} from '../button/button';
 import {CloseSidebarContext} from '../../contexts/close-sidebar-context';
+import {ButtonSize} from '../../enums/button-size';
 
 type SidebarProps<T> = {
 	items: T[];
@@ -29,15 +30,16 @@ export function Sidebar<T>({title, keyExtractor, renderItem, items, buttonTitle,
 				}
 			</ul>
 			<div className="sidebar__button-container">
-				<Button className="sidebar__button"
-					onClick={buttonClickHandler}
+				<Button onClick={buttonClickHandler}
 					hasShadow
+					size={ButtonSize.SMALL}
 				>
 					{buttonTitle}
 				</Button>
 			</div>
 			<button onClick={closeSidebar}
-				className="sidebar__back-button"/>
+				className="sidebar__back-button"
+			/>
 		</div>
 	);
 }

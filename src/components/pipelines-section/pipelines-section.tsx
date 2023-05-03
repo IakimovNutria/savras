@@ -8,6 +8,7 @@ import ShareModal from '../share-modal/share-modal';
 import MainList from '../main-list/main-list';
 import {Button} from '../button/button';
 import './pipelines-section.css';
+import {ButtonSize} from '../../enums/button-size';
 
 export default function PipelinesSection(): JSX.Element {
 	const dispatch = useAppDispatch();
@@ -60,8 +61,9 @@ export default function PipelinesSection(): JSX.Element {
 						value={newPipelineName}
 						onChange={updateNewPipelineName}
 					/>
-					<Button className="pipelines-section__submit-button"
-						type="submit"
+					<Button type="submit"
+						size={ButtonSize.MEDIUM}
+						plainLeft
 					>
 						Create
 					</Button>
@@ -70,32 +72,40 @@ export default function PipelinesSection(): JSX.Element {
 					keyExtractor={(pipeline) => pipeline.id}
 					renderItem={(pipeline) => (
 						<>
-							<Link
-								className="main__list-item-link"
-								id={pipeline.id}
-								to={`/pipeline/${pipeline.id}`}
-							>
-								Open
-							</Link>
-							<button className="main__list-item-button"
-								id={pipeline.id}
-								onClick={() => dispatch(forkPipeline({ pipelineId: pipeline.id }))}
-							>
-								Fork
-							</button>
+							<div className="pipelines-section__buttons">
+								<Button
+									id={pipeline.id}
+									linkTo={`/pipeline/${pipeline.id}`}
+									size={ButtonSize.SMALL}
+									plainRight
+								>
+									Open
+								</Button>
+								<Button id={pipeline.id}
+									onClick={() => dispatch(forkPipeline({ pipelineId: pipeline.id }))}
+									size={ButtonSize.SMALL}
+									plainLeft
+								>
+									Fork
+								</Button>
+							</div>
 							<span>{pipeline.name}</span>
-							<button className="main__list-item-button"
-								id={pipeline.id}
-								onClick={openShareModal}
-							>
-								Share
-							</button>
-							<button className="main__list-item-button"
-								id={pipeline.id}
-								onClick={openDeletePipelineModal}
-							>
-								Delete
-							</button>
+							<div className="pipelines-section__buttons">
+								<Button id={pipeline.id}
+									onClick={openShareModal}
+									size={ButtonSize.SMALL}
+									plainRight
+								>
+									Share
+								</Button>
+								<Button id={pipeline.id}
+									onClick={openDeletePipelineModal}
+									size={ButtonSize.SMALL}
+									plainLeft
+								>
+									Delete
+								</Button>
+							</div>
 						</>
 					)}
 					title="My pipelines"
