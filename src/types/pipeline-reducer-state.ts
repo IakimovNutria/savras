@@ -4,9 +4,9 @@ import { CellStatus } from '../enums/cell-status';
 
 type PipelineReducerState = {
     currentPipeline: PipelineInfo | null;
-    graphs: {[cellId: string]: {[name: string]: TimeSeries}};
+    graphs: Record<string, Record<string, TimeSeries>>;
     isPipelineLoading: boolean;
-    cellsStatus: {[cellId: string]: CellStatus | string};
+    cellsStatus: Record<string, CellStatus | string>;
 }
 
 export default PipelineReducerState;

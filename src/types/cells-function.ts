@@ -5,7 +5,7 @@ type CellFunction = {
     name: string;
     group: string;
     inputs: string[];
-    input_params: {[key: string]: ParamType};
+    input_params: Record<string, ParamType>;
     doc: string;
 };
 

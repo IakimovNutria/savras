@@ -64,6 +64,7 @@ function Cell({ cellInfo, pipelineId, canEdit, setSidebar, setModalFuncName }: C
 		[cellInfo.id, setSidebar]);
 	const changeModalFuncName = useCallback(() => setModalFuncName(cellInfo.function),
 		[setModalFuncName, cellInfo.function]);
+	const preventDefault = useCallback((e: DraggableEvent) => e.preventDefault(), []);
 
 	return (
 		<Draggable
@@ -73,6 +74,7 @@ function Cell({ cellInfo, pipelineId, canEdit, setSidebar, setModalFuncName }: C
 			bounds={{ left: 0, top: 0 }}
 			key={cellInfo.id}
 			disabled={!canEdit}
+			onDrag={preventDefault}
 		>
 			<div className="cell">
 				<header className="cell__header">

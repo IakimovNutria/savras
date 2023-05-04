@@ -34,6 +34,7 @@
     border: none;
     background-repeat: no-repeat;
     background-color: inherit;
+    cursor: pointer;
 }
 
 .cell__function-name {
@@ -56,6 +57,11 @@
     height: var(--header-height);
     box-shadow: 0 10px 10px 5px #A0A0A045;
     margin: 0 0 20px;
+    cursor: grab;
+}
+
+.cell__header:active {
+    cursor: grabbing;
 }
 
 .cell {

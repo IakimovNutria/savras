@@ -29,10 +29,10 @@ function Pipeline() {
 	const pipeline = useAppSelector(getCurrentPipeline);
 	const isLoading = useAppSelector(getIsPipelineLoading);
 	const canEdit = useAppSelector(getUserPipelines)
-		.find((pipeline) => pipeline.id === id) !== undefined;
+		.find((pipeline) => pipeline.id === id) !== undefined; //TODO: заменить на сложный селектор
 	const hasAccess = useAppSelector(getUserPipelines)
 		.concat(useAppSelector(getSharedPipelines))
-		.find((pipeline) => pipeline.id === id) !== undefined;
+		.find((pipeline) => pipeline.id === id) !== undefined; //TODO: заменить на сложный селектор
 	useEffect(() => {
 		dispatch(fetchPipeline({ pipelineId: id === undefined ? '' : id }));
 	}, [dispatch, id]);

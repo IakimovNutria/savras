@@ -1,11 +1,11 @@
 type CellInfo = {
     id: string;
     function: string;
-    inputs: {[inputName: string]: string | null};
-    data_columns: {[dataColumnName: string]: string | null};
-    outputs: {[outputName: string]: string | null};
-    input_params: {[param: string]: string | number | boolean};
-    output_params: {[outputParam: string]: string};
+    inputs: Record<string, string | null>;
+    data_columns: Record<string, string | null>;
+    outputs: Record<string, string | null>;
+    input_params: Record<string, string | number | boolean>;
+    output_params: Record<string, string>;
     error: string;
     x: number;
     y: number;

@@ -17,6 +17,7 @@ import {
 } from '../../store/authorization-reducer/actions';
 import { getAuthorizationStatus } from '../../store/authorization-reducer/selectors';
 import Loading from '../loading/loading';
+import NotFound from '../../pages/not-found/not-found';
 
 function App(): JSX.Element {
 	const authorizationStatus = useAppSelector(getAuthorizationStatus);
@@ -32,16 +33,18 @@ function App(): JSX.Element {
 		}
 	}, [authorizationStatus]);
 	if (authorizationStatus === AuthorizationStatus.IN_PROCESS) {
-		return (<Loading />);
+		return <Loading />;
 	}
 
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route path="sign-in"
-					element={<SignIn />} />
+					element={<SignIn />}
+				/>
 				<Route path="sign-up"
-					element={<SignUp />} />
+					element={<SignUp />}
+				/>
 				<Route
 					path="/"
 					element={(
@@ -59,6 +62,9 @@ function App(): JSX.Element {
 							navigateTo={<Pipeline />}
 						/>
 					)}
+				/>
+				<Route path='*'
+					element={<NotFound />}
 				/>
 			</Routes>
 		</BrowserRouter>
