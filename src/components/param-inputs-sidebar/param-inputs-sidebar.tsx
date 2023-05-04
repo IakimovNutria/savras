@@ -67,14 +67,17 @@ function ParamInputsSidebar({cell}: InputParamsProps): JSX.Element | null {
 		});
 		dispatch(updateParams({ cellId: cell.id, params: toUpdate }));
 	}, [cell.id, dispatch, localParams]);
+	const keyExtractor = useCallback((param: ParamInputInfo) => cell.id + param.name,
+		[]);
+	const renderItem = useCallback((param: ParamInputInfo) => (
+		<ParamInput param={param}
+			setParams={setLocalParams}
+		/>
+	), []);
 	return (
 		<Sidebar items={localParams}
-			keyExtractor={(param) => cell.id + param.name}
-			renderItem={(param) => (
-				<ParamInput param={param}
-					setParams={setLocalParams}
-				/>
-			)}
+			keyExtractor={keyExtractor}
+			renderItem={renderItem}
 			title="Params"
 			buttonTitle="Save params"
 			buttonClickHandler={submitParamsHandler}

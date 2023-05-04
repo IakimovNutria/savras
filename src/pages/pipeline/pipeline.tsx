@@ -28,11 +28,12 @@ function Pipeline() {
 		[functionsInfo, modalFuncName]);
 	const pipeline = useAppSelector(getCurrentPipeline);
 	const isLoading = useAppSelector(getIsPipelineLoading);
-	const canEdit = useAppSelector(getUserPipelines)
-		.find((pipeline) => pipeline.id === id) !== undefined; //TODO: заменить на сложный селектор
-	const hasAccess = useAppSelector(getUserPipelines)
-		.concat(useAppSelector(getSharedPipelines))
-		.find((pipeline) => pipeline.id === id) !== undefined; //TODO: заменить на сложный селектор
+	const userPipelines = useAppSelector(getUserPipelines);
+	const sharedPipelines = useAppSelector(getSharedPipelines);
+	const canEdit = useMemo(() => userPipelines.some((pipeline) => pipeline.id === id),
+		[userPipelines, pipeline?.id]);
+	const hasAccess = useMemo(() => canEdit || sharedPipelines.some((pipeline) => pipeline.id === id),
+		[canEdit, sharedPipelines, pipeline?.id]);
 	useEffect(() => {
 		dispatch(fetchPipeline({ pipelineId: id === undefined ? '' : id }));
 	}, [dispatch, id]);
@@ -40,6 +41,9 @@ function Pipeline() {
 		[setVisible, visible]);
 	const closeSidebar = useCallback(() => setSidebar({id: null, name: null}),
 		[setSidebar]);
+	const closeModal = useCallback(() => setModalFuncName(''), []);
+	const preparedDoc = useMemo(() => modalFunc?.doc.replace(/\n+/g, '\n'),
+		[modalFunc?.doc]);
 
 	if (id === undefined) {
 		return <NotFound />;
@@ -87,13 +91,13 @@ function Pipeline() {
 					sidebarName={sidebar.name} />
 			</CloseSidebarContext.Provider>
 			{
-				modalFunc &&
-				<Modal closeModal={() => setModalFuncName('')}
+				modalFunc && preparedDoc &&
+				<Modal closeModal={closeModal}
 					title={modalFunc.name}
 				>
 					<div className="pipeline__modal-doc">
 						<ReactMarkdown>
-							{modalFunc.doc.replace(/\n+/g, '\n')}
+							{preparedDoc}
 						</ReactMarkdown>
 					</div>
 				</Modal>

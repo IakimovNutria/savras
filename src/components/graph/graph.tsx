@@ -1,5 +1,5 @@
 import Chart from 'react-apexcharts';
-import React from 'react';
+import React, {useMemo} from 'react';
 import TimeSeries from '../../types/time-series';
 
 type GraphProps = {
@@ -9,25 +9,26 @@ type GraphProps = {
     height: number;
 }
 
-function Graph({
-	timeSeries, width, height, name,
-}: GraphProps): JSX.Element {
-	const categories = timeSeries.map((t) => t.datetime);
-	const series = [{ name, data: timeSeries.map((t) => t.value) }];
-	const options = {
+function Graph({timeSeries, width, height, name}: GraphProps): JSX.Element {
+	const series = useMemo(() => [{ name, data: timeSeries.map((t) => t.value) }],
+		[timeSeries, name]);
+	const options = useMemo(() => ({
 		chart: {
 			id: name,
 		},
 		xaxis: {
-			categories,
+			categories: timeSeries.map((t) => t.datetime),
 			type: 'datetime' as const,
 		},
-	};
-	return (<Chart options={options}
-		series={series}
-		type="line"
-		width={width}
-		height={height} />);
+	}), [timeSeries, name]);
+	return (
+		<Chart options={options}
+			series={series}
+			type="line"
+			width={width}
+			height={height}
+		/>
+	);
 }
 
 export default Graph;

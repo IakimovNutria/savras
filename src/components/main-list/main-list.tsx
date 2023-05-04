@@ -14,8 +14,8 @@ function MainList<T> ({items, keyExtractor, renderItem, title}: MainListProps<T>
 		<div className="main-list">
 			<ul className="main-list__items">
 				{
-					items.map((item, index) => (
-						<li className={`main-list__item ${index % 2 === 0 ? 'main-list__item_even' : 'main-list__item_odd'}`}
+					items.map((item) => (
+						<li className="main-list__item"
 							key={keyExtractor(item)}>
 							{renderItem(item)}
 						</li>

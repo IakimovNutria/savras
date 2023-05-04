@@ -11,9 +11,7 @@ type ConfirmationModalProps = {
 	pipelineId: string;
 }
 
-export default function ShareModal({
-	setShowShareModal, pipelineId
-}: ConfirmationModalProps): JSX.Element {
+export default function ShareModal({setShowShareModal, pipelineId}: ConfirmationModalProps): JSX.Element {
 	const dispatch = useAppDispatch();
 	const [userToShare, setUserToShare] = useState('');
 	function sharePipelineHandler() {

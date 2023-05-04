@@ -51,16 +51,19 @@ function FileInputsSidebar({cell}: InputProps): JSX.Element | null {
 		}
 		dispatch(updateInputs({ cellId: cell.id, inputs: toUpdate }));
 	}, [dispatch, cell.id, localInputsColumns, localInputsPaths]);
+	const renderItem = useCallback((input: Input) => (
+		<FileInput input={input}
+			setInputsColumns={setLocalInputsColumns}
+			setInputsPaths={setLocalInputsPaths}
+		/>
+	), []);
+	const keyExtractor = useCallback((item: Input) => cell.id + item.name, [cell.id]);
+
 	return (
 		<Sidebar title="Inputs"
 			items={inputsArray}
-			renderItem={(input) => (
-				<FileInput input={input}
-					setInputsColumns={setLocalInputsColumns}
-					setInputsPaths={setLocalInputsPaths}
-				/>
-			)}
-			keyExtractor={(item) => cell.id + item.name}
+			renderItem={renderItem}
+			keyExtractor={keyExtractor}
 			buttonTitle="Save inputs"
 			buttonClickHandler={submitInputsHandler}
 		/>

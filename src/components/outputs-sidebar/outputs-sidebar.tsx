@@ -11,49 +11,50 @@ type OutputsParams = {
 
 function OutputsSidebar({cell}: OutputsParams): JSX.Element | null {
 	const dispatch = useAppDispatch();
-	const outputsPaths = cell.outputs;
 	const initialLocalOutputs = useMemo(() => {
 		const value: {[key: string]: string | null} = {};
-		for (const key in outputsPaths) {
+		for (const key in cell.outputs) {
 			value[key] = null;
 		}
 		return value;
-	}, []);
+	}, [cell.outputs]);
 	const [localOutputs, setLocalOutputs] = useState(initialLocalOutputs);
 	const saveFilesHandler = useCallback((event: FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
-		if (!outputsPaths) {
+		if (!cell.outputs) {
 			return;
 		}
 		for (const key in localOutputs) {
 			const value = localOutputs[key];
 			if (value !== '' && value != null) {
-				const path = outputsPaths[key];
+				const path = cell.outputs[key];
 				if (path !== null) {
 					dispatch(saveFile({ path, name: value }));
 				}
 			}
 		}
-	}, [dispatch, localOutputs, outputsPaths]);
+	}, [dispatch, localOutputs, cell.outputs]);
 	const outputNames: string[] = useMemo(() => {
 		const newOutputNames = [];
-		for (const key in outputsPaths) {
-			if (outputsPaths[key] !== null) {
+		for (const key in cell.outputs) {
+			if (cell.outputs[key] !== null) {
 				newOutputNames.push(key);
 			}
 		}
 		return newOutputNames;
-	}, [outputsPaths]);
+	}, [cell.outputs]);
+	const keyExtractor = useCallback((output: string) => cell.id + output, [cell.id]);
+	const renderItem = useCallback((output: string) => (
+		<Output output={output}
+			outputName={localOutputs[output] ?? ''}
+			setOutputs={setLocalOutputs}
+		/>
+	), []);
 
 	return localOutputs && (
 		<Sidebar items={outputNames}
-			keyExtractor={(output) => cell.id + output}
-			renderItem={(output) => (
-				<Output output={output}
-					outputName={localOutputs[output] ?? ''}
-					setOutputs={setLocalOutputs}
-				/>
-			)}
+			keyExtractor={keyExtractor}
+			renderItem={renderItem}
 			title="Outputs"
 			buttonTitle="Save Output Files"
 			buttonClickHandler={saveFilesHandler}

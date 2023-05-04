@@ -1,5 +1,5 @@
 import Draggable, {DraggableData, DraggableEvent} from 'react-draggable';
-import React, {Dispatch, FormEvent, SetStateAction, useCallback, useEffect} from 'react';
+import React, {Dispatch, FormEvent, SetStateAction, useCallback, useEffect, useMemo} from 'react';
 import useInterval from '@use-it/interval';
 import CellInfo from '../../types/cell-info';
 import {useAppDispatch, useAppSelector} from '../../hooks';
@@ -26,7 +26,7 @@ type CellProps = {
 function Cell({ cellInfo, pipelineId, canEdit, setSidebar, setModalFuncName }: CellProps): JSX.Element {
 	const dispatch = useAppDispatch();
 	const dataColumns = useAppSelector(getFilesColumns);
-	const cellStatus: string = useAppSelector(getCellsStatus)[cellInfo.id];
+	const cellStatus = useAppSelector(getCellsStatus)[cellInfo.id];
 
 	useEffect(() => {
 		for (const key in cellInfo.inputs) {
@@ -65,6 +65,7 @@ function Cell({ cellInfo, pipelineId, canEdit, setSidebar, setModalFuncName }: C
 	const changeModalFuncName = useCallback(() => setModalFuncName(cellInfo.function),
 		[setModalFuncName, cellInfo.function]);
 	const preventDefault = useCallback((e: DraggableEvent) => e.preventDefault(), []);
+	const statusStyle = useMemo(() => ({ ...getStatusStyle(cellStatus) }), [cellStatus]);
 
 	return (
 		<Draggable
@@ -78,7 +79,7 @@ function Cell({ cellInfo, pipelineId, canEdit, setSidebar, setModalFuncName }: C
 		>
 			<div className="cell">
 				<header className="cell__header">
-					<span style={{ ...getStatusStyle(cellStatus) }}
+					<span style={statusStyle}
 						className="cell__status">{cellStatus}</span>
 					<div className="cell__function">
 						<h2 className="cell__function-name">{cellInfo.function}</h2>

@@ -27,11 +27,11 @@
     border-radius: 5px;
 }
 
-.main-list__item_even {
+.main-list__item:nth-child(odd) {
     background: #F0F0F0;
 }
 
-.main-list__item_odd {
+.main-list__item:nth-child(even) {
     background: #E1E1E1;
 }
 

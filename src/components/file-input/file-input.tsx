@@ -57,7 +57,7 @@ export default function FileInput({input, setInputsColumns, setInputsPaths}: Cel
 				id={input.name}
 			>
 				{
-					(input.fileName === null) && (<option id="">choose file</option>)
+					(input.fileName === null) && <option id="">choose file</option>
 				}
 				{
 					files.map((file) => (
@@ -70,7 +70,7 @@ export default function FileInput({input, setInputsColumns, setInputsPaths}: Cel
 				}
 			</select>
 			{
-				(input.fileName !== null) && (
+				(input.fileName !== null) &&
 					<select value={input.inputColumn ? input.inputColumn : 'choose column'}
 						onChange={updateColumnHandler}
 						id={input.name}
@@ -88,7 +88,6 @@ export default function FileInput({input, setInputsColumns, setInputsPaths}: Cel
 							))
 						}
 					</select>
-				)
 			}
 		</span>
 	);
