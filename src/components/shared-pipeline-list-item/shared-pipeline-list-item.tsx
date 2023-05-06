@@ -4,6 +4,7 @@ import {ButtonSize} from '../../enums/button-size';
 import {forkPipeline} from '../../store/main-reducer/actions';
 import React, {useCallback} from 'react';
 import {useAppDispatch} from '../../hooks';
+import {MainListItemName} from '../main-list-item-name/main-list-item-name';
 
 type SharedPipelineListItemProps = {
 	pipeline: ShortPipelineInfo;
@@ -21,7 +22,7 @@ export function SharedPipelineListItem({pipeline}: SharedPipelineListItemProps):
 			>
 				Open
 			</Button>
-			<span>{pipeline.name}</span>
+			<MainListItemName name={pipeline.name} />
 			<Button id={pipeline.id}
 				size={ButtonSize.SMALL}
 				onClick={forkPipelineHandler}

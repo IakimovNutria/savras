@@ -6,6 +6,7 @@ import {downloadFile} from '../../utils/download-file';
 import ConfirmationModal from '../confirmation-modal/confirmation-modal';
 import {deleteFile} from '../../store/main-reducer/actions';
 import {useAppDispatch} from '../../hooks';
+import {MainListItemName} from '../main-list-item-name/main-list-item-name';
 
 type FileListItemProps = {
 	file: FileInfo;
@@ -36,7 +37,7 @@ export function FileListItem({file}: FileListItemProps): JSX.Element {
 			>
 				Download
 			</Button>
-			<span>{file.name}</span>
+			<MainListItemName name={file.name} />
 			<Button
 				id={file.path}
 				onClick={openDeleteFileModal}

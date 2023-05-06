@@ -7,7 +7,7 @@ import {Button} from '../button/button';
 import './pipelines-section.css';
 import {ButtonSize} from '../../enums/button-size';
 import {OwnPipelineListItem} from '../own-pipeline-list-item/own-pipeline-list-item';
-import {SharedPipelineListItem} from '../sharedPipelineListItem/shared-pipeline-list-item';
+import {SharedPipelineListItem} from '../shared-pipeline-list-item/shared-pipeline-list-item';
 import ShortPipelineInfo from '../../types/short-pipeline-info';
 
 export default function PipelinesSection(): JSX.Element {

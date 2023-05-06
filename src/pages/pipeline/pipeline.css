@@ -21,6 +21,8 @@
     font-weight: 700;
     line-height: 23px;
     letter-spacing: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .pipeline__modal-doc {

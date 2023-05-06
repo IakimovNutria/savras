@@ -7,6 +7,7 @@ import {useAppDispatch} from '../../hooks';
 import ConfirmationModal from '../confirmation-modal/confirmation-modal';
 import ShareModal from '../share-modal/share-modal';
 import './own-pipeline-list-item.css';
+import {MainListItemName} from '../main-list-item-name/main-list-item-name';
 
 type OwnPipelineListItemProps = {
 	pipeline: ShortPipelineInfo;
@@ -44,7 +45,7 @@ export function OwnPipelineListItem({pipeline}: OwnPipelineListItemProps): JSX.E
 					Fork
 				</Button>
 			</div>
-			<span>{pipeline.name}</span>
+			<MainListItemName name={pipeline.name} />
 			<div className="own-pipeline-list-item__buttons">
 				<Button id={pipeline.id}
 					onClick={openShareModal}

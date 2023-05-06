@@ -1,9 +1,8 @@
-import {DraggableData, DraggableEvent} from 'react-draggable';
 import React, {FormEvent, useCallback, useContext, useEffect, useMemo, useState} from 'react';
 import useInterval from '@use-it/interval';
 import CellInfo from '../../types/cell-info';
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import {deleteCell, executeCell, fetchCellInfo, moveCell} from '../../store/pipeline-reducer/actions';
+import {deleteCell, executeCell, fetchCellInfo} from '../../store/pipeline-reducer/actions';
 import {fetchFileColumns} from '../../store/main-reducer/actions';
 import {CellStatus} from '../../enums/cell-status';
 import {getFilesColumns, getFunctions} from '../../store/main-reducer/selectors';

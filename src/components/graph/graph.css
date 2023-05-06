@@ -1,4 +1,5 @@
 .react-flow {
-    position: absolute !important;
+    position: absolute;
     top: var(--header-height);
+    height: calc(100% - var(--header-height));
 }

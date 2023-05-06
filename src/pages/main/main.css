@@ -66,6 +66,7 @@
 }
 
 .main__divide-line {
+    flex-shrink: 0;
     width: 2px;
     min-height: 634px;
     background: #A0A0A0;
