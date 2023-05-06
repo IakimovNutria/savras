@@ -7,7 +7,7 @@ import {
 	executeCell,
 	fetchCellInfo,
 	fetchPipeline,
-	getFileTimeSeries,
+	getFileTimeSeries, moveCell,
 	updateInputs,
 	updateParams,
 } from './actions';
@@ -150,6 +150,16 @@ export const pipelineReducer = createSlice({
 					state.currentPipeline.cells.push(action.payload);
 				}
 				state.cellsStatus[action.payload.id] = CellStatus.NOT_EXECUTED;
+			})
+			.addCase(moveCell.fulfilled, (state, action) => {
+				if (state.currentPipeline) {
+					state.currentPipeline.cells = state.currentPipeline.cells.map((cell) => {
+						if (cell.id === action.payload.cellId) {
+							return {...cell, x: action.payload.x, y: action.payload.y};
+						}
+						return cell;
+					});
+				}
 			});
 	},
 });

@@ -1,8 +1,8 @@
-import React, {FormEvent, useContext} from 'react';
+import React, {FormEvent, useCallback, useContext} from 'react';
 import './sidebar.css';
 import {Button} from '../button/button';
-import {CloseSidebarContext} from '../../contexts/close-sidebar-context';
 import {ButtonSize} from '../../enums/button-size';
+import {PipelineContext} from '../../contexts/pipeline-context';
 
 type SidebarProps<T> = {
 	items: T[];
@@ -14,7 +14,8 @@ type SidebarProps<T> = {
 }
 
 export function Sidebar<T>({title, keyExtractor, renderItem, items, buttonTitle, buttonClickHandler}: SidebarProps<T>): JSX.Element {
-	const closeSidebar = useContext(CloseSidebarContext);
+	const {setSidebar} = useContext(PipelineContext);
+	const closeSidebar = useCallback(() => setSidebar && setSidebar({id: null, name: null}), [setSidebar]);
 
 	return (
 		<div className="sidebar">

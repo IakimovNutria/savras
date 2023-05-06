@@ -7,7 +7,6 @@
 
 .cell__status {
     padding: 0 18px;
-    user-select: none;
     font-family: Disket Mono bold, serif;
     font-size: 20px;
     font-weight: 700;
@@ -38,7 +37,6 @@
 }
 
 .cell__function-name {
-    user-select: none;
     font-family: Disket Mono, serif;
     font-size: 20px;
     font-weight: 400;
@@ -69,7 +67,7 @@
     align-items: center;
     flex-direction: column;
     width: auto;
-    position: absolute;
+    position: relative;
     background: white;
     padding: 0 0 20px;
 }

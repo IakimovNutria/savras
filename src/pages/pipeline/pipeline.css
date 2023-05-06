@@ -5,6 +5,8 @@
     height: var(--header-height);
     width: 100%;
     background: white;
+    z-index: 100;
+    position: relative;
 }
 
 .pipeline__header-buttons {

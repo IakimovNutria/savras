@@ -1,6 +1,6 @@
 import React from 'react';
 /*, { useEffect, useMemo } from 'react';
-import Graph from '../graph/graph';
+import Chart from '../chart/chart';
 import { getFileTimeSeries } from '../../store/pipeline-reducer/actions';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import TimeSeries from '../../types/time-series';
@@ -63,12 +63,12 @@ function CellGraphs({ cellId, outputs }: GraphsParams): JSX.Element {
 	return (graphs.length !== 0) ? (
 		<ul className="cell__graphs">
 			{
-				graphs.map((graph) => (
-					<li key={graph.name}
+				graphs.map((chart) => (
+					<li key={chart.name}
 						className="cell__graph-item">
-						<span className="cell__graph-name">{graph.name}</span>
-						<Graph name={graph.name}
-							timeSeries={graph.timeSeries}
+						<span className="cell__graph-name">{chart.name}</span>
+						<Chart name={chart.name}
+							timeSeries={chart.timeSeries}
 							width={400}
 							height={150} />
 					</li>))
