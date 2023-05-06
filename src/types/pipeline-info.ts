@@ -4,7 +4,7 @@ type PipelineInfo = {
     id: string;
     name: string;
     cells: CellInfo[];
-    edges: [];
+    edges: string[][];
 };
 
 export default PipelineInfo;

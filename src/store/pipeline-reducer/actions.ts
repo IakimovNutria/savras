@@ -54,13 +54,13 @@ export const createCell = createAsyncThunk<CellInfo, {pipelineId: string, functi
 }>(
 	ApiRoute.CELLS_CREATE,
 	async ({ pipelineId, functionName }, { extra: api }) => {
-		const { data } = await api.post(ApiRoute.CELLS_CREATE, { pipeline_id: pipelineId, function: functionName });
+		const { data } = await api.post<CellInfo>(ApiRoute.CELLS_CREATE, { pipeline_id: pipelineId, function: functionName });
 		return data;
 	},
 );
 
 
-export const addEdge = createAsyncThunk<void, {cellIdFrom: string, cellIdTo: string}, {
+export const addEdge = createAsyncThunk<string[], {cellIdFrom: string, cellIdTo: string}, {
 	dispatch: AppDispatch,
 	state: State,
 	extra: AxiosInstance
@@ -68,6 +68,7 @@ export const addEdge = createAsyncThunk<void, {cellIdFrom: string, cellIdTo: str
 	ApiRoute.PIPELINES_EDGE,
 	async ({ cellIdFrom, cellIdTo }, { extra: api }) => {
 		await api.post(ApiRoute.PIPELINES_EDGE, { cell_id_from: cellIdFrom, cell_id_to: cellIdTo });
+		return [cellIdFrom, cellIdTo];
 	},
 );
 

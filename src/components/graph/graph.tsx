@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useContext, useEffect} from 'react';
 import ReactFlow, {
 	Background,
 	BackgroundVariant,
@@ -6,13 +6,14 @@ import ReactFlow, {
 	MiniMap,
 	ReactFlowProvider,
 	useNodesState,
-	Node
+	Node, useEdgesState, Connection
 } from 'react-flow-renderer';
 import CellNode from '../cell-node/cell-node';
 import './graph.css';
 import {CellNodeInfo} from '../../types/cell-node-info';
-import {moveCell} from '../../store/pipeline-reducer/actions';
+import {addEdge, moveCell} from '../../store/pipeline-reducer/actions';
 import {useAppDispatch} from '../../hooks';
+import {GraphEdge} from '../../types/graph-edge';
 
 
 const nodeTypes = {
@@ -21,21 +22,34 @@ const nodeTypes = {
 
 type GraphProps = {
 	cellNodes: CellNodeInfo[];
+	graphEdges: GraphEdge[];
 };
 
-const Graph = ({cellNodes}: GraphProps) => {
+const Graph = ({cellNodes, graphEdges}: GraphProps) => {
 	const [nodes, setNodes, onNodesChange] = useNodesState(cellNodes);
-	useEffect(() => {setNodes(cellNodes);console.log(nodes);}, [cellNodes]);
+	const [edges, setEdges, onEdgesChange] = useEdgesState(graphEdges);
 	const dispatch = useAppDispatch();
+	useEffect(() => setEdges(graphEdges), [graphEdges]);
+	useEffect(() => setNodes(cellNodes), [cellNodes]);
 	const stopHandler = useCallback((event: React.MouseEvent, node: Node) => {
 		dispatch(moveCell({ cellId: node.id, x: node.position.x, y: node.position.y }));
 	}, [dispatch]);
+	const onConnect = useCallback((params: Connection) => {
+		if (params.source && params.target) {
+			//const newEdge = {id: `${params.source}__${params.target}`, source: params.source, target: params.target};
+			dispatch(addEdge({cellIdFrom: params.source, cellIdTo: params.target}));
+		}
+	}, [dispatch]);
+
 	return (
 		<ReactFlowProvider>
 			<ReactFlow
 				nodes={nodes}
+				edges={edges}
 				onNodesChange={onNodesChange}
+				onEdgesChange={onEdgesChange}
 				onNodeDragStop={stopHandler}
+				onConnect={onConnect}
 				elementsSelectable={true}
 				selectNodesOnDrag={true}
 				nodeTypes={nodeTypes}
@@ -46,7 +60,7 @@ const Graph = ({cellNodes}: GraphProps) => {
 				/>
 				<Controls />
 				<MiniMap
-					nodeColor={'red'}
+					nodeColor={'#FFDD2D'}
 				/>
 			</ReactFlow>
 		</ReactFlowProvider>

@@ -1,3 +1,4 @@
 .react-flow {
-    position: static !important;
+    position: absolute !important;
+    top: var(--header-height);
 }

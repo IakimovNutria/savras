@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { ReducerName } from '../../enums/reducer-name';
 import PipelineReducerState from '../../types/pipeline-reducer-state';
 import {
+	addEdge,
 	createCell,
 	deleteCell,
 	executeCell,
@@ -159,6 +160,10 @@ export const pipelineReducer = createSlice({
 						}
 						return cell;
 					});
+				}
+			}).addCase(addEdge.fulfilled, (state, action) => {
+				if (state.currentPipeline) {
+					state.currentPipeline.edges = [...state.currentPipeline.edges, action.payload];
 				}
 			});
 	},
