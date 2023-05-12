@@ -45,8 +45,8 @@ function OutputsSidebar({cell}: OutputsParams): JSX.Element | null {
 	}, [cell.outputs]);
 	const keyExtractor = useCallback((output: string) => cell.id + output, [cell.id]);
 	const renderItem = useCallback((output: string) => (
-		<Output output={output}
-			outputName={localOutputs[output] ?? ''}
+		<Output outputName={output}
+			outputValue={localOutputs[output] ?? ''}
 			setOutputs={setLocalOutputs}
 		/>
 	), []);

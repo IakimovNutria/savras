@@ -44,7 +44,7 @@ export const pipelineReducer = createSlice({
 				}
 			})
 			.addCase(updateParams.fulfilled, (state, action) => {
-				if (state.cellsStatus[action.meta.arg.cellId] !== CellStatus.IN_PROCESS) {
+				if (state.cellsStatus[action.payload.cellId] !== CellStatus.IN_PROCESS) {
 					state.cellsStatus[action.payload.cellId] = CellStatus.SAVED;
 				}
 				if (state.currentPipeline) {
@@ -77,7 +77,7 @@ export const pipelineReducer = createSlice({
 				}
 			})
 			.addCase(updateInputs.fulfilled, (state, action) => {
-				if (state.cellsStatus[action.meta.arg.cellId] !== CellStatus.IN_PROCESS) {
+				if (state.cellsStatus[action.payload.cellId] !== CellStatus.IN_PROCESS) {
 					state.cellsStatus[action.payload.cellId] = CellStatus.SAVED;
 				}
 				if (state.currentPipeline) {
@@ -109,8 +109,7 @@ export const pipelineReducer = createSlice({
 			})
 			.addCase(updateInputs.rejected, (state, action) => {
 				if (state.cellsStatus[action.meta.arg.cellId] !== CellStatus.IN_PROCESS) {
-					const errorMessage = action.error.message;
-					state.cellsStatus[action.meta.arg.cellId] = errorMessage === undefined ? CellStatus.NOT_SAVED : errorMessage;
+					state.cellsStatus[action.meta.arg.cellId] = action.error.message ?? CellStatus.NOT_SAVED;
 				}
 			})
 			.addCase(getFileTimeSeries.fulfilled, (state, action) => {

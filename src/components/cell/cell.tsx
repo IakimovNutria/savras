@@ -76,9 +76,12 @@ function Cell({ cellInfo }: CellProps): JSX.Element {
 						className="cell__status">{cellStatus}</span>
 					<div className="cell__function">
 						<h2 className="cell__function-name">{cellInfo.function}</h2>
-						<button className="cell__function-info-icon"
-							onClick={openModal}
-						/>
+						{
+							funcDoc &&
+							<button className="cell__function-info-icon"
+								onClick={openModal}
+							/>
+						}
 					</div>
 					{
 						canEdit &&

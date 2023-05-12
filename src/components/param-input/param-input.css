@@ -1,17 +1,3 @@
-.param-input {
-    display: inline-flex;
-    gap: 5px;
-    align-items: center;
-}
-
-.param-input__name {
-    font-family: Hubballi, serif;
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 18px;
-    letter-spacing: 0;
-}
-
 .param-input__text-input {
     text-align: center;
     height: 20px;

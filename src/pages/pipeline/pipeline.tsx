@@ -50,15 +50,12 @@ function Pipeline() {
 			}
 		}));
 	}, [pipeline?.cells]);
-
-	if (id === undefined) {
+	if (!id) {
 		return <NotFound />;
 	}
-
 	if (!hasAccess) {
 		return <NoAccess />;
 	}
-
 	if (pipeline === null) {
 		return isLoading ? <Loading /> : <NotFound />;
 	}
@@ -86,7 +83,8 @@ function Pipeline() {
 					graphEdges={pipeline.edges.map((e) => ({id: getEdgeId(e[0], e[1]), source: e[0], target: e[1], label: ''}))}
 				/>
 				<SidebarTabs sidebarId={sidebar.id}
-					sidebarName={sidebar.name} />
+					sidebarName={sidebar.name}
+				/>
 			</PipelineContext.Provider>
 		</>);
 }

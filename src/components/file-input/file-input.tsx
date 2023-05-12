@@ -4,6 +4,7 @@ import {useAppDispatch, useAppSelector} from '../../hooks';
 import {getFiles, getFilesColumns} from '../../store/main-reducer/selectors';
 import {fetchFileColumns} from '../../store/main-reducer/actions';
 import './file-input.css';
+import {FormField} from '../form-field/form-field';
 
 type CellInputProps = {
 	input: Input;
@@ -46,49 +47,50 @@ export default function FileInput({input, setInputsColumns, setInputsPaths}: Cel
 	}, [setInputsColumns]);
 
 	return (
-		<span className="file-input">
-			<span className="file-input__name">
-				{input.name}:
-			</span>
-			<select
-				value={(input.fileName === null) ? 'choose file' : input.fileName}
-				onChange={updateInputHandler}
-				name={input.name}
-				id={input.name}
-			>
-				{
-					(input.fileName === null) && <option id="">choose file</option>
-				}
-				{
-					files.map((file) => (
-						<option id={file.path}
-							key={file.path}
-						>
-							{file.name}
-						</option>
-					))
-				}
-			</select>
-			{
-				(input.fileName !== null) &&
-					<select value={input.inputColumn ? input.inputColumn : 'choose column'}
-						onChange={updateColumnHandler}
+		<FormField name={input.name}
+			input={
+				<>
+					<select
+						value={(input.fileName === null) ? 'choose file' : input.fileName}
+						onChange={updateInputHandler}
+						name={input.name}
 						id={input.name}
 					>
 						{
-							input.inputColumn || (<option id="">choose column</option>)
+							(input.fileName === null) && <option id="">choose file</option>
 						}
 						{
-							getFileColumns(input.path).map((elem) => (
-								<option id={input.name + elem}
-									key={input.name + elem}
+							files.map((file) => (
+								<option id={file.path}
+									key={file.path}
 								>
-									{elem}
+									{file.name}
 								</option>
 							))
 						}
 					</select>
+					{
+						(input.fileName !== null) &&
+				<select value={input.inputColumn ? input.inputColumn : 'choose column'}
+					onChange={updateColumnHandler}
+					id={input.name}
+				>
+					{
+						input.inputColumn || (<option id="">choose column</option>)
+					}
+					{
+						getFileColumns(input.path).map((elem) => (
+							<option id={input.name + elem}
+								key={input.name + elem}
+							>
+								{elem}
+							</option>
+						))
+					}
+				</select>
+					}
+				</>
 			}
-		</span>
+		/>
 	);
 }

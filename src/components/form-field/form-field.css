@@ -1,0 +1,13 @@
+.form-field {
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.form-field__name {
+    font-family: Hubballi, serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0;
+}

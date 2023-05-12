@@ -1,6 +1,7 @@
 import React, {Dispatch, SetStateAction, useCallback} from 'react';
 import ParamInputInfo from '../../types/param-input-info';
 import './param-input.css';
+import {FormField} from '../form-field/form-field';
 
 type CellParamInputProps = {
 	param: ParamInputInfo;
@@ -20,20 +21,19 @@ function ParamInput({param, setParams}: CellParamInputProps): JSX.Element {
 	}, [setParams]);
 
 	return (
-		<span className="param-input">
-			<span className="param-input__name">
-				{param.name}:
-			</span>
-			<input
-				checked={typeof param.value === 'boolean' ? param.value : undefined}
-				value={typeof param.value !== 'boolean' ? param.value : undefined}
-				id={param.name}
-				type={param.type}
-				className={param.type !== 'checkbox' ? 'param-input__text-input' : ''}
-				pattern={param.pattern}
-				onChange={updateParamHandler}
-			/>
-		</span>
+		<FormField name={param.name}
+			input={
+				<input
+					checked={typeof param.value === 'boolean' ? param.value : undefined}
+					value={typeof param.value !== 'boolean' ? param.value : undefined}
+					id={param.name}
+					type={param.type}
+					className={param.type !== 'checkbox' ? 'param-input__text-input' : ''}
+					pattern={param.pattern}
+					onChange={updateParamHandler}
+				/>
+			}
+		/>
 	);
 }
 

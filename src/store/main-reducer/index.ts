@@ -32,6 +32,7 @@ export const mainReducer = createSlice({
 		builder
 			.addCase(deleteFile.fulfilled, (state, action) => {
 				state.files = state.files.filter((file) => file.path !== action.payload.path);
+				delete state.filesColumns[action.payload.path];
 			})
 			.addCase(saveFile.fulfilled, (state, action) => {
 				state.files = [action.payload].concat(state.files);

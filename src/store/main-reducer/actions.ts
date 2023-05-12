@@ -151,7 +151,7 @@ export const forkPipeline = createAsyncThunk<ShortPipelineInfo, {pipelineId: str
 	},
 );
 
-export const saveFile = createAsyncThunk<{path: string, name: string}, {path: string, name: string}, {
+export const saveFile = createAsyncThunk<FileInfo, {path: string, name: string}, {
 	dispatch: AppDispatch,
 	state: State,
 	extra: AxiosInstance

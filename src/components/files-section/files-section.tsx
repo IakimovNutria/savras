@@ -56,13 +56,11 @@ export default function FilesSection(): JSX.Element {
 					Upload
 				</Button>
 			</form>
-			<div>
-				<MainList items={files}
-					keyExtractor={fileKeyExtractor}
-					renderItem={renderFileItem}
-					title="My files"
-				/>
-			</div>
+			<MainList items={files}
+				keyExtractor={fileKeyExtractor}
+				renderItem={renderFileItem}
+				title="My files"
+			/>
 		</section>
 	);
 }

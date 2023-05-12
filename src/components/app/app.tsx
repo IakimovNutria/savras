@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import SignIn from '../../pages/sign-in/sign-in';
 import SignUp from '../../pages/sign-up/sign-up';
@@ -37,37 +37,35 @@ function App(): JSX.Element {
 	}
 
 	return (
-		<BrowserRouter>
-			<Routes>
-				<Route path="sign-in"
-					element={<SignIn />}
-				/>
-				<Route path="sign-up"
-					element={<SignUp />}
-				/>
-				<Route
-					path="/"
-					element={(
-						<PrivateRoute
-							hasAccess={authorizationStatus === AuthorizationStatus.AUTHORIZED}
-							navigateTo={<Main />}
-						/>
-					)}
-				/>
-				<Route
-					path="pipeline/:id"
-					element={(
-						<PrivateRoute
-							hasAccess={authorizationStatus === AuthorizationStatus.AUTHORIZED}
-							navigateTo={<Pipeline />}
-						/>
-					)}
-				/>
-				<Route path='*'
-					element={<NotFound />}
-				/>
-			</Routes>
-		</BrowserRouter>
+		<Routes>
+			<Route path="sign-in"
+				element={<SignIn />}
+			/>
+			<Route path="sign-up"
+				element={<SignUp />}
+			/>
+			<Route
+				path="/"
+				element={(
+					<PrivateRoute
+						hasAccess={authorizationStatus === AuthorizationStatus.AUTHORIZED}
+						navigateTo={<Main />}
+					/>
+				)}
+			/>
+			<Route
+				path="pipeline/:id"
+				element={(
+					<PrivateRoute
+						hasAccess={authorizationStatus === AuthorizationStatus.AUTHORIZED}
+						navigateTo={<Pipeline />}
+					/>
+				)}
+			/>
+			<Route path='*'
+				element={<NotFound />}
+			/>
+		</Routes>
 	);
 }
 

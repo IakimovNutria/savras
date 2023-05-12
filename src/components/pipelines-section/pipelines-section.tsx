@@ -31,37 +31,35 @@ export default function PipelinesSection(): JSX.Element {
 		[]);
 
 	return (
-		<>
-			<section className="pipelines-section">
-				<h2 style={{ display: 'none' }}>pipelines</h2>
-				<h3 className="pipelines-section__title">Create new pipeline</h3>
-				<form className="pipelines-section__form"
-					onSubmit={createPipelineHandler}>
-					<input
-						required
-						className="pipelines-section__input"
-						placeholder="Name"
-						value={newPipelineName}
-						onChange={updateNewPipelineName}
-					/>
-					<Button type="submit"
-						size={ButtonSize.MEDIUM}
-						plainLeft
-					>
-						Create
-					</Button>
-				</form>
-				<MainList items={userPipelines}
-					keyExtractor={pipelineKeyExtractor}
-					renderItem={renderOwnPipelineItem}
-					title="My pipelines"
+		<section className="pipelines-section">
+			<h2 style={{ display: 'none' }}>pipelines</h2>
+			<h3 className="pipelines-section__title">Create new pipeline</h3>
+			<form className="pipelines-section__form"
+				onSubmit={createPipelineHandler}>
+				<input
+					required
+					className="pipelines-section__input"
+					placeholder="Name"
+					value={newPipelineName}
+					onChange={updateNewPipelineName}
 				/>
-				<MainList items={sharedPipelines}
-					keyExtractor={pipelineKeyExtractor}
-					renderItem={renderSharedPipelineItem}
-					title="Shared pipelines"
-				/>
-			</section>
-		</>
+				<Button type="submit"
+					size={ButtonSize.MEDIUM}
+					plainLeft
+				>
+					Create
+				</Button>
+			</form>
+			<MainList items={userPipelines}
+				keyExtractor={pipelineKeyExtractor}
+				renderItem={renderOwnPipelineItem}
+				title="My pipelines"
+			/>
+			<MainList items={sharedPipelines}
+				keyExtractor={pipelineKeyExtractor}
+				renderItem={renderSharedPipelineItem}
+				title="Shared pipelines"
+			/>
+		</section>
 	);
 }
