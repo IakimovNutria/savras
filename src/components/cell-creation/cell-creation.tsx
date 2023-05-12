@@ -1,9 +1,11 @@
 import React, {MouseEvent, useCallback, useMemo, useState} from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { createCell } from '../../store/pipeline-reducer/actions';
-import { getFunctions } from '../../store/main-reducer/selectors';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {createCell} from '../../store/pipeline-reducer/actions';
+import {getFunctions} from '../../store/main-reducer/selectors';
 import './cell-creation.css';
 import cn from 'classnames';
+import {Button} from '../button/button';
+import {ButtonSize} from '../../enums/button-size';
 
 type CreateButtonsProps = {
 	pipelineId: string;
@@ -44,13 +46,12 @@ function CellCreation({ pipelineId, changeVisible }: CreateButtonsProps) : JSX.E
 				{
 					groupFunctions.map((func) => (
 						<li key={func.function}>
-							<button
+							<Button size={ButtonSize.MEDIUM}
 								id={func.function}
 								onClick={handleCreate}
-								className="cell-creation__create-button"
 							>
 								{func.name}
-							</button>
+							</Button>
 						</li>
 					))
 				}

@@ -1,48 +1,34 @@
 .cell-creation  {
-    background: #ffdd2d;
+    background: white;
     left: 0;
     margin: 0;
     padding: 0;
     width: 100%;
     display: flex;
     flex-direction: column;
-    z-index: 100;
+    z-index: 99;
     position: absolute;
-}
-
-.cell-creation__create-button {
-    width: 130px;
-    height: 50px;
-    color: black;
-    border-radius: 5px;
-    cursor: pointer;
-    background: #ffdd2d;
-    padding: 0;
-    border-style: hidden;
-}
-
-.cell-creation__create-button:hover {
-    background: #fcc521;
-    color: #131D2B;
-}
-
-.cell-creation__create-button:active {
-    background: #fab619;
-    color: black;
 }
 
 .cell-creation__func-type {
     border: none;
     background: none;
     font-weight: bold;
+    font-family: 'Hubballi', cursive;
+    font-style: normal;
+    font-size: 16px;
 }
 
 .cell-creation__func-type:hover {
-    color: darkblue;
+    color: #E5C000;
 }
 
 .cell-creation__func-type_active {
-    text-decoration: underline;
+    color: #CC9608;
+}
+
+.cell-creation__func-type_active:hover {
+    color: #CC9608;
 }
 
 .cell-creation__func-types, .cell-creation__create-buttons {
@@ -50,8 +36,13 @@
     align-items: center;
     flex-direction: row;
     list-style-type: none;
+    flex-wrap: wrap;
 }
 
 .cell-creation__create-buttons {
-    gap: 5px;
+    margin: 0 0 16px;
+}
+
+.cell-creation__create-buttons {
+    gap: 10px;
 }
