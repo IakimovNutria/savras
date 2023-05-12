@@ -24,6 +24,7 @@
     letter-spacing: 0;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space:nowrap;
 }
 
 .pipeline__modal-doc {
