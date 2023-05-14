@@ -1,5 +1,6 @@
 import React, {Dispatch, SetStateAction, useCallback} from 'react';
 import {FormField} from '../form-field/form-field';
+import './output.css';
 
 type CellOutputProps = {
 	outputName: string;

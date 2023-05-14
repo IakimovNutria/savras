@@ -49,7 +49,7 @@ function OutputsSidebar({cell}: OutputsParams): JSX.Element | null {
 			outputValue={localOutputs[output] ?? ''}
 			setOutputs={setLocalOutputs}
 		/>
-	), []);
+	), [localOutputs, setLocalOutputs]);
 
 	return localOutputs && (
 		<Sidebar items={outputNames}
