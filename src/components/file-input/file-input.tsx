@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useCallback} from 'react';
+import React, {Dispatch, SetStateAction, useCallback, useMemo} from 'react';
 import Input from '../../types/input';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {getFiles, getFilesColumns} from '../../store/main-reducer/selectors';
@@ -16,12 +16,12 @@ export default function FileInput({input, setInputsColumns, setInputsPaths}: Cel
 	const files = useAppSelector(getFiles);
 	const dataColumns = useAppSelector(getFilesColumns);
 	const dispatch = useAppDispatch();
-	const getFileColumns = useCallback((path: string | null) => {
-		if (path && Object.prototype.hasOwnProperty.call(dataColumns, path)) {
-			return dataColumns[path];
+	const fileColumns = useMemo(() => {
+		if (input.path && Object.prototype.hasOwnProperty.call(dataColumns, input.path)) {
+			return dataColumns[input.path];
 		}
 		return [];
-	}, [dataColumns]);
+	}, [input.path]);
 
 	const updateInputHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
 		event.preventDefault();
@@ -51,13 +51,13 @@ export default function FileInput({input, setInputsColumns, setInputsPaths}: Cel
 			input={
 				<>
 					<select
-						value={(input.fileName === null) ? 'choose file' : input.fileName}
+						value={input.fileName ?? 'choose file'}
 						onChange={updateInputHandler}
 						name={input.name}
 						id={input.name}
 					>
 						{
-							(input.fileName === null) && <option id="">choose file</option>
+							input.fileName || <option id="">choose file</option>
 						}
 						{
 							files.map((file) => (
@@ -71,15 +71,15 @@ export default function FileInput({input, setInputsColumns, setInputsPaths}: Cel
 					</select>
 					{
 						(input.fileName !== null) &&
-				<select value={input.inputColumn ? input.inputColumn : 'choose column'}
+				<select value={input.inputColumn ?? 'choose column'}
 					onChange={updateColumnHandler}
 					id={input.name}
 				>
 					{
-						input.inputColumn || (<option id="">choose column</option>)
+						input.inputColumn || <option id="">choose column</option>
 					}
 					{
-						getFileColumns(input.path).map((elem) => (
+						fileColumns.map((elem) => (
 							<option id={input.name + elem}
 								key={input.name + elem}
 							>

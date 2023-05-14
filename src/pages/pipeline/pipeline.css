@@ -27,11 +27,6 @@
     white-space:nowrap;
 }
 
-.pipeline__modal-doc {
-    padding: 10px 0 20px;
-    white-space: pre-line;
-}
-
 .pipeline__modal-doc > p {
     margin: 0;
     line-height: 30px;

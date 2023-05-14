@@ -113,10 +113,7 @@ export const pipelineReducer = createSlice({
 				}
 			})
 			.addCase(getFileTimeSeries.fulfilled, (state, action) => {
-				state.graphs[action.payload.cellId] = {
-					...state.graphs[action.payload.cellId],
-					[action.payload.name]: action.payload.timeSeries,
-				};
+				state.graphs[action.payload.path] = action.payload.timeSeries;
 			})
 			.addCase(deleteCell.fulfilled, (state, action) => {
 				if (state.currentPipeline) {

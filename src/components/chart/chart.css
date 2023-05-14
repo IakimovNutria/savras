@@ -1,0 +1,23 @@
+.chart__message {
+    font-family: Disket Mono bold, serif;
+    font-size: 45px;
+    font-weight: 700;
+    color: gray;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 400px;
+    padding: 7px 0 8px;
+}
+
+.chart__message_error {
+    color: palevioletred;
+}
+
+.chart {
+    width: 100%;
+    cursor: auto;
+    margin: 0;
+}

@@ -219,8 +219,8 @@ describe('pipeline-reducer', () => {
 			state.currentPipeline = mockPipeline;
 		});
 		it('should set timeSeries on fulfilled', () => {
-			expect(pipelineReducer.reducer(state, {type: getFileTimeSeries.fulfilled.type, payload: {cellId: 'id', name: 'name', timeSeries: [{datetime: 'string', value: 0}]}}).graphs)
-				.toEqual({['id']: {['name']: [{datetime: 'string', value: 0}]}});
+			expect(pipelineReducer.reducer(state, {type: getFileTimeSeries.fulfilled.type, payload: {cellId: 'id', path: 'name', timeSeries: [{datetime: 'string', value: 0}]}}).graphs)
+				.toEqual({['name']: [{datetime: 'string', value: 0}]});
 		});
 	});
 });

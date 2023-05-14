@@ -1,0 +1,29 @@
+
+.cell-charts__selectors {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.cell-charts {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.cell-charts__charts {
+    display: flex;
+    justify-content: center;
+}
+
+.cell-charts__selector {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px
+}
+
+.cell-charts__selector-name {
+    font-family: Disket Mono, serif;
+    font-size: 14px;
+}

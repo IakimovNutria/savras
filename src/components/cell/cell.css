@@ -55,10 +55,9 @@
     height: var(--header-height);
     box-shadow: 0 10px 10px 5px #A0A0A045;
     margin: 0 0 20px;
-    cursor: grab;
 }
 
-.cell__header:active {
+.cell:active {
     cursor: grabbing;
 }
 
@@ -70,28 +69,6 @@
     position: relative;
     background: white;
     padding: 0 0 20px;
-}
-
-.cell__graph-name {
-    margin: 0;
-}
-
-.cell__graphs {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    overflow-x: auto;
-    overflow-y: hidden;
-    width: 100%;
-    height: 200px;
-    margin: 0;
-    padding: 0;
-}
-
-.cell__graph-item {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
 }
 
 .cell__params-buttons {
@@ -108,4 +85,9 @@
     width: 20px;
     margin: 0 10px;
     background-repeat: no-repeat;
+}
+
+.cell__modal-doc {
+    padding: 10px 0 20px;
+    white-space: pre-line;
 }

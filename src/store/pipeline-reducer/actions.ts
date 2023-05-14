@@ -7,18 +7,16 @@ import CellInfo from '../../types/cell-info';
 import PipelineInfo from '../../types/pipeline-info';
 
 export const getFileTimeSeries = createAsyncThunk<
-	{cellId: string, name: string, timeSeries: TimeSeries},
-	{path: string, dataColumn: string, cellId: string, graphName: string}, {
+	{cellId: string, path: string, timeSeries: TimeSeries},
+	{path: string, dataColumn: string, cellId: string}, {
 	dispatch: AppDispatch,
 	state: State,
 	extra: AxiosInstance
 }>(
 	ApiRoute.FILES_TIME_SERIES,
-	async ({
-		path, dataColumn, cellId, graphName,
-	}, { extra: api }) => {
+	async ({path, dataColumn, cellId}, { extra: api }) => {
 		const { data } = await api.get<TimeSeries>(ApiRoute.FILES_TIME_SERIES, { params: { path, data_column: dataColumn } });
-		return { cellId, name: graphName, timeSeries: data };
+		return { cellId, path, timeSeries: data };
 	},
 );
 

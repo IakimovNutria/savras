@@ -4,7 +4,7 @@ import { CellStatus } from '../enums/cell-status';
 
 type PipelineReducerState = {
     currentPipeline: PipelineInfo | null;
-    graphs: Record<string, Record<string, TimeSeries>>;
+    graphs: Record<string, TimeSeries>;
     isPipelineLoading: boolean;
     cellsStatus: Record<string, CellStatus | string>;
 }

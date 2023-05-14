@@ -16,6 +16,7 @@ import {ButtonSize} from '../../enums/button-size';
 import Modal from '../modal/modal';
 import ReactMarkdown from 'react-markdown';
 import {PipelineContext} from '../../contexts/pipeline-context';
+import CellCharts from '../cell-charts/cell-charts';
 
 type CellProps = {
     cellInfo: CellInfo;
@@ -120,13 +121,18 @@ function Cell({ cellInfo }: CellProps): JSX.Element {
 						Execute
 					</Button>
 				}
+				<CellCharts cellId={cellInfo.id}
+					outputs={cellInfo.outputs}
+					inputs={cellInfo.inputs}
+					dataColumns={cellInfo.data_columns}
+				/>
 			</div>
 			{
 				modalVisible && preparedDoc &&
 				<Modal closeModal={closeModal}
 					title={cellInfo.function}
 				>
-					<div className="pipeline__modal-doc">
+					<div className="cell__modal-doc">
 						<ReactMarkdown>
 							{preparedDoc}
 						</ReactMarkdown>
