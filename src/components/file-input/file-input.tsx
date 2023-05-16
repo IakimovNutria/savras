@@ -21,7 +21,7 @@ export default function FileInput({input, setInputsColumns, setInputsPaths}: Cel
 			return dataColumns[input.path];
 		}
 		return [];
-	}, [input.path]);
+	}, [input.path, dataColumns]);
 
 	const updateInputHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
 		event.preventDefault();

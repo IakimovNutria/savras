@@ -20,8 +20,8 @@ const initialState: MainReducerState = {
 	files: [],
 	userPipelines: [],
 	sharedPipelines: [],
-	functions: [],
-	filesColumns: {},
+	functions: null,
+	filesColumns: {}
 };
 
 export const mainReducer = createSlice({

@@ -8,6 +8,7 @@ import CellInfo from '../../types/cell-info';
 import {Sidebar} from '../sidebar/sidebar';
 import ParamInputsSidebar from './param-inputs-sidebar';
 import ParamInput from '../param-input/param-input';
+import {ParamType} from '../../enums/param-type';
 
 describe('param-inputs-sidebar tests', () => {
 	const store = mockStore({
@@ -35,7 +36,7 @@ describe('param-inputs-sidebar tests', () => {
 					name: 'func',
 					group: 'func',
 					inputs: [],
-					input_params: {'param-name': undefined},
+					input_params: {'param-name': ParamType.STR},
 					doc: 'string'
 				}
 			],

@@ -6,7 +6,7 @@ type MainReducerState = {
     files: FileInfo[];
     userPipelines: ShortPipelineInfo[];
     sharedPipelines: ShortPipelineInfo[];
-    functions: CellsFunction[];
+    functions: CellsFunction[] | null;
     filesColumns: Record<string, string[]>;
 }
 

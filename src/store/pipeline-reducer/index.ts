@@ -38,6 +38,9 @@ export const pipelineReducer = createSlice({
 					state.cellsStatus = { ...state.cellsStatus, [cell.id]: getCellStatus(cell, CellStatus.NOT_EXECUTED) };
 				});
 			})
+			.addCase(fetchPipeline.rejected, (state) => {
+				state.isPipelineLoading = false;
+			})
 			.addCase(updateParams.pending, (state, action) => {
 				if (state.cellsStatus[action.meta.arg.cellId] !== CellStatus.IN_PROCESS) {
 					state.cellsStatus[action.meta.arg.cellId] = CellStatus.SAVING;

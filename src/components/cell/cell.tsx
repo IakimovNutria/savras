@@ -43,7 +43,7 @@ function Cell({ cellInfo }: CellProps): JSX.Element {
 		dispatch(fetchCellInfo({ cellId: cellInfo.id }));
 	}, cellStatus === CellStatus.IN_PROCESS ? 1000 * 5 : null);
 	const functionsInfo = useAppSelector(getFunctions);
-	const funcDoc = useMemo(() => functionsInfo.find((func) => func.function === cellInfo.function)?.doc,
+	const funcDoc = useMemo(() => functionsInfo?.find((func) => func.function === cellInfo.function)?.doc,
 		[functionsInfo, cellInfo.function]);
 
 	const executeHandler = useCallback((event: FormEvent<HTMLButtonElement>) => {

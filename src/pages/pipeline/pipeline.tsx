@@ -6,7 +6,7 @@ import CellCreation from '../../components/cell-creation/cell-creation';
 import {getCurrentPipeline, getIsPipelineLoading} from '../../store/pipeline-reducer/selectors';
 import Loading from '../../components/loading/loading';
 import NotFound from '../not-found/not-found';
-import {getSharedPipelines, getUserPipelines} from '../../store/main-reducer/selectors';
+import {getFunctions, getSharedPipelines, getUserPipelines} from '../../store/main-reducer/selectors';
 import NoAccess from '../no-access/no-access';
 import './pipeline.css';
 import {HeaderButton} from '../../components/header-button/header-button';
@@ -15,6 +15,7 @@ import {SidebarTabs} from '../../components/sidebar-tabs/sidebar-tabs';
 import Graph from '../../components/graph/graph';
 import {PipelineContext} from '../../contexts/pipeline-context';
 import {getEdgeId} from '../../utils/get-edge-id';
+import {fetchCellsFunctionsInfo} from '../../store/main-reducer/actions';
 
 function Pipeline() {
 	const { id } = useParams();
@@ -25,6 +26,7 @@ function Pipeline() {
 	const isLoading = useAppSelector(getIsPipelineLoading);
 	const userPipelines = useAppSelector(getUserPipelines);
 	const sharedPipelines = useAppSelector(getSharedPipelines);
+	const functions = useAppSelector(getFunctions);
 	const canEdit = useMemo(() => userPipelines.some((pipeline) => pipeline.id === id),
 		[userPipelines, pipeline?.id]);
 	const hasAccess = useMemo(() => canEdit || sharedPipelines.some((pipeline) => pipeline.id === id),
@@ -50,6 +52,7 @@ function Pipeline() {
 			}
 		}));
 	}, [pipeline?.cells]);
+
 	if (!id) {
 		return <NotFound />;
 	}
@@ -58,6 +61,9 @@ function Pipeline() {
 	}
 	if (pipeline === null) {
 		return isLoading ? <Loading /> : <NotFound />;
+	}
+	if (functions === null) {
+		dispatch(fetchCellsFunctionsInfo());
 	}
 
 	return (

@@ -9,6 +9,7 @@ import {SidebarName} from '../../enums/sidebar-name';
 import FileInputsSidebar from '../file-inputs-sidebar/file-inputs-sidebar';
 import ParamInputsSidebar from '../param-inputs-sidebar/param-inputs-sidebar';
 import OutputsSidebar from '../outputs-sidebar/outputs-sidebar';
+import {ParamType} from '../../enums/param-type';
 
 describe('param-inputs-sidebar tests', () => {
 	const store = mockStore({
@@ -54,7 +55,7 @@ describe('param-inputs-sidebar tests', () => {
 					name: 'func',
 					group: 'func',
 					inputs: [],
-					input_params: {'param-name': undefined},
+					input_params: {'param-name': ParamType.STR},
 					doc: 'string'
 				}
 			],

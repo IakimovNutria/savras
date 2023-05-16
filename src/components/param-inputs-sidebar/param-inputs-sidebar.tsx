@@ -15,14 +15,14 @@ type InputParamsProps = {
 function ParamInputsSidebar({cell}: InputParamsProps): JSX.Element | null {
 	const dispatch = useAppDispatch();
 	const functionsInfo = useAppSelector(getFunctions);
-	const functionInfo = useMemo(() => functionsInfo.find((elem) => (elem.function === cell?.function)),
+	const functionInfo = useMemo(() => functionsInfo?.find((elem) => (elem.function === cell?.function)),
 		[functionsInfo, cell?.function]);
 	const params = useMemo(() => {
 		if (!cell) {
 			return [];
 		}
 		const newParams = [];
-		if (functionInfo !== undefined) {
+		if (functionInfo) {
 			for (const key in functionInfo.input_params) {
 				const fieldType = functionInfo.input_params[key];
 				const toPush: ParamInputInfo = {
