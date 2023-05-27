@@ -1,8 +1,7 @@
 type ParamInputInfo = {
     name: string,
     value: string | boolean | number,
-    type: string,
-    pattern: string
+    type: string
 };
 
 export default ParamInputInfo;

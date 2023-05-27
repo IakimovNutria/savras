@@ -6,7 +6,7 @@ import ParamInput from './param-input';
 describe('param-input tests', () => {
 	it('should render correctly', () => {
 		const component = mount(
-			<ParamInput param={{name: 'param-name', value: false, type: 'checkbox', pattern: '*'}}
+			<ParamInput param={{name: 'param-name', value: false, type: 'checkbox'}}
 				setParams={() => {/*do nothing*/}}
 			/>
 		);

@@ -59,7 +59,7 @@ describe('main-reducer', () => {
 			userPipelines: [],
 			filesColumns: {},
 			files: [],
-			functions: []
+			functions: null
 		};
 	});
 
@@ -70,7 +70,7 @@ describe('main-reducer', () => {
 				userPipelines: [],
 				filesColumns: {},
 				files: [],
-				functions: []
+				functions: null
 			});
 	});
 

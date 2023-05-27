@@ -28,12 +28,10 @@ function ParamInputsSidebar({cell}: InputParamsProps): JSX.Element | null {
 				const toPush: ParamInputInfo = {
 					name: key,
 					type: '',
-					pattern: '*',
 					value: cell.input_params[key],
 				};
 				if (fieldType === ParamType.BOOL) {
 					toPush.type = 'checkbox';
-					toPush.pattern = '';
 					toPush.value = Boolean(toPush.value);
 				} else if (fieldType === ParamType.STR) {
 					toPush.type = 'text';
@@ -42,10 +40,8 @@ function ParamInputsSidebar({cell}: InputParamsProps): JSX.Element | null {
 					}
 				} else if (fieldType === ParamType.INT) {
 					toPush.type = 'number';
-					toPush.pattern = '\\d*';
 				} else if (fieldType === ParamType.FLOAT) {
 					toPush.type = 'number';
-					toPush.pattern = '*';
 				}
 				newParams.push(toPush);
 			}

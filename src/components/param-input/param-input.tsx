@@ -24,12 +24,11 @@ function ParamInput({param, setParams}: CellParamInputProps): JSX.Element {
 		<FormField name={param.name}
 			input={
 				<input
-					checked={typeof param.value === 'boolean' ? param.value : undefined}
-					value={typeof param.value !== 'boolean' ? param.value : undefined}
+					checked={typeof param.value === 'boolean' ? (param.value ?? undefined) : undefined}
+					value={typeof param.value !== 'boolean' ? (param.value ?? undefined) : undefined}
 					id={param.name}
 					type={param.type}
 					className={param.type !== 'checkbox' ? 'param-input__text-input' : ''}
-					pattern={param.pattern}
 					onChange={updateParamHandler}
 				/>
 			}

@@ -32,7 +32,9 @@ function Pipeline() {
 	const hasAccess = useMemo(() => canEdit || sharedPipelines.some((pipeline) => pipeline.id === id),
 		[canEdit, sharedPipelines, pipeline?.id]);
 	useEffect(() => {
-		dispatch(fetchPipeline({ pipelineId: id === undefined ? '' : id }));
+		if (pipeline?.id !== id && id) {
+			dispatch(fetchPipeline({pipelineId: id}));
+		}
 	}, [dispatch, id]);
 	const changeVisible = useCallback(() => setVisible((visible) => !visible),
 		[setVisible, visible]);
@@ -53,6 +55,12 @@ function Pipeline() {
 		}));
 	}, [pipeline?.cells]);
 
+	useEffect(() => {
+		if (functions === null) {
+			dispatch(fetchCellsFunctionsInfo());
+		}
+	}, [functions]);
+
 	if (!id) {
 		return <NotFound />;
 	}
@@ -61,9 +69,6 @@ function Pipeline() {
 	}
 	if (pipeline === null) {
 		return isLoading ? <Loading /> : <NotFound />;
-	}
-	if (functions === null) {
-		dispatch(fetchCellsFunctionsInfo());
 	}
 
 	return (
