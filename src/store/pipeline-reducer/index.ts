@@ -93,16 +93,8 @@ export const pipelineReducer = createSlice({
 							inputs:
 								{
 									...cell.inputs,
-									...action.payload.inputs.reduce((result: {[key: string]: string}, item) => {
-										result[item.field] = item.path;
-										return result;
-									}, {})
-								},
-							data_columns:
-								{
-									...cell.data_columns,
-									...action.payload.inputs.reduce((result: {[key: string]: string}, item) => {
-										result[item.field] = item.data_column;
+									...action.payload.inputs.reduce((result: Record<string, {path: string, data_column: string}[] | null>, item) => {
+										result[item.field] = item.values;
 										return result;
 									}, {})
 								}

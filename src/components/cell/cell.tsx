@@ -32,9 +32,13 @@ function Cell({ cellInfo }: CellProps): JSX.Element {
 
 	useEffect(() => {
 		for (const key in cellInfo.inputs) {
-			const path = cellInfo.inputs[key];
-			if (path && !Object.prototype.hasOwnProperty.call(dataColumns, path)) {
-				dispatch(fetchFileColumns({ path }));
+			const paths = cellInfo.inputs[key];
+			if (paths) {
+				for (const {path} of paths) {
+					if (path && !Object.prototype.hasOwnProperty.call(dataColumns, path)) {
+						dispatch(fetchFileColumns({ path }));
+					}
+				}
 			}
 		}
 	}, [cellInfo.inputs]);
@@ -124,7 +128,6 @@ function Cell({ cellInfo }: CellProps): JSX.Element {
 				<CellCharts cellId={cellInfo.id}
 					outputs={cellInfo.outputs}
 					inputs={cellInfo.inputs}
-					dataColumns={cellInfo.data_columns}
 				/>
 			</div>
 			{

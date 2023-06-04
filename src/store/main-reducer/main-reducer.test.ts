@@ -25,7 +25,8 @@ describe('main-reducer', () => {
 			function: 'func1',
 			name: 'name1',
 			group: 'group1',
-			inputs: [],
+			inputs: {},
+			outputs: {},
 			input_params: {},
 			doc: 'doc'
 		},
@@ -33,7 +34,8 @@ describe('main-reducer', () => {
 			function: 'func2',
 			name: 'name2',
 			group: 'group1',
-			inputs: [],
+			inputs: {},
+			outputs: {},
 			input_params: {},
 			doc: 'doc'
 		},
@@ -41,7 +43,8 @@ describe('main-reducer', () => {
 			function: 'func3',
 			name: 'name3',
 			group: 'group2',
-			inputs: [],
+			inputs: {},
+			outputs: {},
 			input_params: {},
 			doc: 'doc'
 		}

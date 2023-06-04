@@ -36,8 +36,7 @@ describe('file-inputs-sidebar tests', () => {
 	const mockCell = {
 		id: 'id',
 		function: 'func',
-		inputs: {'input-name': 'input-file-path'},
-		data_columns: {'input-name': 'input-data-column'},
+		inputs: {'input-name': [{path: 'input-file-path', data_column: 'input-data-column'}]},
 		outputs: {},
 		input_params: {},
 		output_params: {},

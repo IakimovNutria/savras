@@ -8,12 +8,11 @@ import TimeSeries from '../../types/time-series';
 
 type GraphsParams = {
     cellId: string;
-    outputs: {[key: string]: string | null};
-	inputs: {[key: string]: string | null};
-	dataColumns: Record<string, string | null>;
+    outputs: {[key: string]: string[] | null};
+	inputs: Record<string, {path: string | null, data_column: string | null}[] | null>;
 };
 
-function CellCharts({ cellId, outputs, inputs, dataColumns }: GraphsParams): JSX.Element {
+function CellCharts({ cellId, outputs, inputs }: GraphsParams): JSX.Element {
 	const graphs = useAppSelector(getGraphs);
 	const dispatch = useAppDispatch();
 	const [inputGraph, setInputGraph] = useState('');
@@ -26,14 +25,15 @@ function CellCharts({ cellId, outputs, inputs, dataColumns }: GraphsParams): JSX
 		const path = (selectedIndex !== -1) ? options[selectedIndex].id : null;
 		const fieldName = select.value;
 		setInputGraph(fieldName);
-		if (!path || graphs[path]) {
+		const dataColumns = inputs[fieldName];
+		if (!path || graphs[path] || !dataColumns) {
 			return;
 		}
-		const dataColumn = dataColumns[fieldName];
+		const dataColumn = dataColumns[0].data_column;
 		if (dataColumn) {
 			dispatch(getFileTimeSeries({path, dataColumn, cellId}));
 		}
-	}, [graphs, dataColumns, dispatch]);
+	}, [graphs, inputs, dispatch]);
 
 	const updateOutputGraph = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
 		event.preventDefault();
@@ -50,18 +50,20 @@ function CellCharts({ cellId, outputs, inputs, dataColumns }: GraphsParams): JSX
 	}, [graphs, dispatch]);
 
 	const outputTimeSeries = useMemo(() => {
-		const path = outputs[outputGraph];
-		if (!path) {
+		const paths = outputs[outputGraph];
+		if (!paths || paths.length === 0) {
 			return null;
 		}
+		const path = paths[0];
 		return graphs[path];
 	}, [graphs, outputs, outputGraph]);
 	const inputTimeSeries = useMemo(() => {
-		const path = inputs[inputGraph];
-		if (!path) {
+		const paths = inputs[inputGraph];
+		if (!paths || paths.length === 0) {
 			return null;
 		}
-		return graphs[path];
+		const {path} = paths[0];
+		return path ? graphs[path] : null;
 	}, [graphs, inputs, inputGraph]);
 
 	const timeSeries = useMemo(() => {
@@ -89,9 +91,9 @@ function CellCharts({ cellId, outputs, inputs, dataColumns }: GraphsParams): JSX
 						}
 						{
 							Object.entries(inputs).map(([name, path]) => (
-								path &&
-								<option id={path?.toString()}
-									key={path}
+								path && path.length && path[0].path &&
+								<option id={path[0].path?.toString()}
+									key={cellId + name}
 								>
 									{name}
 								</option>
@@ -110,9 +112,9 @@ function CellCharts({ cellId, outputs, inputs, dataColumns }: GraphsParams): JSX
 						}
 						{
 							Object.entries(outputs).map(([name, path]) => (
-								path &&
-								<option id={path?.toString()}
-									key={path}
+								path && path.length && path[0] &&
+								<option id={path[0]?.toString()}
+									key={cellId + name}
 								>
 									{name}
 								</option>

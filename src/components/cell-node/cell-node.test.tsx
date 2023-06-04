@@ -14,7 +14,6 @@ describe('cell-node tests', () => {
 		id: 'id',
 		function: 'function',
 		inputs: {'string1': null},
-		data_columns: {'string1': null},
 		outputs: {},
 		input_params: {['string']: false},
 		output_params: {},

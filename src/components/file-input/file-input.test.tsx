@@ -35,9 +35,8 @@ describe('file-input tests', () => {
 	it('should render correctly when input not chosen', () => {
 		const component = mount(
 			<Provider store={store}>
-				<FileInput input={{name: 'input-name', fileName: null, path: null, inputColumn: null}}
-					setInputsColumns={() => {/*do nothing*/}}
-					setInputsPaths={() => {/*do nothing*/}}
+				<FileInput input={{name: 'input-name', value: [{fileName: null, path: null, inputColumn: null}]}}
+					setInputs={() => {/*do nothing*/}}
 				/>
 			</Provider>
 		);
@@ -52,9 +51,8 @@ describe('file-input tests', () => {
 	it('should render correctly when input chosen', () => {
 		const component = mount(
 			<Provider store={store}>
-				<FileInput input={{name: 'input-name', fileName: 'file-name', path: 'file-path', inputColumn: null}}
-					setInputsColumns={() => {/*do nothing*/}}
-					setInputsPaths={() => {/*do nothing*/}}
+				<FileInput input={{name: 'input-name', value: [{fileName: 'file-name', path: 'file-path', inputColumn: null}]}}
+					setInputs={() => {/*do nothing*/}}
 				/>
 			</Provider>
 		);

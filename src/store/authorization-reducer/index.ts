@@ -25,7 +25,8 @@ export const authorizationReducer = createSlice({
 			.addCase(signInAction.pending, (state) => {
 				state.authorization = AuthorizationStatus.IN_PROCESS;
 			})
-			.addCase(signInAction.rejected, (state) => {
+			.addCase(signInAction.rejected, (state, action) => {
+				console.log(action);
 				state.authorization = AuthorizationStatus.BAD_AUTHENTICATE;
 			})
 			.addCase(signUpAction.fulfilled, (state) => {

@@ -24,7 +24,6 @@ describe('pipeline-reducer', () => {
 				id: 'id',
 				function: 'function',
 				inputs: {'string1': null},
-				data_columns: {'string1': null},
 				outputs: {},
 				input_params: {['string']: false},
 				output_params: {},
@@ -36,7 +35,6 @@ describe('pipeline-reducer', () => {
 				id: 'id2',
 				function: 'function',
 				inputs: {},
-				data_columns: {},
 				outputs: {},
 				input_params: {},
 				output_params: {},
@@ -127,7 +125,7 @@ describe('pipeline-reducer', () => {
 				.toEqual('string3');
 		});
 		it('should update columns on fulfilled', () => {
-			expect(pipelineReducer.reducer(state, {type: updateInputs.fulfilled.type, payload: {cellId: 'id', inputs: [{data_column: 'string2', field: 'string1', path: 'string3'}]}}).currentPipeline?.cells.find((cell) => cell.id === 'id')?.data_columns['string1'])
+			expect(pipelineReducer.reducer(state, {type: updateInputs.fulfilled.type, payload: {cellId: 'id', inputs: [{data_column: 'string2', field: 'string1', path: 'string3'}]}}).currentPipeline?.cells.find((cell) => cell.id === 'id')?.inputs['string1'])
 				.toEqual('string2');
 		});
 		it('should set cellStatus NOT_SAVED on rejected if there is not error message', () => {

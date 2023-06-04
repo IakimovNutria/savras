@@ -28,8 +28,8 @@ function OutputsSidebar({cell}: OutputsParams): JSX.Element | null {
 			const value = localOutputs[key];
 			if (value !== '' && value != null) {
 				const path = cell.outputs[key];
-				if (path !== null) {
-					dispatch(saveFile({ path, name: value }));
+				if (path !== null && path.length !== 0) {
+					dispatch(saveFile({ path: path[0], name: value }));
 				}
 			}
 		}

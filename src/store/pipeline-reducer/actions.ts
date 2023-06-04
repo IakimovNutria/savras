@@ -121,8 +121,8 @@ export const updateParams = createAsyncThunk<
 );
 
 export const updateInputs = createAsyncThunk<
-	{cellId: string, inputs: {field: string, path: string, data_column: string}[]},
-	{cellId: string, inputs: {field: string, path: string, data_column: string}[]}, {
+	{cellId: string, inputs: {field: string, values: {path: string, data_column: string}[]}[]},
+	{cellId: string, inputs: {field: string, values: {path: string, data_column: string}[]}[]}, {
 	dispatch: AppDispatch,
 	state: State,
 	extra: AxiosInstance

@@ -31,7 +31,8 @@ describe('cell creation tests', () => {
 					function: 'function1',
 					name: 'function1',
 					group: 'group1',
-					inputs: [],
+					inputs: {},
+					outputs: {},
 					input_params: {},
 					doc: 'haha'
 				},
@@ -39,7 +40,8 @@ describe('cell creation tests', () => {
 					function: 'function2',
 					name: 'function2',
 					group: 'group1',
-					inputs: [],
+					inputs: {},
+					outputs: {},
 					input_params: {},
 					doc: 'haha'
 				},
@@ -47,7 +49,8 @@ describe('cell creation tests', () => {
 					function: 'function3',
 					name: 'function3',
 					group: 'group2',
-					inputs: [],
+					inputs: {},
+					outputs: {},
 					input_params: {},
 					doc: 'haha'
 				},
@@ -55,7 +58,8 @@ describe('cell creation tests', () => {
 					function: 'function4',
 					name: 'function4',
 					group: 'group2',
-					inputs: [],
+					inputs: {},
+					outputs: {},
 					input_params: {},
 					doc: 'haha'
 				},
@@ -63,7 +67,8 @@ describe('cell creation tests', () => {
 					function: 'function5',
 					name: 'function5',
 					group: 'group2',
-					inputs: [],
+					inputs: {},
+					outputs: {},
 					input_params: {},
 					doc: 'haha'
 				}

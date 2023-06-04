@@ -1,0 +1,12 @@
+.file-input__list {
+    list-style: none;
+    padding: 0;
+}
+
+.file-input__name {
+    font-family: Hubballi, serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0;
+}

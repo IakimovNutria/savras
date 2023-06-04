@@ -17,7 +17,6 @@ describe('loading tests', () => {
 		id: 'id',
 		function: 'function',
 		inputs: {'string1': null},
-		data_columns: {'string1': null},
 		outputs: {},
 		input_params: {['string']: false},
 		output_params: {},
@@ -37,7 +36,6 @@ describe('loading tests', () => {
 						id: 'id2',
 						function: 'function',
 						inputs: {},
-						data_columns: {},
 						outputs: {},
 						input_params: {},
 						output_params: {},
@@ -63,7 +61,8 @@ describe('loading tests', () => {
 					function: 'function',
 					name: 'name',
 					group: 'group',
-					inputs: [],
+					inputs: {},
+					outputs: {},
 					input_params: {},
 					doc: 'string'
 				}

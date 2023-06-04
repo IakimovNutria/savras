@@ -35,7 +35,8 @@ describe('param-inputs-sidebar tests', () => {
 					function: 'func',
 					name: 'func',
 					group: 'func',
-					inputs: [],
+					inputs: {},
+					outputs: {},
 					input_params: {'param-name': ParamType.STR},
 					doc: 'string'
 				}
@@ -46,9 +47,8 @@ describe('param-inputs-sidebar tests', () => {
 	const mockCell = {
 		id: 'id',
 		function: 'func',
-		inputs: {'input-name': 'input-file-path'},
-		data_columns: {'input-name': 'input-data-column'},
-		outputs: {'output-name': 'output-value'},
+		inputs: {'input-name': [{path: 'input-file-path', data_column: 'input-data-column'}]},
+		outputs: {'output-name': ['output-value']},
 		input_params: {'param-name': false},
 		output_params: {},
 		error: 'error',
