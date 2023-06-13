@@ -62,7 +62,8 @@ describe('main-reducer', () => {
 			userPipelines: [],
 			filesColumns: {},
 			files: [],
-			functions: null
+			functions: null,
+			fileNames: {}
 		};
 	});
 
@@ -107,7 +108,8 @@ describe('main-reducer', () => {
 				userPipelines: [],
 				filesColumns: {['file-path']: ['a', 'b', 'c']},
 				files: [{name: 'file-name', path: 'file-path'}],
-				functions: []
+				functions: [],
+				fileNames: {}
 			};
 		});
 		it('should delete file and fileColumns on fulfilled', () => {
@@ -171,7 +173,8 @@ describe('main-reducer', () => {
 				userPipelines: mockPipelines,
 				filesColumns: {},
 				files: [],
-				functions: []
+				functions: [],
+				fileNames: {}
 			};
 		});
 		it('should delete pipeline on fulfilled', () => {

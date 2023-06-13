@@ -43,7 +43,7 @@ describe('pipeline-reducer', () => {
 				y: 20
 			}
 		],
-		edges: [['first', 'second']],
+		edges: [],
 		id: 'pipeline',
 		name: 'pipeline'
 	};
@@ -138,16 +138,6 @@ describe('pipeline-reducer', () => {
 		});
 	});
 
-	describe('add-edge test', () => {
-		beforeEach(() => {
-			state.currentPipeline = mockPipeline;
-		});
-		it('should set edge on fulfilled', () => {
-			expect(pipelineReducer.reducer(state, {type: addEdge.fulfilled.type, payload: ['second', 'third']}).currentPipeline?.edges)
-				.toEqual(mockPipeline.edges.concat([['second', 'third']]));
-		});
-	});
-
 	describe('move-cell test', () => {
 		beforeEach(() => {
 			state.currentPipeline = mockPipeline;
@@ -180,7 +170,7 @@ describe('pipeline-reducer', () => {
 		});
 		it('should set cell status IN_PROCESS on fulfilled', () => {
 			expect(pipelineReducer.reducer(state, {type: executeCell.fulfilled.type, payload: {cellId: 'id'}, meta: {arg: {cellId: 'id'}}}).cellsStatus['id'])
-				.toEqual(CellStatus.IN_PROCESS);
+				.toEqual(CellStatus.IN_PROGRESS);
 		});
 	});
 

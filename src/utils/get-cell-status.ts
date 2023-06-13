@@ -5,10 +5,10 @@ function getCellStatus(cell: CellInfo, defaultStatus: string): string {
 	const { error } = cell;
 	const haveOutputs = Object.keys(cell.outputs).some((key) => cell.outputs[key]);
 	if (error && error !== '') {
-		return error;
+		return 'error';
 	}
 	if (haveOutputs) {
-		return CellStatus.EXECUTED;
+		return CellStatus.SUCCEED;
 	}
 	return defaultStatus;
 }

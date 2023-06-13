@@ -61,14 +61,14 @@ function Pipeline() {
 		}
 	}, [functions]);
 
-	if (!id) {
+	if (isLoading) {
+		return <Loading />;
+	}
+	if (!id || pipeline === null) {
 		return <NotFound />;
 	}
 	if (!hasAccess) {
 		return <NoAccess />;
-	}
-	if (pipeline === null) {
-		return isLoading ? <Loading /> : <NotFound />;
 	}
 
 	return (
@@ -91,7 +91,7 @@ function Pipeline() {
 			}
 			<PipelineContext.Provider value={{pipelineId: pipeline.id, canEdit, setSidebar}}>
 				<Graph cellNodes={cellNodesInfo}
-					graphEdges={pipeline.edges.map((e) => ({id: getEdgeId(e[0], e[1]), source: e[0], target: e[1], label: ''}))}
+					graphEdges={pipeline.edges.map((e) => ({id: getEdgeId(e.parent_cell, e.child_cell), source: e.parent_cell, target: e.child_cell, label: `${e.parent_output}\n${e.child_input}`, type: 'custom'}))}
 				/>
 				<SidebarTabs sidebarId={sidebar.id}
 					sidebarName={sidebar.name}

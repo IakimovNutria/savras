@@ -5,6 +5,7 @@ import {
 	addEdge,
 	createCell,
 	deleteCell,
+	deleteEdge,
 	executeCell,
 	fetchCellInfo,
 	fetchPipeline,
@@ -42,12 +43,12 @@ export const pipelineReducer = createSlice({
 				state.isPipelineLoading = false;
 			})
 			.addCase(updateParams.pending, (state, action) => {
-				if (state.cellsStatus[action.meta.arg.cellId] !== CellStatus.IN_PROCESS) {
+				if (state.cellsStatus[action.meta.arg.cellId] !== CellStatus.IN_PROGRESS) {
 					state.cellsStatus[action.meta.arg.cellId] = CellStatus.SAVING;
 				}
 			})
 			.addCase(updateParams.fulfilled, (state, action) => {
-				if (state.cellsStatus[action.payload.cellId] !== CellStatus.IN_PROCESS) {
+				if (state.cellsStatus[action.payload.cellId] !== CellStatus.IN_PROGRESS) {
 					state.cellsStatus[action.payload.cellId] = CellStatus.SAVED;
 				}
 				if (state.currentPipeline) {
@@ -70,17 +71,17 @@ export const pipelineReducer = createSlice({
 				}
 			})
 			.addCase(updateParams.rejected, (state, action) => {
-				if (state.cellsStatus[action.meta.arg.cellId] !== CellStatus.IN_PROCESS) {
+				if (state.cellsStatus[action.meta.arg.cellId] !== CellStatus.IN_PROGRESS) {
 					state.cellsStatus[action.meta.arg.cellId] = action.error.message ?? CellStatus.NOT_SAVED;
 				}
 			})
 			.addCase(updateInputs.pending, (state, action) => {
-				if (state.cellsStatus[action.meta.arg.cellId] !== CellStatus.IN_PROCESS) {
+				if (state.cellsStatus[action.meta.arg.cellId] !== CellStatus.IN_PROGRESS) {
 					state.cellsStatus[action.meta.arg.cellId] = CellStatus.SAVING;
 				}
 			})
 			.addCase(updateInputs.fulfilled, (state, action) => {
-				if (state.cellsStatus[action.payload.cellId] !== CellStatus.IN_PROCESS) {
+				if (state.cellsStatus[action.payload.cellId] !== CellStatus.IN_PROGRESS) {
 					state.cellsStatus[action.payload.cellId] = CellStatus.SAVED;
 				}
 				if (state.currentPipeline) {
@@ -103,7 +104,7 @@ export const pipelineReducer = createSlice({
 				}
 			})
 			.addCase(updateInputs.rejected, (state, action) => {
-				if (state.cellsStatus[action.meta.arg.cellId] !== CellStatus.IN_PROCESS) {
+				if (state.cellsStatus[action.meta.arg.cellId] !== CellStatus.IN_PROGRESS) {
 					state.cellsStatus[action.meta.arg.cellId] = action.error.message ?? CellStatus.NOT_SAVED;
 				}
 			})
@@ -117,7 +118,7 @@ export const pipelineReducer = createSlice({
 				}
 			})
 			.addCase(executeCell.fulfilled, (state, action) => {
-				state.cellsStatus = { ...state.cellsStatus, [action.payload.cellId]: CellStatus.IN_PROCESS };
+				state.cellsStatus = { ...state.cellsStatus, [action.payload.cellId]: CellStatus.IN_PROGRESS };
 			})
 			.addCase(executeCell.rejected, (state, action) => {
 				state.cellsStatus = {
@@ -130,10 +131,10 @@ export const pipelineReducer = createSlice({
 					state.currentPipeline.cells = state.currentPipeline.cells
 						.map((cell) => (cell.id === action.payload.id ? action.payload : cell));
 				}
-				if (state.cellsStatus[action.payload.id] === CellStatus.IN_PROCESS) {
+				if (state.cellsStatus[action.payload.id] === CellStatus.IN_PROGRESS) {
 					state.cellsStatus = {
 						...state.cellsStatus,
-						[action.payload.id]: getCellStatus(action.payload, CellStatus.IN_PROCESS),
+						[action.payload.id]: getCellStatus(action.payload, CellStatus.IN_PROGRESS),
 					};
 				}
 			})
@@ -152,9 +153,20 @@ export const pipelineReducer = createSlice({
 						return cell;
 					});
 				}
-			}).addCase(addEdge.fulfilled, (state, action) => {
+			})
+			.addCase(addEdge.fulfilled, (state, action) => {
 				if (state.currentPipeline) {
 					state.currentPipeline.edges = [...state.currentPipeline.edges, action.payload];
+				}
+			})
+			.addCase(deleteEdge.fulfilled, (state, action) => {
+				if (state.currentPipeline) {
+					state.currentPipeline.edges = state.currentPipeline.edges.filter((edge) =>
+						edge.child_cell !== action.payload.child_cell ||
+						edge.child_input !== action.payload.child_input ||
+						edge.parent_cell !== action.payload.parent_cell ||
+						edge.parent_output !== action.payload.parent_output
+					);
 				}
 			});
 	},

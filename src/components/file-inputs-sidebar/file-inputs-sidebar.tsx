@@ -1,11 +1,12 @@
 import React, {FormEvent, useCallback, useEffect, useMemo, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import Input from '../../types/input';
-import {getFiles, getFunctions} from '../../store/main-reducer/selectors';
+import {getFileNames, getFiles, getFunctions} from '../../store/main-reducer/selectors';
 import FileInput from '../file-input/file-input';
 import {updateInputs} from '../../store/pipeline-reducer/actions';
 import {Sidebar} from '../sidebar/sidebar';
 import CellInfo from '../../types/cell-info';
+import {fetchFileName} from '../../store/main-reducer/actions';
 
 type InputProps = {
     cell: CellInfo;
@@ -13,6 +14,7 @@ type InputProps = {
 
 function FileInputsSidebar({cell}: InputProps): JSX.Element | null {
 	const files = useAppSelector(getFiles);
+	const unsavedFiles = useAppSelector(getFileNames);
 	const functions = useAppSelector(getFunctions);
 	const func = useMemo(() => {
 		return functions?.find((func) => func.function === cell.function);
@@ -28,12 +30,19 @@ function FileInputsSidebar({cell}: InputProps): JSX.Element | null {
 	const [localInputs, setLocalInputs] = useState(defaultLocalInputs);
 	useEffect(() => setLocalInputs(defaultLocalInputs), [defaultLocalInputs]);
 	const getFileName = useCallback((path: string | null) => {
+		if (path === null) {
+			return null;
+		}
 		const file = files.find((elem) => elem.path === path);
 		if (file === undefined) {
 			return null;
 		}
-		return file.name;
-	}, [files]);
+		if (!unsavedFiles[path]) {
+			dispatch(fetchFileName({path}));
+			return null;
+		}
+		return unsavedFiles[path];
+	}, [files, unsavedFiles]);
 	const inputsArray: Input[] = useMemo(() => {
 		const newInputsArray = [];
 		for (const key in localInputs) {

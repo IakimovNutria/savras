@@ -23,5 +23,8 @@ export enum ApiRoute {
 	CELLS_UPDATE_PARAMS = '/cells/update/params',
 	CELLS_UPDATE_INPUTS = '/cells/update/inputs',
 	CELLS_EXECUTE = '/cells/execute',
-	FILES_SAVE = '/files/save'
+	FILES_SAVE = '/files/save',
+	CELLS_STATUS = '/cells/status',
+	CELLS_STOP = '/cells/stop',
+	FILES_FILENAME = '/files/filename'
 }

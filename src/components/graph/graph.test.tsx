@@ -5,7 +5,7 @@ import ReactFlow, {
 	Background,
 	Controls,
 	MiniMap
-} from 'react-flow-renderer';
+} from 'reactflow';
 import {Provider} from 'react-redux';
 import {mockStore} from '../../test-utils';
 import {ReducerName} from '../../enums/reducer-name';

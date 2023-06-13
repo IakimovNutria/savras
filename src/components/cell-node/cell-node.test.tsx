@@ -2,7 +2,7 @@ import React from 'react';
 import {mount} from 'enzyme';
 import CellNode from './cell-node';
 import CellInfo from '../../types/cell-info';
-import {ReactFlowProvider} from 'react-flow-renderer';
+import {ReactFlowProvider} from 'reactflow';
 import Cell from '../cell/cell';
 import {Provider} from 'react-redux';
 import {mockStore} from '../../test-utils';

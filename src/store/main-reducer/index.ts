@@ -6,7 +6,7 @@ import {
 	deleteFile,
 	deletePipeline,
 	fetchCellsFunctionsInfo,
-	fetchFileColumns,
+	fetchFileColumns, fetchFileName,
 	fetchFilesAction,
 	fetchSharedPipelinesAction,
 	fetchUserPipelinesAction,
@@ -21,7 +21,8 @@ const initialState: MainReducerState = {
 	userPipelines: [],
 	sharedPipelines: [],
 	functions: null,
-	filesColumns: {}
+	filesColumns: {},
+	fileNames: {}
 };
 
 export const mainReducer = createSlice({
@@ -64,6 +65,9 @@ export const mainReducer = createSlice({
 			})
 			.addCase(fetchFileColumns.fulfilled, (state, action) => {
 				state.filesColumns = { ...state.filesColumns, [action.payload.path]: action.payload.columns };
+			})
+			.addCase(fetchFileName.fulfilled, (state, action) => {
+				state.fileNames = {...state.fileNames, [action.payload.path]: action.payload.name};
 			});
 	},
 });

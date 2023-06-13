@@ -174,3 +174,15 @@ export const deleteFile = createAsyncThunk<{path: string}, {path: string}, {
 		return { path };
 	},
 );
+
+export const fetchFileName = createAsyncThunk<{path: string, name: string}, {path: string}, {
+	dispatch: AppDispatch,
+	state: State,
+	extra: AxiosInstance
+}>(
+	ApiRoute.FILES_FILENAME,
+	async ({ path }, { extra: api }) => {
+		const {data} = await api.get<string>(ApiRoute.FILES_FILENAME, { params: { path } });
+		return { path, name: data };
+	},
+);

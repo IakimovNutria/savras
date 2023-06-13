@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import './button.css';
 import cn from 'classnames';
 import {ButtonSize} from '../../enums/button-size';
@@ -12,12 +12,13 @@ type ButtonProps = {
 	plainRight?: boolean;
 	plainLeft?: boolean;
 	linkTo?: string;
+	disabled?: boolean;
 	[key: string]: unknown;
 };
 
-export const Button: React.FC<ButtonProps> = ({children, hasShadow, size, plainLeft, plainRight, linkTo, ...buttonProps}: ButtonProps) => {
-	const className = useMemo(() => cn('button', hasShadow && 'button_has-shadow', `button_${size}`,
-		plainLeft && 'button_plain-left', plainRight && 'button_plain-right'), [hasShadow, size, plainRight, plainLeft]);
+export const Button: React.FC<ButtonProps> = ({children, hasShadow, size, plainLeft, plainRight, linkTo, disabled, ...buttonProps}: ButtonProps) => {
+	const className = cn('button', hasShadow && 'button_has-shadow', `button_${size}`,
+		plainLeft && 'button_plain-left', plainRight && 'button_plain-right', disabled && 'button_disabled');
 	return (
 		linkTo ? (
 			<Link className={className}
@@ -29,6 +30,7 @@ export const Button: React.FC<ButtonProps> = ({children, hasShadow, size, plainL
 		) : (
 			<button className={className}
 				{...buttonProps}
+				disabled={disabled}
 			>
 				{children}
 			</button>

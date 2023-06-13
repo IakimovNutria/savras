@@ -1,0 +1,26 @@
+.add-edge-modal {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.add-edge-modal__selects, .add-edge-modal__buttons {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+}
+
+.add-edge-modal__selects {
+    margin-bottom: 24px;
+}
+
+.add-edge-modal__select {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.add-edge-modal__head-text {
+    margin: 10px 0;
+}

@@ -9,3 +9,4 @@ export const getUserPipelines = (state: State): ShortPipelineInfo[] => state[Red
 export const getSharedPipelines = (state: State): ShortPipelineInfo[] => state[ReducerName.MAIN].sharedPipelines;
 export const getFunctions = (state: State): CellFunction[] | null => state[ReducerName.MAIN].functions;
 export const getFilesColumns = (state: State): {[path: string]: string[]} => state[ReducerName.MAIN].filesColumns;
+export const getFileNames = (state: State): Record<string, string> => state[ReducerName.MAIN].fileNames;

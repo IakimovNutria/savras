@@ -40,7 +40,7 @@ describe('cell-charts tests', () => {
 						y: 20
 					}
 				],
-				edges: [['first', 'second']],
+				edges: [],
 				id: 'pipeline',
 				name: 'pipeline'
 			},

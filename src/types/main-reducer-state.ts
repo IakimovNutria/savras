@@ -8,6 +8,7 @@ type MainReducerState = {
     sharedPipelines: ShortPipelineInfo[];
     functions: CellsFunction[] | null;
     filesColumns: Record<string, string[]>;
+    fileNames: Record<string, string>
 }
 
 export default MainReducerState;
