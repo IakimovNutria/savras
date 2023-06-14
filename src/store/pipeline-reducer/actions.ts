@@ -1,4 +1,4 @@
-import {createAsyncThunk} from '@reduxjs/toolkit';
+import {createAction, createAsyncThunk} from '@reduxjs/toolkit';
 import TimeSeries from '../../types/time-series';
 import {AppDispatch, State} from '../../types/state';
 import {AxiosInstance} from 'axios';
@@ -174,4 +174,47 @@ export const stopCell = createAsyncThunk<{cellId: string}, {cellId: string}, {
 		await api.post(ApiRoute.CELLS_STOP, { cell_id: cellId });
 		return { cellId };
 	},
+);
+
+export const executePipeline = createAsyncThunk<void, {pipelineId: string}, {
+	dispatch: AppDispatch,
+	state: State,
+	extra: AxiosInstance
+}>(
+	ApiRoute.PIPELINES_EXECUTE,
+	async ({ pipelineId }, { extra: api }) => {
+		await api.post(ApiRoute.PIPELINES_EXECUTE, { pipeline_id: pipelineId });
+	},
+);
+
+export const stopPipeline = createAsyncThunk<void, {pipelineId: string}, {
+	dispatch: AppDispatch,
+	state: State,
+	extra: AxiosInstance
+}>(
+	ApiRoute.PIPELINES_STOP,
+	async ({ pipelineId }, { extra: api }) => {
+		await api.post(ApiRoute.PIPELINES_STOP, { pipeline_id: pipelineId });
+	},
+);
+
+export const fetchPipelineStatus = createAsyncThunk<CellStatus, {pipelineId: string}, {
+	dispatch: AppDispatch,
+	state: State,
+	extra: AxiosInstance
+}>(
+	ApiRoute.PIPELINES_STATUS,
+	async ({ pipelineId }, { extra: api, dispatch }) => {
+		const {data} = await api.get<{status: CellStatus}>(ApiRoute.PIPELINES_STATUS, {params: { pipeline_id: pipelineId }});
+		const {status} = data;
+		if (status !== CellStatus.IN_PROGRESS) {
+			dispatch(fetchPipeline({pipelineId}));
+		}
+		return status;
+	},
+);
+
+export const setCellStatus = createAction(
+	'/set/cell/status',
+	({cellStatus: CellStatus, cellId: string}) => ({payload: {cellStatus: CellStatus, cellId: string}}),
 );

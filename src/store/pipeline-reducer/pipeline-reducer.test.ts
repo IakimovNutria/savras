@@ -1,16 +1,15 @@
 import PipelineReducerState from '../../types/pipeline-reducer-state';
 import {pipelineReducer} from './index';
 import {
-	getFileTimeSeries,
 	createCell,
 	deleteCell,
 	executeCell,
 	fetchCellInfo,
-	moveCell,
 	fetchPipeline,
-	addEdge,
-	updateParams,
-	updateInputs
+	getFileTimeSeries,
+	moveCell,
+	updateInputs,
+	updateParams
 } from './actions';
 import PipelineInfo from '../../types/pipeline-info';
 import {CellStatus} from '../../enums/cell-status';
@@ -29,7 +28,8 @@ describe('pipeline-reducer', () => {
 				output_params: {},
 				error: '',
 				x: 10,
-				y: 20
+				y: 20,
+				status: CellStatus.NOT_EXECUTED
 			},
 			{
 				id: 'id2',
@@ -40,7 +40,8 @@ describe('pipeline-reducer', () => {
 				output_params: {},
 				error: 'error',
 				x: 20,
-				y: 20
+				y: 20,
+				status: CellStatus.NOT_EXECUTED
 			}
 		],
 		edges: [],
@@ -53,7 +54,8 @@ describe('pipeline-reducer', () => {
 			cellsStatus: {},
 			currentPipeline: null,
 			graphs: {},
-			isPipelineLoading: false
+			isPipelineLoading: false,
+			status: CellStatus.NOT_EXECUTED
 		};
 	});
 

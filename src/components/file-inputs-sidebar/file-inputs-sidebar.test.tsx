@@ -8,6 +8,7 @@ import FileInputsSidebar from './file-inputs-sidebar';
 import CellInfo from '../../types/cell-info';
 import {Sidebar} from '../sidebar/sidebar';
 import FileInput from '../file-input/file-input';
+import {CellStatus} from "../../enums/cell-status";
 
 describe('file-inputs-sidebar tests', () => {
 	const store = mockStore({
@@ -42,7 +43,8 @@ describe('file-inputs-sidebar tests', () => {
 		output_params: {},
 		error: 'error',
 		x: 10,
-		y: 20
+		y: 20,
+		status: CellStatus.NOT_EXECUTED
 	} as CellInfo;
 
 	it('should render correctly', () => {

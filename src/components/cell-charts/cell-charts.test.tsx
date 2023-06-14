@@ -7,6 +7,7 @@ import {ReducerName} from '../../enums/reducer-name';
 import AuthorizationStatus from '../../enums/authorization-status';
 import {Provider} from 'react-redux';
 import Chart from '../chart/chart';
+import {CellStatus} from '../../enums/cell-status';
 
 describe('cell-charts tests', () => {
 	const mockCell: CellInfo = {
@@ -18,7 +19,8 @@ describe('cell-charts tests', () => {
 		output_params: {},
 		error: '',
 		x: 10,
-		y: 20
+		y: 20,
+		status: CellStatus.NOT_EXECUTED
 	};
 	const store = mockStore({
 		[ReducerName.AUTHORIZATION]: {
@@ -37,7 +39,8 @@ describe('cell-charts tests', () => {
 						output_params: {},
 						error: 'error',
 						x: 20,
-						y: 20
+						y: 20,
+						status: CellStatus.NOT_EXECUTED
 					}
 				],
 				edges: [],

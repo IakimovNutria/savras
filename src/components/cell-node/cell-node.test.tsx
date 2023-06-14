@@ -8,6 +8,7 @@ import {Provider} from 'react-redux';
 import {mockStore} from '../../test-utils';
 import {ReducerName} from '../../enums/reducer-name';
 import AuthorizationStatus from '../../enums/authorization-status';
+import {CellStatus} from '../../enums/cell-status';
 
 describe('cell-node tests', () => {
 	const mockCell: CellInfo = {
@@ -19,7 +20,8 @@ describe('cell-node tests', () => {
 		output_params: {},
 		error: '',
 		x: 10,
-		y: 20
+		y: 20,
+		status: CellStatus.NOT_EXECUTED
 	};
 	const store = mockStore({
 		[ReducerName.AUTHORIZATION]: {

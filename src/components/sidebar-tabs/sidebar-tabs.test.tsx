@@ -10,6 +10,7 @@ import FileInputsSidebar from '../file-inputs-sidebar/file-inputs-sidebar';
 import ParamInputsSidebar from '../param-inputs-sidebar/param-inputs-sidebar';
 import OutputsSidebar from '../outputs-sidebar/outputs-sidebar';
 import {ParamType} from '../../enums/param-type';
+import {CellStatus} from "../../enums/cell-status";
 
 describe('param-inputs-sidebar tests', () => {
 	const store = mockStore({
@@ -30,7 +31,8 @@ describe('param-inputs-sidebar tests', () => {
 						output_params: {},
 						error: 'error',
 						x: 10,
-						y: 20
+						y: 20,
+						status: CellStatus.NOT_EXECUTED
 					}
 				],
 				edges: []

@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import {fetchPipeline} from '../../store/pipeline-reducer/actions';
+import {executePipeline, fetchPipeline, fetchPipelineStatus, stopPipeline} from '../../store/pipeline-reducer/actions';
 import CellCreation from '../../components/cell-creation/cell-creation';
-import {getCurrentPipeline, getIsPipelineLoading} from '../../store/pipeline-reducer/selectors';
+import {getCurrentPipeline, getIsPipelineLoading, getStatus} from '../../store/pipeline-reducer/selectors';
 import Loading from '../../components/loading/loading';
 import NotFound from '../not-found/not-found';
 import {getFunctions, getSharedPipelines, getUserPipelines} from '../../store/main-reducer/selectors';
@@ -16,6 +16,9 @@ import Graph from '../../components/graph/graph';
 import {PipelineContext} from '../../contexts/pipeline-context';
 import {getEdgeId} from '../../utils/get-edge-id';
 import {fetchCellsFunctionsInfo} from '../../store/main-reducer/actions';
+import useInterval from '@use-it/interval';
+import {CellStatus} from '../../enums/cell-status';
+import {getStatusStyle} from '../../utils/get-status-style';
 
 function Pipeline() {
 	const { id } = useParams();
@@ -27,6 +30,8 @@ function Pipeline() {
 	const userPipelines = useAppSelector(getUserPipelines);
 	const sharedPipelines = useAppSelector(getSharedPipelines);
 	const functions = useAppSelector(getFunctions);
+	const pipelineStatus = useAppSelector(getStatus);
+	const [interval, setInterval] = useState(500);
 	const canEdit = useMemo(() => userPipelines.some((pipeline) => pipeline.id === id),
 		[userPipelines, pipeline?.id]);
 	const hasAccess = useMemo(() => canEdit || sharedPipelines.some((pipeline) => pipeline.id === id),
@@ -38,6 +43,11 @@ function Pipeline() {
 	}, [dispatch, id]);
 	const changeVisible = useCallback(() => setVisible((visible) => !visible),
 		[setVisible, visible]);
+	const executeHandle = useCallback(() => pipeline?.id && dispatch(executePipeline({pipelineId: pipeline?.id})),
+		[dispatch, pipeline?.id]);
+	const stopHandle = useCallback(() => pipeline?.id && dispatch(stopPipeline({pipelineId: pipeline?.id})),
+		[dispatch, pipeline?.id]);
+
 	const cellNodesInfo = useMemo(() => {
 		if (!pipeline) {
 			return [];
@@ -61,6 +71,17 @@ function Pipeline() {
 		}
 	}, [functions]);
 
+	useInterval(() => {
+		pipeline?.id && dispatch(fetchPipelineStatus({ pipelineId: pipeline?.id }));
+		setInterval((prev) => Math.min(prev * 2, 5000));
+	}, pipelineStatus === CellStatus.IN_PROGRESS ? interval : null);
+
+	useEffect(() => {
+		if (pipelineStatus !== CellStatus.IN_PROGRESS) {
+			setInterval(100);
+		}
+	}, [pipelineStatus]);
+
 	if (isLoading) {
 		return <Loading />;
 	}
@@ -70,15 +91,32 @@ function Pipeline() {
 	if (!hasAccess) {
 		return <NoAccess />;
 	}
-
 	return (
 		<>
 			<header className="pipeline__header">
 				<h1 className="pipeline__title">{pipeline.name}</h1>
+				<h1 className="pipeline__title"
+					style={getStatusStyle(pipelineStatus)}>{pipelineStatus}</h1>
 				<div className="pipeline__header-buttons">
 					{
-						canEdit && <HeaderButton onClick={changeVisible}
-							withoutRightBorder>Create</HeaderButton>
+						canEdit && (
+							<>
+								{pipelineStatus === CellStatus.IN_PROGRESS ?
+									<HeaderButton onClick={stopHandle}
+										withoutRightBorder>
+										Stop
+									</HeaderButton> :
+									<HeaderButton onClick={executeHandle}
+										withoutRightBorder>
+										Execute
+									</HeaderButton>
+								}
+								<HeaderButton onClick={changeVisible}
+									withoutRightBorder>
+									Create
+								</HeaderButton>
+							</>
+						)
 					}
 					<HeaderButton linkTo="/">Main</HeaderButton>
 				</div>

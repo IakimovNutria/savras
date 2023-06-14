@@ -8,6 +8,7 @@ import CellInfo from '../../types/cell-info';
 import {Sidebar} from '../sidebar/sidebar';
 import OutputsSidebar from './outputs-sidebar';
 import Output from '../output/output';
+import {CellStatus} from "../../enums/cell-status";
 
 describe('outputs-sidebar tests', () => {
 	const store = mockStore({
@@ -42,7 +43,8 @@ describe('outputs-sidebar tests', () => {
 		output_params: {},
 		error: 'error',
 		x: 10,
-		y: 20
+		y: 20,
+		status: CellStatus.NOT_EXECUTED
 	} as CellInfo;
 
 	it('should render correctly', () => {

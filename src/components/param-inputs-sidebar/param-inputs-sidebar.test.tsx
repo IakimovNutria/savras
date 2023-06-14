@@ -9,6 +9,7 @@ import {Sidebar} from '../sidebar/sidebar';
 import ParamInputsSidebar from './param-inputs-sidebar';
 import ParamInput from '../param-input/param-input';
 import {ParamType} from '../../enums/param-type';
+import {CellStatus} from "../../enums/cell-status";
 
 describe('param-inputs-sidebar tests', () => {
 	const store = mockStore({
@@ -53,7 +54,8 @@ describe('param-inputs-sidebar tests', () => {
 		output_params: {},
 		error: 'error',
 		x: 10,
-		y: 20
+		y: 20,
+		status: CellStatus.NOT_EXECUTED
 	} as CellInfo;
 
 	it('should render correctly', () => {

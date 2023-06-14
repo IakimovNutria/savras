@@ -7,6 +7,7 @@ type PipelineReducerState = {
     graphs: Record<string, TimeSeries>;
     isPipelineLoading: boolean;
     cellsStatus: Record<string, CellStatus | string>;
+    status: CellStatus;
 }
 
 export default PipelineReducerState;

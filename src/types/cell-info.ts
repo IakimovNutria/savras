@@ -1,3 +1,5 @@
+import {CellStatus} from '../enums/cell-status';
+
 type CellInfo = {
     id: string;
     function: string;
@@ -8,6 +10,7 @@ type CellInfo = {
     error: string;
     x: number;
     y: number;
+    status: CellStatus;
 };
 
 export default CellInfo;

@@ -22,7 +22,8 @@ describe('loading tests', () => {
 		output_params: {},
 		error: '',
 		x: 10,
-		y: 20
+		y: 20,
+		status: CellStatus.NOT_EXECUTED
 	};
 	const store = mockStore({
 		[ReducerName.AUTHORIZATION]: {
@@ -41,7 +42,8 @@ describe('loading tests', () => {
 						output_params: {},
 						error: 'error',
 						x: 20,
-						y: 20
+						y: 20,
+						status: CellStatus.NOT_EXECUTED
 					}
 				],
 				edges: [],

@@ -6,10 +6,10 @@ import {
 	createCell,
 	deleteCell,
 	deleteEdge,
-	executeCell,
+	executeCell, executePipeline,
 	fetchCellInfo,
-	fetchPipeline,
-	getFileTimeSeries, moveCell,
+	fetchPipeline, fetchPipelineStatus,
+	getFileTimeSeries, moveCell, setCellStatus,
 	updateInputs,
 	updateParams,
 } from './actions';
@@ -21,6 +21,7 @@ const initialState: PipelineReducerState = {
 	currentPipeline: null,
 	graphs: {},
 	isPipelineLoading: false,
+	status: CellStatus.NOT_EXECUTED
 };
 
 export const pipelineReducer = createSlice({
@@ -38,7 +39,7 @@ export const pipelineReducer = createSlice({
 				state.isPipelineLoading = false;
 				state.currentPipeline = action.payload;
 				state.currentPipeline.cells.forEach((cell) => {
-					state.cellsStatus = { ...state.cellsStatus, [cell.id]: getCellStatus(cell, CellStatus.NOT_EXECUTED) };
+					state.cellsStatus = { ...state.cellsStatus, [cell.id]: cell.status };
 				});
 			})
 			.addCase(fetchPipeline.rejected, (state) => {
@@ -139,6 +140,7 @@ export const pipelineReducer = createSlice({
 						[action.payload.id]: getCellStatus(action.payload, CellStatus.IN_PROGRESS),
 					};
 				}
+				state.cellsStatus[action.payload.id] = action.payload.status;
 			})
 			.addCase(createCell.fulfilled, (state, action) => {
 				if (state.currentPipeline) {
@@ -170,6 +172,15 @@ export const pipelineReducer = createSlice({
 						edge.parent_output !== action.payload.parent_output
 					);
 				}
+			})
+			.addCase(fetchPipelineStatus.fulfilled, (state, action) => {
+				state.status = action.payload;
+			})
+			.addCase(executePipeline.fulfilled, (state) => {
+				state.status = CellStatus.IN_PROGRESS;
+			})
+			.addCase(setCellStatus, (state, action) => {
+				state.cellsStatus[action.payload.cellId] = action.payload.cellStatus;
 			});
 	},
 });
