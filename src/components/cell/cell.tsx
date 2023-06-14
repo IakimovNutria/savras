@@ -44,7 +44,7 @@ function Cell({ cellInfo }: CellProps): JSX.Element {
 	}, [cellInfo.inputs]);
 
 	useInterval(() => {
-		dispatch(fetchCellStatus({ cellId: cellInfo.id }));
+		dispatch(fetchCellStatus({ cellId: cellInfo.id, pipelineId }));
 		setInterval((prev) => Math.min(prev * 2, 5000));
 	}, cellStatus === CellStatus.IN_PROGRESS ? interval : null);
 	useEffect(() => {

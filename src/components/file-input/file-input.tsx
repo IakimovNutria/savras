@@ -111,6 +111,11 @@ export default function FileInput({input, setInputs, multi}: FileInputProps): JS
 									fileName || <option id="">choose file</option>
 								}
 								{
+									fileName && !files.find((file) => file.path === path) && <option key={input.name + path}
+										data-file-path={path}
+										id={path ?? undefined}>{fileName}</option>
+								}
+								{
 									files.map((file) => (
 										<option data-file-path={file.path}
 											id={file.path}

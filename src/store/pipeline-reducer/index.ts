@@ -30,7 +30,9 @@ export const pipelineReducer = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchPipeline.pending, (state) => {
-				state.isPipelineLoading = true;
+				if (!state.currentPipeline) {
+					state.isPipelineLoading = true;
+				}
 			})
 			.addCase(fetchPipeline.fulfilled, (state, action) => {
 				state.isPipelineLoading = false;

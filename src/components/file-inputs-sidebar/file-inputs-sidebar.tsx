@@ -34,8 +34,8 @@ function FileInputsSidebar({cell}: InputProps): JSX.Element | null {
 			return null;
 		}
 		const file = files.find((elem) => elem.path === path);
-		if (file === undefined) {
-			return null;
+		if (file) {
+			return file.name;
 		}
 		if (!unsavedFiles[path]) {
 			dispatch(fetchFileName({path}));
@@ -59,8 +59,7 @@ function FileInputsSidebar({cell}: InputProps): JSX.Element | null {
 			newInputsArray.push(toPush);
 		}
 		return newInputsArray;
-	}, [localInputs, getFileName]);
-
+	}, [localInputs, getFileName, unsavedFiles]);
 	const submitInputsHandler = useCallback(async (event: FormEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		const toUpdate: {values: {path: string, data_column: string}[], field: string}[] = [];

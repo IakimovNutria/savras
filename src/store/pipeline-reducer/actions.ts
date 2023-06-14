@@ -149,16 +149,16 @@ export const executeCell = createAsyncThunk<{cellId: string}, {cellId: string}, 
 	},
 );
 
-export const fetchCellStatus = createAsyncThunk<{cellId: string, status: CellStatus}, {cellId: string}, {
+export const fetchCellStatus = createAsyncThunk<{cellId: string, status: CellStatus}, {cellId: string, pipelineId: string}, {
 	dispatch: AppDispatch,
 	state: State,
 	extra: AxiosInstance
 }>(
 	ApiRoute.CELLS_STATUS,
-	async ({ cellId }, { extra: api, dispatch }) => {
+	async ({ cellId, pipelineId }, { extra: api, dispatch }) => {
 		const { data: {status} } = await api.get<{status: CellStatus}>(ApiRoute.CELLS_STATUS, {params: { cell_id: cellId }});
 		if (status !== CellStatus.IN_PROGRESS) {
-			dispatch(fetchCellInfo({cellId}));
+			dispatch(fetchPipeline({pipelineId}));
 		}
 		return { cellId, status };
 	},
