@@ -62,7 +62,7 @@ export default function ChangeEdgeModal({setShowModal, parentCellId, childCellId
 
 
 	return (
-		<Modal title="Share pipeline"
+		<Modal title="Change edge"
 			closeModal={closeModal}>
 			<div className="add-edge-modal">
 				<div className="add-edge-modal__head-text">

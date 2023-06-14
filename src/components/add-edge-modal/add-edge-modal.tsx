@@ -48,7 +48,7 @@ export default function AddEdgeModal({setShowModal, parentCellId, childCellId}: 
 	}, [dispatch, parentCellId, childCellId, chosenOutput, chosenInput, closeModal]);
 
 	return (
-		<Modal title="Share pipeline"
+		<Modal title="Add edge"
 			closeModal={closeModal}>
 			<div className="add-edge-modal">
 				<div className="add-edge-modal__head-text">
